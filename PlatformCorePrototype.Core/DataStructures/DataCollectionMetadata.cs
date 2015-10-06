@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class CollectionMetadata
+    public class DataCollectionMetadata
     {
-        public string DataSourceName { get; set; }  
+
         public string CollectionName { get; set; }
         public string DataSourceLocation { get; set; }
 

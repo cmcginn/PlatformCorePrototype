@@ -9,7 +9,6 @@ namespace PlatformCorePrototype.Core.DataStructures
     public class DataColumnMetadata
     {
         public string ColumnName { get; set; }
-        public string DisplayName { get; set; }
         public string DataType { get; set; }
 
         List<DataColumnMetadata> _Columns;

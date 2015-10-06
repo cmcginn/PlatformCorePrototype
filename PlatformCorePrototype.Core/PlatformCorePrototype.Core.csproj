@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="DataStructures\CollectionMetadata.cs" />
+    <Compile Include="DataStructures\DataCollectionMetadata.cs" />
     <Compile Include="DataStructures\DataColumnMetadata.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

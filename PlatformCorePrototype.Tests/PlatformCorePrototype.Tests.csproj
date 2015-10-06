@@ -64,6 +64,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Services\DataServiceTests.cs" />
+    <Compile Include="Services\ServiceTestBase.cs" />
+    <Compile Include="TestUtils.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,6 +78,10 @@
     <ProjectReference Include="..\PlatformCorePrototype.Core\PlatformCorePrototype.Core.csproj">
       <Project>{d3dbb8fb-dd03-4d3e-ae4b-595606fce7c4}</Project>
       <Name>PlatformCorePrototype.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlatformCorePrototype.Services\PlatformCorePrototype.Services.csproj">
+      <Project>{BE68EB2A-6C5C-4BF1-BFB1-AF69968ADF6F}</Project>
+      <Name>PlatformCorePrototype.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
