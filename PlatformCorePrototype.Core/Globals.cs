@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Core
 {
@@ -31,5 +32,11 @@ namespace PlatformCorePrototype.Core
                 return _MetadataCollectionStoreName;
             }
         }
+
+        public const string StringDatatypeName = "System.String";
+        public const string IntegerDataTypeName = "System.Int32";
+        public const string CollectionDataTypeName = "List<DataColumnMetadata>";
+        public const string ObjectDataTypeName = "System.Object";
+
     }
 }

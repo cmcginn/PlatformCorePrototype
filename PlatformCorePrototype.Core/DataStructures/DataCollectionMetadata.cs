@@ -9,7 +9,7 @@ namespace PlatformCorePrototype.Core.DataStructures
     public class DataCollectionMetadata
     {
 
-        public string CollectionName { get; set; }
+        public string Id { get; set; }
         public string DataSourceLocation { get; set; }
 
         List<DataColumnMetadata> _Columns;

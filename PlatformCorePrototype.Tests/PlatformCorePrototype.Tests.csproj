@@ -64,8 +64,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
     <Compile Include="Services\DataServiceTests.cs" />
     <Compile Include="Services\ServiceTestBase.cs" />
+    <Compile Include="TestHelper.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,11 +15,16 @@ namespace PlatformCorePrototype.Tests.Services
     {
         public ServiceTestBase()
         {
+            BsonClassMap.RegisterClassMap<DataSourceSettings>(dss =>
+            {
+                dss.AutoMap();
+                dss.MapIdMember(c => c.CollectionName);
+            });
             BsonClassMap.RegisterClassMap<DataColumnMetadata>(dcm => dcm.AutoMap());
             BsonClassMap.RegisterClassMap<DataCollectionMetadata>(dcm =>
             {
                 dcm.AutoMap();
-                dcm.MapIdMember(c => c.CollectionName);
+                dcm.MapIdMember(c => c.Id);
             });
         }
     }
