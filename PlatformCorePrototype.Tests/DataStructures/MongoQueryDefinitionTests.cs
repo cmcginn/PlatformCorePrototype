@@ -10,6 +10,7 @@ using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Services.DataStructures;
+using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Tests.DataStructures
 {
@@ -126,6 +127,35 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var actual = match.Render(documentSerializer, BsonSerializer.SerializerRegistry).ToString();
             Assert.AreEqual("{ \"Test1\" : { \"$in\" : [\"test\"] }, \"Test2\" : { \"$in\" : [\"TestValue\", \"TestValue2\"] } }", actual);
 
+        }
+
+
+        [TestMethod]
+        public void GetFilterDefinitionTest_WhenObjectColumn()
+        {
+            var source = new FilterSpecification
+            {
+                Column = new DataColumnMetadata
+                {
+                    ColumnName = "Root",
+                    DataType = Globals.ObjectDataTypeName,
+                    Columns = new List<DataColumnMetadata>
+                    {
+                        new DataColumnMetadata
+                        {
+                            ColumnName = "Child1Level1",
+                            DataType = Globals.StringDatatypeName
+                        },
+                        new DataColumnMetadata
+                        {
+                            ColumnName = "Child2Level1",
+                            DataType = Globals.StringDatatypeName
+                        }
+                    }
+                },
+                FilterType = FilterTypes.Value,
+
+            };
         }
     }
 }

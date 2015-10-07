@@ -49,6 +49,10 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.0.1\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -65,8 +69,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
+    <Compile Include="Helpers\TreeExtensionsTests.cs" />
     <Compile Include="Services\DataServiceTests.cs" />
     <Compile Include="Services\ServiceTestBase.cs" />
+    <Compile Include="TestData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestData.resx</DependentUpon>
+    </Compile>
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="UnitTest1.cs" />
@@ -85,6 +95,12 @@
       <Project>{BE68EB2A-6C5C-4BF1-BFB1-AF69968ADF6F}</Project>
       <Name>PlatformCorePrototype.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestData.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

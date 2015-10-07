@@ -12,6 +12,15 @@ namespace PlatformCorePrototype.Services.DataStructures
 {
     public class MongoQueryDefinition:QueryDefinition,IMongoQueryDefinition
     {
+        public static FilterDefinition<BsonDocument> GetFilterDefinition(FilterSpecification filterSpec)
+        {
+            FilterDefinition<BsonDocument> result = null;
+            filterSpec.FilterValues.Where(x => x.Active).ToList().ForEach(filterValue =>
+            {
+
+            });
+            return result;
+        }
         public FilterDefinition<BsonDocument> GetMatchDocument()
         {
            
