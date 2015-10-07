@@ -64,20 +64,21 @@ namespace PlatformCorePrototype.Tests {
         ///   Looks up a localized string similar to { 
         ///    &quot;_id&quot; : {
         ///        &quot;ColumnName&quot; : &quot;Child 1 Level 2&quot;, 
-        ///        &quot;_id&quot; : ObjectId(&quot;561537bdcd158746a441b279&quot;)
+        ///        &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27d&quot;)
         ///    }, 
         ///    &quot;Value&quot; : &quot;TestNodeChild&quot;, 
         ///    &quot;Ancestors&quot; : [
         ///        {
         ///            &quot;ColumnName&quot; : &quot;Root&quot;, 
-        ///            &quot;_id&quot; : ObjectId(&quot;561537bdcd158746a441b276&quot;)
+        ///            &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27a&quot;)
         ///        }, 
         ///        {
         ///            &quot;ColumnName&quot; : &quot;Child 2 Level 1&quot;, 
-        ///            &quot;_id&quot; : ObjectId(&quot;561537bdcd158746a441b278&quot;)
+        ///            &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27c&quot;)
         ///        }
         ///    ], 
-        ///    &quot;Level&quot; : NumberInt(2)
+        ///    &quot;Level&quot; : NumberInt(2), 
+        ///    &quot;Path&quot; : &quot;Root.Child 2 Level 1&quot;
         ///}.
         /// </summary>
         public static string NestedTreeNodeBson {
