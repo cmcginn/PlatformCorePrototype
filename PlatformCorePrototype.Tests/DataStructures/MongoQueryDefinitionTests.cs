@@ -130,32 +130,5 @@ namespace PlatformCorePrototype.Tests.DataStructures
         }
 
 
-        [TestMethod]
-        public void GetFilterDefinitionTest_WhenObjectColumn()
-        {
-            var source = new FilterSpecification
-            {
-                Column = new DataColumnMetadata
-                {
-                    ColumnName = "Root",
-                    DataType = Globals.ObjectDataTypeName,
-                    Columns = new List<DataColumnMetadata>
-                    {
-                        new DataColumnMetadata
-                        {
-                            ColumnName = "Child1Level1",
-                            DataType = Globals.StringDatatypeName
-                        },
-                        new DataColumnMetadata
-                        {
-                            ColumnName = "Child2Level1",
-                            DataType = Globals.StringDatatypeName
-                        }
-                    }
-                },
-                FilterType = FilterTypes.Value,
-
-            };
-        }
     }
 }

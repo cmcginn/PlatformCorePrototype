@@ -11,10 +11,5 @@ namespace PlatformCorePrototype.Core.DataStructures
         public string ColumnName { get; set; }
         public string DataType { get; set; }
 
-        List<DataColumnMetadata> _Columns;
-        public List<DataColumnMetadata> Columns        {
-            get { return _Columns ?? (_Columns = new List<DataColumnMetadata>()); }
-            set { _Columns = value; }
-        }
     }
 }

@@ -37,6 +37,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\MongoDB.Bson.2.0.1\lib\net45\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>
@@ -70,6 +74,7 @@
   <ItemGroup>
     <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
     <Compile Include="Helpers\TreeExtensionsTests.cs" />
+    <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="Services\DataServiceTests.cs" />
     <Compile Include="Services\ServiceTestBase.cs" />
     <Compile Include="TestData.Designer.cs">
@@ -94,6 +99,10 @@
     <ProjectReference Include="..\PlatformCorePrototype.Services\PlatformCorePrototype.Services.csproj">
       <Project>{BE68EB2A-6C5C-4BF1-BFB1-AF69968ADF6F}</Project>
       <Name>PlatformCorePrototype.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlatformCorePrototype.Web\PlatformCorePrototype.Web.csproj">
+      <Project>{b97f03c5-8e84-46ba-ac9a-f07362843c6a}</Project>
+      <Name>PlatformCorePrototype.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

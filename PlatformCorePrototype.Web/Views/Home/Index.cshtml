@@ -3,15 +3,16 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+<div ng-controller="DataViewController" ng-init="init('segments_view1')">
+    <div class="row">
+        <div class="col-xs-3" ng-repeat="filter in viewDefinition.filters">
+            <div filter-control data-filter-selection-mode="filter.selectionMode" data-filter-id="filter.column.columnName" data-filter-display-name="filter.column.displayName" data-filter-values="filter.filterValues">
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="row">
+        <div class="col-xs-12">
+            <button class="btn btn-primary" ng-click="refreshData()">Refresh Data</button>
+        </div>
+    </div>
+</div>

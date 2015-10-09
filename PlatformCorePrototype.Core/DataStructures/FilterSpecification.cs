@@ -21,9 +21,13 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _FilterValues ?? (_FilterValues = new List<FilterValue>()); }
             set { _FilterValues = value; }
         }
+
+        public int DisplayOrder { get; set; }
         public FilterTypes FilterType { get; set; }
         private List<FilterSpecification> _Dependencies;
 
         private List<FilterValue> _FilterValues;
+
+        public string SelectionMode { get; set; }
     }
 }

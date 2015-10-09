@@ -14,13 +14,8 @@ namespace PlatformCorePrototype.Tests
     {
         public static DataCollectionMetadata GetDataCollectionMetadata(string collectionName)
         {
-            var svc = new DataService();
-            var settings = new DataSourceSettings
-            {
-                CollectionName = collectionName,
-                DataSourceLocation = Globals.MongoConnectionString
-            };
-            return svc.GetDataCollectionMetadata(settings).Result;
+            var svc = new MongoDataService();
+            return svc.GetDataCollectionMetadata(collectionName).Result;
         }
     }
 }

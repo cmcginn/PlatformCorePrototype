@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\MongoDB.Bson.2.0.1\lib\net45\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>
@@ -53,13 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="DataService.cs" />
+    <Compile Include="Configuration\MongoClassMapRegistration.cs" />
+    <Compile Include="Mapping\QueryBuilderToMongoQueryDefinitionProfile.cs" />
+    <Compile Include="MongoDataService.cs" />
     <Compile Include="DataStructures\Ancestor.cs" />
     <Compile Include="DataStructures\IMongoQueryDefinition.cs" />
     <Compile Include="DataStructures\MongoQueryDefinition.cs" />
+    <Compile Include="DataStructures\QueryBuilder.cs" />
     <Compile Include="DataStructures\TreeNode.cs" />
     <Compile Include="Helpers\TreeExtensions.cs" />
+    <Compile Include="Mapping\ViewDefinitionMetadataToViewDefinitionProfile.cs" />
+    <Compile Include="Models\ViewDefinitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

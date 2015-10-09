@@ -8,6 +8,7 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public class TreeDataColumnMetadata:DataColumnMetadata
     {
-        private List<string> _Ancestors;
+        public string Path { get; set; }
+
     }
 }

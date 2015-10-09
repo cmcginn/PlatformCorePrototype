@@ -12,6 +12,7 @@ namespace PlatformCorePrototype.Services.DataStructures
     public interface IMongoQueryDefinition:IQueryDefinition
     {
         FilterDefinition<BsonDocument> GetMatchDocument();
-
+        List<BsonDocument> GetPipeline();
+        string ViewId { get; set; }
     }
 }

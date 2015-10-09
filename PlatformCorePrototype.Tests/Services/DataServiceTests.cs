@@ -59,9 +59,9 @@ namespace PlatformCorePrototype.Tests.Services
         //
         #endregion
 
-        DataService GetTarget()
+        MongoDataService GetTarget()
         {
-            return new DataService();
+            return new MongoDataService();
         }
 
         [TestMethod]

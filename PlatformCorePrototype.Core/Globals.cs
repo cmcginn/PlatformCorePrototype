@@ -11,6 +11,7 @@ namespace PlatformCorePrototype.Core
     {
         private static string _MongoConnectionString;
         private static string _MetadataCollectionStoreName;
+
         public static string MongoConnectionString
         {
             get

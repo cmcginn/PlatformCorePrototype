@@ -9,6 +9,6 @@ namespace PlatformCorePrototype.Core.Services
 {
     public interface IDataService
     {
-        Task<DataCollectionMetadata> GetDataCollectionMetadata(DataSourceSettings dataSource);
+        Task<DataCollectionMetadata> GetDataCollectionMetadata(string collectionName);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson.Serialization;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Services.Configuration;
 
 namespace PlatformCorePrototype.Tests.Services
 {
@@ -15,17 +16,7 @@ namespace PlatformCorePrototype.Tests.Services
     {
         public ServiceTestBase()
         {
-            BsonClassMap.RegisterClassMap<DataSourceSettings>(dss =>
-            {
-                dss.AutoMap();
-                dss.MapIdMember(c => c.CollectionName);
-            });
-            BsonClassMap.RegisterClassMap<DataColumnMetadata>(dcm => dcm.AutoMap());
-            BsonClassMap.RegisterClassMap<DataCollectionMetadata>(dcm =>
-            {
-                dcm.AutoMap();
-                dcm.MapIdMember(c => c.Id);
-            });
+            MongoClassMapRegistration.RegisterClassMaps();
         }
     }
 }

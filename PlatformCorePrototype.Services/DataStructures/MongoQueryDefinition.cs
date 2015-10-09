@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
@@ -12,15 +13,15 @@ namespace PlatformCorePrototype.Services.DataStructures
 {
     public class MongoQueryDefinition:QueryDefinition,IMongoQueryDefinition
     {
-        public static FilterDefinition<BsonDocument> GetFilterDefinition(FilterSpecification filterSpec)
-        {
-            FilterDefinition<BsonDocument> result = null;
-            filterSpec.FilterValues.Where(x => x.Active).ToList().ForEach(filterValue =>
-            {
+        //public static FilterDefinition<BsonDocument> GetFilterDefinition(FilterSpecification filterSpec)
+        //{
+        //    FilterDefinition<BsonDocument> result = null;
+        //    filterSpec.FilterValues.Where(x => x.Active).ToList().ForEach(filterValue =>
+        //    {
 
-            });
-            return result;
-        }
+        //    });
+        //    return result;
+        //}
         public FilterDefinition<BsonDocument> GetMatchDocument()
         {
            
@@ -51,6 +52,16 @@ namespace PlatformCorePrototype.Services.DataStructures
        
                 });
             }
+            return result;
+        }
+
+        public List<BsonDocument> GetPipeline()
+        {
+            var result = new List<BsonDocument>();
+            var matchDefinition = GetMatchDocument();
+            var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<BsonDocument>();
+            var matchDocument = new BsonDocument(new BsonElement("$match", matchDefinition.Render(documentSerializer, BsonSerializer.SerializerRegistry)));
+            result.Add(matchDocument);
             return result;
         }
     }
