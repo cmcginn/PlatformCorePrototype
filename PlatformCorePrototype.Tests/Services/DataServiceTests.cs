@@ -1,8 +1,21 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
+using Newtonsoft.Json;
+using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Services;
+using PlatformCorePrototype.Services.Configuration;
+using JsonReader = MongoDB.Bson.IO.JsonReader;
+using JsonWriter = MongoDB.Bson.IO.JsonWriter;
+using PlatformCorePrototype.Web.Infrastructure;
 
 namespace PlatformCorePrototype.Tests.Services
 {
@@ -70,6 +83,59 @@ namespace PlatformCorePrototype.Tests.Services
             var target = GetTarget();
 
 
+        }
+
+        [TestMethod]
+        public void GetStuff()
+        {
+          
+            var client = new MongoClient(Globals.MongoConnectionString);
+    
+            var db = client.GetDatabase("prototype");
+            var items = db.GetCollection<dynamic>("segments");
+       
+            var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<BsonDocument>();
+            //BsonSerializer.RegisterDiscriminatorConvention(typeof (BsonDocument), new ObjectIdDiscriminator());
+            var dd = documentSerializer.ValueType;
+            var ss = new List<string>();
+       
+            //items.
+            //BsonSerializer.RegisterSerializer<BsonValue>(new MyBsonValueSerializer());
+            var stuff = items.FindAsync(new BsonDocument()).Result.ToListAsync().Result;
+            //stuff.ForEach(item =>
+            //{
+            //    var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            //    settings.Converters.Add(new JsonNetBsonDocumentConverter());
+            //    //settings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            //    ss.Add(Newtonsoft.Json.JsonConvert.SerializeObject(item, settings));
+            //});
+            //var sString = ss.First();
+            //var ddl = BsonDocument.Parse(stuff.First().ToString());
+       
+            //items.UpdateOneAsync()
+            //var doc = ss.ToBsonDocument();//Newtonsoft.Json.JsonConvert.DeserializeObject<BsonDocument>(ss.First());
+            //var result = stuff.ToJson(new JsonWriterSettings {OutputMode = JsonOutputMode.Strict});
+            var cc = "Y";
+        }
+    }
+
+    public class ObjectIdDiscriminator : IDiscriminatorConvention
+    {
+
+        public string ElementName
+        {
+            get { return null; }
+        }
+
+        public Type GetActualType(IBsonReader bsonReader, Type nominalType)
+        {
+            //throw new NotImplementedException();
+            return nominalType;
+        }
+
+        public BsonValue GetDiscriminator(Type nominalType, Type actualType)
+        {
+            return null;
         }
     }
 }

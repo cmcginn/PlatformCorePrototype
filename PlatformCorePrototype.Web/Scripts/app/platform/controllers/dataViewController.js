@@ -19,6 +19,7 @@
             d.then(function(data) {
                 $log.debug('getDataAsync result');
                 $log.debug(data);
+                console.log(data);
             });
         }
         function getFilterValues(cb) {

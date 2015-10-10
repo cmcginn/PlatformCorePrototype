@@ -63,7 +63,7 @@ namespace PlatformCorePrototype.Web.Services
             return await result;
         }
 
-        public async Task<List<BsonDocument>> GetDataAsync(QueryBuilder queryBuilder)
+        public async Task<List<dynamic>> GetDataAsync(QueryBuilder queryBuilder)
         {
             var qd = Mapper.Map<MongoQueryDefinition>(queryBuilder);
             var service = new MongoDataService();

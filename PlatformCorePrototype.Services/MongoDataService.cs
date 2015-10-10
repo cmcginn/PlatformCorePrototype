@@ -38,15 +38,15 @@ namespace PlatformCorePrototype.Services
             var result = await viewDefinitionMetadataTask.SingleAsync();
             return result;
         }
-        public async Task<List<BsonDocument>> GetDataAsync(IMongoQueryDefinition queryDefinition)
+        public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
         {
 
             var viewDefinition = await GetViewDefinitionMetadataAsync(queryDefinition.ViewId);
             var collectionMetadata = await GetDataCollectionMetadata(viewDefinition.MetadataCollectionId);
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(collectionMetadata.DataSourceName);
-            var items = db.GetCollection<BsonDocument>(collectionMetadata.Id);
-            var aggregation = items.AggregateAsync<BsonDocument>(queryDefinition.GetPipeline());
+            var items = db.GetCollection<dynamic>(collectionMetadata.Id);
+            var aggregation = items.AggregateAsync<dynamic>(queryDefinition.GetPipeline());
             var result = aggregation.Result.ToListAsync();
             return await result;
 

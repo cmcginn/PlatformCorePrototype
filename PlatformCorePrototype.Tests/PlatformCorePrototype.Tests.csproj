@@ -75,6 +75,7 @@
     <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
     <Compile Include="Helpers\TreeExtensionsTests.cs" />
     <Compile Include="Mapping\MappingTests.cs" />
+    <Compile Include="MyBsonDocumentSerializer.cs" />
     <Compile Include="Services\DataServiceTests.cs" />
     <Compile Include="Services\ServiceTestBase.cs" />
     <Compile Include="TestData.Designer.cs">

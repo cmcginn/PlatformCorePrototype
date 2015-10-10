@@ -15,7 +15,7 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //POST:api/FilterValuesController
-        public async Task<List<BsonDocument>> Post(QueryBuilder value)
+        public async Task<List<dynamic>> Post(QueryBuilder value)
         {
             var result =  await service.GetDataAsync(value);
             return result;
