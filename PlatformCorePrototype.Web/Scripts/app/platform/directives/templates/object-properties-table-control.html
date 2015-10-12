@@ -1,0 +1,13 @@
+﻿<h1>Properties</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td ng-repeat="header in keys">{{header | normalCase}}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td ng-repeat="prop in item">{{prop.value}}</td>
+        </tr>
+    </tbody>
+</table>

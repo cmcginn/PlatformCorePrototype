@@ -20,7 +20,7 @@ namespace PlatformCorePrototype.Web
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             
-            jsonFormatter.SerializerSettings.Converters.Add(new JsonNetBsonDocumentConverter());
+            //jsonFormatter.SerializerSettings.Converters.Add(new JsonNetBsonDocumentConverter());
            
             config.MapHttpAttributeRoutes();
 

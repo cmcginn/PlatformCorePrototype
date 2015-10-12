@@ -110,8 +110,8 @@ namespace PlatformCorePrototype.Tests.Services
             //    ss.Add(Newtonsoft.Json.JsonConvert.SerializeObject(item, settings));
             //});
             //var sString = ss.First();
-            //var ddl = BsonDocument.Parse(stuff.First().ToString());
-       
+           //var ddl = BsonDocument.Parse(stuff.ToJson());
+         //   var dl = stuff.First();
             //items.UpdateOneAsync()
             //var doc = ss.ToBsonDocument();//Newtonsoft.Json.JsonConvert.DeserializeObject<BsonDocument>(ss.First());
             //var result = stuff.ToJson(new JsonWriterSettings {OutputMode = JsonOutputMode.Strict});

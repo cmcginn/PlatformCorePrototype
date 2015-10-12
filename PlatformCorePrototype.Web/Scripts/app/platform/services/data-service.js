@@ -27,6 +27,13 @@
                     });
             });
         },
+        postDataAsync:function(d) {
+            return $q(function(resolve, reject) {
+                $http.post(appProperties.apiBasePath + '/Document/', d).success(function(data, status, headers, config) {
+                    resolve(data);
+                });
+            });
+        },
         getDataAsync: function (queryBuilder) {
             return $q(function(resolve, reject) {
                 $http.post(appProperties.apiBasePath + '/QueryBuilder/', queryBuilder).

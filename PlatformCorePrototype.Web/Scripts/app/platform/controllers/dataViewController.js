@@ -19,7 +19,8 @@
             d.then(function(data) {
                 $log.debug('getDataAsync result');
                 $log.debug(data);
-                console.log(data);
+                $scope.viewDefinition.data = data;
+                $scope.$broadcast('viewDefinitionDataReceived', { viewId: $scope.viewId, data: $scope.viewDefinition.data });
             });
         }
         function getFilterValues(cb) {
@@ -41,7 +42,8 @@
     $scope.refreshData = function() {
         getData();
     };
-    $scope.init = function(viewId) {
+    $scope.init = function (viewId) {
+        $scope.viewId = viewId;
         var d = dataService.getViewDefinitionAsync(viewId);
         d.then(function(data) {
             $scope.viewDefinition = data;

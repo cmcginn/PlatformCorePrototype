@@ -204,6 +204,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\DocumentController.cs" />
     <Compile Include="Api\FilterValuesController.cs" />
     <Compile Include="Api\QueryBuilderController.cs" />
     <Compile Include="Api\ViewDefinitionController.cs" />
@@ -265,7 +266,10 @@
     <Content Include="Scripts\app\modules\services\utils.js" />
     <Content Include="Scripts\app\platform\controllers\dataViewController.js" />
     <Content Include="Scripts\app\platform\directives\filter-control.js" />
+    <Content Include="Scripts\app\platform\directives\object-properties-table-control.js" />
     <Content Include="Scripts\app\platform\directives\templates\filter-control.html" />
+    <Content Include="Scripts\app\platform\directives\templates\object-properties-table-control.html" />
+    <Content Include="Scripts\app\platform\filters\normal-case.js" />
     <Content Include="Scripts\app\platform\services\chart-data-service.js" />
     <Content Include="Scripts\app\platform\services\data-service.js" />
     <Content Include="Scripts\app\platform\services\route-helpers.js" />
@@ -1883,7 +1887,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="Scripts\app\platform\filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
