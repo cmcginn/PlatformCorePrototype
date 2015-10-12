@@ -46,6 +46,7 @@
     <Compile Include="DataStructures\DataCollectionMetadata.cs" />
     <Compile Include="DataStructures\DataColumnMetadata.cs" />
     <Compile Include="DataStructures\DataSourceSettings.cs" />
+    <Compile Include="DataStructures\DataStorageStructureTypes.cs" />
     <Compile Include="DataStructures\FilterSpecification.cs" />
     <Compile Include="DataStructures\FilterTypes.cs" />
     <Compile Include="DataStructures\FilterValue.cs" />

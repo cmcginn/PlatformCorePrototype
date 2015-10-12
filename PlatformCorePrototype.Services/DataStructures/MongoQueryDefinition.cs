@@ -60,8 +60,12 @@ namespace PlatformCorePrototype.Services.DataStructures
             var result = new List<BsonDocument>();
             var matchDefinition = GetMatchDocument();
             var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<BsonDocument>();
-            var matchDocument = new BsonDocument(new BsonElement("$match", matchDefinition.Render(documentSerializer, BsonSerializer.SerializerRegistry)));
-            result.Add(matchDocument);
+            if (matchDefinition != null)
+            {
+                var matchDocument = new BsonDocument(new BsonElement("$match", matchDefinition.Render(documentSerializer, BsonSerializer.SerializerRegistry)));
+                result.Add(matchDocument);
+            }
+
             return result;
         }
     }

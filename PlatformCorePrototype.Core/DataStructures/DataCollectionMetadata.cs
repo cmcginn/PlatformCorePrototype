@@ -12,6 +12,7 @@ namespace PlatformCorePrototype.Core.DataStructures
         public string Id { get; set; }
         public string DataSourceLocation { get; set; }
 
+        public DataStorageStructureTypes DataStorageStructure { get; set; }
         public string DataSourceName { get; set; }
 
         List<DataColumnMetadata> _Columns;

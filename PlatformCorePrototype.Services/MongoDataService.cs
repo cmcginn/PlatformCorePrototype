@@ -38,6 +38,40 @@ namespace PlatformCorePrototype.Services
             var result = await viewDefinitionMetadataTask.SingleAsync();
             return result;
         }
+
+        public async Task<List<dynamic>> GetDataTreeStructureAsync(Task<List<dynamic>> source)
+        {
+            var result = source.ContinueWith<List<dynamic>>(task =>
+            {
+                var taskResult = new List<dynamic>();
+                var sourceResult = task.Result;
+                task.Result.ForEach(item =>
+                {
+                    if (item.Parents.Count > 0)
+                    {
+                        var parentId = ((List<object>)item.Parents).Last().ToString();
+                        var parent = sourceResult.SingleOrDefault(x => x._id.ToString() == parentId);
+                        if (parent != null)
+                        {
+                            if (!((IDictionary<String, object>)parent).ContainsKey("Children"))
+                               parent.Children= new List<dynamic>();
+                            parent.Children.Add(item);
+                        }
+                        else
+                        {
+                            taskResult.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        taskResult.Add(item);
+                    }
+
+                });
+                return taskResult;
+            });
+            return await result;
+        }
         public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
         {
 
@@ -48,7 +82,10 @@ namespace PlatformCorePrototype.Services
             var items = db.GetCollection<dynamic>(collectionMetadata.Id);
             var aggregation = items.AggregateAsync<dynamic>(queryDefinition.GetPipeline());
             var result = aggregation.Result.ToListAsync();
-            return await result;
+            if (collectionMetadata.DataStorageStructure == DataStorageStructureTypes.Tree)
+                return await GetDataTreeStructureAsync(result);
+            else
+                return await result;
 
         }
     }
