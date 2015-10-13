@@ -9,10 +9,10 @@ using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public interface IMongoQueryDefinition:IQueryDefinition
+    public interface IMongoQueryStrategy:IQueryStrategy
     {
-        FilterDefinition<BsonDocument> GetMatchDocument(bool includeChildren = false);
+        FilterDefinition<dynamic> GetFilterDefinition();
         List<BsonDocument> GetPipeline();
-        string ViewId { get; set; }
+        Task<List<dynamic>> RunQueryAsync();
     }
 }

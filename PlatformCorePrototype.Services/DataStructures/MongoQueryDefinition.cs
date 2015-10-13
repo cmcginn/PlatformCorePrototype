@@ -22,7 +22,7 @@ namespace PlatformCorePrototype.Services.DataStructures
         //    });
         //    return result;
         //}
-        public FilterDefinition<BsonDocument> GetMatchDocument()
+        public FilterDefinition<BsonDocument> GetMatchDocument(bool includeChildren=false)
         {
            
             var builder = new FilterDefinitionBuilder<BsonDocument>();

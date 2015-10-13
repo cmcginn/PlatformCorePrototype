@@ -1,4 +1,4 @@
-﻿var myApp = angular.module('platform', ['angle']).config(function($logProvider) {
+﻿var myApp = angular.module('platform', ['angle']).config(function ($logProvider) {
     $logProvider.debugEnabled(true);
 
 });

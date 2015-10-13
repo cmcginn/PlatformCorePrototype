@@ -101,11 +101,15 @@ myApp
       // Angular based script (use the right module name)
       modules: [
         { name: 'isteven-multi-select', files: [appRoot + 'Vendor/angular-multi-select-master/isteven-multi-select.js'] },
-         {
-             name: 'ngDialog', files: [appRoot + 'vendor/ngDialog/js/ngDialog.min.js',
-                                                    appRoot + 'vendor/ngDialog/css/ngDialog.min.css',
-                                                    appRoot + 'vendor/ngDialog/css/ngDialog-theme-default.min.css']
-         }
+        {
+          name: 'ngDialog', files: [appRoot + 'vendor/ngDialog/js/ngDialog.min.js',
+                                            appRoot + 'vendor/ngDialog/css/ngDialog.min.css',
+                                            appRoot + 'vendor/ngDialog/css/ngDialog-theme-default.min.css']
+        }
+        //{
+        //    name: 'angularBootstrapNavTree', files: [appRoot + 'Vendor/angular-bootstrap-nav-tree/dist/abn_tree_directive.js',
+        //    appRoot + 'Vendor/angular-bootstrap-nav-tree/dist/abn_tree.css']
+        //}
       ]
 
   })

@@ -102,6 +102,53 @@ namespace PlatformCorePrototype.Tests.Services
             Assert.IsTrue(actual.Count == 1, "Expected 1 root with children");
         }
 
+        [TestMethod]
+        public void DoStuff()
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase("prototype");
+            var items = db.GetCollection<dynamic>("segments");
+            var pipeline = new List<BsonDocument>();
+            pipeline.Add(BsonDocument.Parse("{ '$match': { 'Code' : { '$in' : ['Account Main', 'Statistical'] }}}"));
+            //pipeline.Add(BsonDocument.Parse("{ '$group':{'_id':'0', '_ids':{'$addToSet':'$_id'} } }"));
+
+            var aggregation = items.AggregateAsync<dynamic>(pipeline).Result.ToListAsync<dynamic>().Result;
+            var ids = aggregation.Select(x => x._id).ToList();
+           
+            var builder = new FilterDefinitionBuilder<dynamic>();
+            var filters = new List<FilterDefinition<dynamic>>();
+            var parents = builder.In("_id", ids);
+            var children = builder.In("Parents", ids);
+            filters.Add(parents);
+            filters.Add(children);
+            var fd = builder.Or(filters);
+            //var fd = builder.Or()
+           // var filters = new List<FilterDefinition<dynamic>>();
+            //FilterDefinition<dynamic> parents;
+           // var parents = builder.In<ObjectId>("_id", ids);
+            //actual.ToList().ForEach(x =>
+            //{
+            //    parents = builder &= builder.In<ObjectId>("_id", x);
+            //});
+            //var parents = builder.In<List<ObjectId>>("_id",actual.ToList());
+            //var children = builder.In<dynamic>("Parents", actual);
+            //filters.Add(parents);
+            //filters.Add(children);
+
+            //var fd = builder.Or(filters);
+
+            var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<dynamic>();
+            var result = fd.Render(documentSerializer, BsonSerializer.SerializerRegistry);
+            //var pl = new List<BsonDocument> {result};
+            //var pipeLineDefinition = new List<BsonDocument>();
+            //pipeLineDefinition.Add(new BsonDocument {{"$match", result}});
+            //var agg2 = items.AggregateAsync<dynamic>(pipeLineDefinition).Result.ToListAsync().Result;
+            
+
+            var nothing = "Y";
+            //var result = aggregation.Result.ToListAsync();
+
+        }
 
     }
 }

@@ -84,7 +84,7 @@ namespace PlatformCorePrototype.Services
             var result = aggregation.Result.ToListAsync();
             if (collectionMetadata.DataStorageStructure == DataStorageStructureTypes.Tree)
                 return await GetDataTreeStructureAsync(result);
-            else
+
                 return await result;
 
         }

@@ -73,6 +73,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
+    <Compile Include="DataStructures\MongoTreeQueryStrategyTests.cs" />
     <Compile Include="Helpers\TreeExtensionsTests.cs" />
     <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="MyBsonDocumentSerializer.cs" />

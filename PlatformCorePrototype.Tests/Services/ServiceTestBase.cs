@@ -14,9 +14,11 @@ namespace PlatformCorePrototype.Tests.Services
     [TestClass]
     public class ServiceTestBase
     {
-        public ServiceTestBase()
+        [ClassInitialize]
+        public static void Initialize(TestContext ctx)
         {
             MongoClassMapRegistration.RegisterClassMaps();
         }
+
     }
 }

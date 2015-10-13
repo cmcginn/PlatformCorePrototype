@@ -21,6 +21,8 @@
                 $log.debug(data);
                 $scope.viewDefinition.data = data;
                 $scope.$broadcast('viewDefinitionDataReceived', { viewId: $scope.viewId, data: $scope.viewDefinition.data });
+                if (cb)
+                    cb();
             });
         }
         function getFilterValues(cb) {
@@ -39,8 +41,12 @@
     $scope.applyFilters=function() {
         
     }
-    $scope.refreshData = function() {
-        getData();
+    $scope.refreshData = function () {
+        var callback = function () {
+            $log.debug('Brodcasting treeDataReceived');
+            $scope.$broadcast('treeDataReceived', { viewId: $scope.viewId, data: $scope.viewDefinition.data });
+        }
+        getData(callback);
     };
     $scope.init = function (viewId) {
         $scope.viewId = viewId;

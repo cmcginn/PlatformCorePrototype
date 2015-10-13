@@ -14,6 +14,11 @@
                 title: 'Home',
                 templateUrl: helper.basepath('Home/Index'),
                 resolve: helper.resolveFor('isteven-multi-select', 'whirl', 'ngDialog')
+            }).state('platform.scratch', {
+                url: '/Scratch',
+                templateUrl: helper.basepath('Home/Scratch'),
+                resolve: helper.resolveFor('angularBootstrapNavTree'),
+                title: 'Home'
             });
     }
 ]);

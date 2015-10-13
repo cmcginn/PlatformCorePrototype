@@ -13,5 +13,10 @@ namespace PlatformCorePrototype.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult Scratch()
+        {
+            return View();
+        }
     }
 }

@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\MongoClassMapRegistration.cs" />
+    <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
+    <Compile Include="DataStructures\IMongoTreeQueryDefinition.cs" />
+    <Compile Include="DataStructures\MongoTreeQueryStrategy.cs" />
     <Compile Include="Mapping\QueryBuilderToMongoQueryDefinitionProfile.cs" />
     <Compile Include="MongoDataService.cs" />
     <Compile Include="DataStructures\Ancestor.cs" />
