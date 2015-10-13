@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,9 @@ using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoTreeQueryStrategy
+
+
+    public class MongoTreeQueryStrategy<T> : IMongoTreeQueryStrategy<T>
     {
         public bool IncludeChildren { get; set; }
 
@@ -101,57 +104,17 @@ namespace PlatformCorePrototype.Services.DataStructures
             }
             return result;
         }
-        //protected FilterDefinition<dynamic> GetChildrenFilterDefinition()
-        //{
-            
-        //}
-        //public FilterDefinition<dynamic> GetChildrenFilterDefinition()
-        //{
-        //    var parents = GetParents().Result.Select(x => x._id).ToList();
-        //    var builder = new FilterDefinitionBuilder<dynamic>();
-        //    var result = builder.In("Parents", parents);
-        //    return result;
-        //}
-        public async Task<List<dynamic>> RunQuery()
+        public async Task<List<T>> RunQuery()
         {
             var pl = GetPipeline();
             var collection = GetCollection();
-            var asyncResult = collection.AggregateAsync<dynamic>(pl).Result;
-            return await asyncResult.ToListAsync<dynamic>();
+            var asyncResult = collection.AggregateAsync<T>(pl).Result;
+            return await asyncResult.ToListAsync<T>();
         }
-
         protected BsonDocument ToDocument(FilterDefinition<dynamic> source){
             var serializer = BsonSerializer.SerializerRegistry.GetSerializer<dynamic>();
             return source.Render(serializer, BsonSerializer.SerializerRegistry);
         }
-      
-        //public List<BsonDocument> GetParentPipeline()
-        //{
-        //    var result = new List<BsonDocument>();
-        //    result.Add(GetParentMatchDocument());
-        //    return result;
-        //}
-
-        //public async Task<List<dynamic>> GetParents()
-        //{
-        //    var collection = GetCollection();
-        //    var asyncResults = collection.AggregateAsync<dynamic>(GetParentPipeline());
-        //    var result = asyncResults.Result.ToListAsync();
-        //    return await result;
-
-        //}
-
-        //public BsonDocument GetChildenMatchDocument()
-        //{
-        //    var childrenFilter = GetParentFilterDefinition();
-        //    var childrenFilterBson = childrenFilter.Render(GetSerializer(), BsonSerializer.SerializerRegistry);
-        //    var result = new BsonDocument { { "$match", childrenFilterBson } };
-        //    return result;
-        //}
-        //public List<BsonDocument> GetChildrenPipeline()
-        //{
-            
-        //}
         IMongoCollection<dynamic> GetCollection()
         {
             var client = new MongoClient(DataSourceLocation);
@@ -159,24 +122,6 @@ namespace PlatformCorePrototype.Services.DataStructures
             var result = db.GetCollection<dynamic>(CollectionName);
             return result;
         }
-        //public async Task<List<dynamic>> GetParents()
-        //{
-        //    var collection = GetCollection();
-
-        //}
-
-        //public List<BsonDocument> GetPipeline()
-        //{
-        //    var result = new List<BsonDocument>();
-
-        //    //throw new NotImplementedException();
-        //}
-
-        //public Task<List<dynamic>> RunQueryAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public string CollectionName { get; set; }
         public string DataSourceName { get; set; }
         public string DataSourceLocation { get; set; }

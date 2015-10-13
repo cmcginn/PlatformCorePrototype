@@ -57,15 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\MongoClassMapRegistration.cs" />
-    <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
     <Compile Include="DataStructures\IMongoTreeQueryDefinition.cs" />
+    <Compile Include="DataStructures\IMongoTreeQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoTreeQueryStrategy.cs" />
     <Compile Include="Mapping\QueryBuilderToMongoQueryDefinitionProfile.cs" />
     <Compile Include="MongoDataService.cs" />
     <Compile Include="DataStructures\Ancestor.cs" />
-    <Compile Include="DataStructures\IMongoQueryDefinition.cs" />
     <Compile Include="DataStructures\MongoQueryDefinition.cs" />
-    <Compile Include="DataStructures\QueryBuilder.cs" />
+    <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
     <Compile Include="DataStructures\TreeNode.cs" />
     <Compile Include="Helpers\TreeExtensions.cs" />
     <Compile Include="Mapping\ViewDefinitionMetadataToViewDefinitionProfile.cs" />

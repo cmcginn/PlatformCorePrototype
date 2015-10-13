@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Driver;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using MongoDB.Bson;
+//using MongoDB.Driver;
 
-namespace PlatformCorePrototype.Services.DataStructures
-{
-    public interface IMongoTreeQueryDefinition:IMongoQueryDefinition
-    {
-        //GroupDefinition<BsonDocument> GetParentStageMatchDocument();
-    }
-}
+//namespace PlatformCorePrototype.Services.DataStructures
+//{
+//    public interface IMongoTreeQueryDefinition:IMongoQueryDefinition
+//    {
+//        //GroupDefinition<BsonDocument> GetParentStageMatchDocument();
+//    }
+//}

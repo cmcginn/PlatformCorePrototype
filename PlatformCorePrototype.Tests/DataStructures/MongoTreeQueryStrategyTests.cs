@@ -12,7 +12,7 @@ using PlatformCorePrototype.Tests.Services;
 
 namespace PlatformCorePrototype.Tests.DataStructures
 {
-    public class MongoTreeQueryStrategyAccessor : MongoTreeQueryStrategy
+    public class MongoTreeQueryStrategyAccessor : MongoTreeQueryStrategy<dynamic>
     {
         public BsonDocument GetParentFilterDocument()
         {
@@ -165,63 +165,18 @@ namespace PlatformCorePrototype.Tests.DataStructures
             Assert.IsTrue(actual.Count > 2);
 
         }
-        //[TestMethod]
-        //public void GetParentFilterDefinitionTest()
-        //{
-           
-        //    var target = GetTarget();
-        //    target.Filters = GetWellKnownParentFilters();
-        //    var filterDefinition = target.GetParentFilterDefinition();
-        //    var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<dynamic>();
-        //    var actual = filterDefinition.Render(documentSerializer, BsonSerializer.SerializerRegistry);
-        //    Assert.AreEqual("{ \"TestColumn1\" : { \"$in\" : [\"TestValue1\", \"TestValue2\"] } }", actual.ToString());
 
-        //}
-        //[TestMethod]
-        //public void GetParentParentMatchDocumentTest()
-        //{
-
-        //    var target = GetTarget();
-        //    target.Filters = GetWellKnownParentFilters();
-        //    var actual = target.GetParentMatchDocument().ToString();
-        //    var expected = "{ \"$match\" : { \"TestColumn1\" : { \"$in\" : [\"TestValue1\", \"TestValue2\"] } } }";
-        //    Assert.AreEqual(expected,actual);
-
-        //}
-
-        //[TestMethod]
-        //public void GetParentPipelineTest()
-        //{
-
-        //    var target = GetTarget();
-        //    target.Filters = GetWellKnownParentFilters();
-        //    var actual = target.GetParentPipeline().Single().ToString();
-        //    var expected = "{ \"$match\" : { \"TestColumn1\" : { \"$in\" : [\"TestValue1\", \"TestValue2\"] } } }";
-        //    Assert.AreEqual(expected, actual);
-
-        //}
-
-        //[TestMethod]
-        //public void GetParentsTest()
-        //{
-        //    var target = GetSegmentsTarget();
-        //    target.Filters = GetWellKnownSegmentsParentFilters();
-        //    var actual = target.GetParents().Result;
-        //    Assert.IsTrue(actual.Any());
-        //}
-
-        //[TestMethod]
-        //public void GetChildrenFilterDefinitionTest()
-        //{
-        //    var target = GetSegmentsTarget();
-        //    target.Filters = GetWellKnownSegmentsParentFilters();
-        //    var filterResult = target.GetChildrenFilterDefinition();
-        //    var documentSerializer = BsonSerializer.SerializerRegistry.GetSerializer<dynamic>();
-        //    var actual = filterResult.Render(documentSerializer, BsonSerializer.SerializerRegistry).ToString();
-        //    var expected = "{ \"Parents\" : { \"$in\" : [ObjectId(\"561cd0a8cd1587437c632e5b\"), ObjectId(\"561cd0a8cd1587437c632e5c\")] } }";
-        //    Assert.AreEqual(expected, actual);
-        //}
-
+        [TestMethod]
+        public void RunQueryTest_Implementation()
+        {
+            IMongoTreeQueryStrategy<dynamic> target = new MongoTreeQueryStrategy<dynamic>();
+            target.Filters = GetWellKnownSegmentsParentFilters();
+            target.CollectionName = "tree_strategy_tests";
+            target.DataSourceName = "prototype";
+            target.DataSourceLocation = Globals.MongoConnectionString;
+            var actual = target.RunQuery().Result;
+            Assert.IsTrue(actual.Any());
+        }
 
     }
 }

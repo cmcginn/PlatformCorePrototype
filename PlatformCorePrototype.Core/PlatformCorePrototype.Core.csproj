@@ -52,6 +52,7 @@
     <Compile Include="DataStructures\FilterValue.cs" />
     <Compile Include="DataStructures\IQueryDefinition.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
+    <Compile Include="DataStructures\ITreeQueryStrategy.cs" />
     <Compile Include="DataStructures\QueryDefinition.cs" />
     <Compile Include="DataStructures\QueryStrategy.cs" />
     <Compile Include="DataStructures\TreeDataColumnMetadata.cs" />

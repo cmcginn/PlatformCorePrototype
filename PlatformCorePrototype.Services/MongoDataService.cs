@@ -72,21 +72,21 @@ namespace PlatformCorePrototype.Services
             });
             return await result;
         }
-        public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
-        {
+        //public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
+        //{
 
-            var viewDefinition = await GetViewDefinitionMetadataAsync(queryDefinition.ViewId);
-            var collectionMetadata = await GetDataCollectionMetadata(viewDefinition.MetadataCollectionId);
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(collectionMetadata.DataSourceName);
-            var items = db.GetCollection<dynamic>(collectionMetadata.Id);
-            var aggregation = items.AggregateAsync<dynamic>(queryDefinition.GetPipeline());
-            var result = aggregation.Result.ToListAsync();
-            if (collectionMetadata.DataStorageStructure == DataStorageStructureTypes.Tree)
-                return await GetDataTreeStructureAsync(result);
+        //    var viewDefinition = await GetViewDefinitionMetadataAsync(queryDefinition.ViewId);
+        //    var collectionMetadata = await GetDataCollectionMetadata(viewDefinition.MetadataCollectionId);
+        //    var client = new MongoClient(Globals.MongoConnectionString);
+        //    var db = client.GetDatabase(collectionMetadata.DataSourceName);
+        //    var items = db.GetCollection<dynamic>(collectionMetadata.Id);
+        //    var aggregation = items.AggregateAsync<dynamic>(queryDefinition.GetPipeline());
+        //    var result = aggregation.Result.ToListAsync();
+        //    if (collectionMetadata.DataStorageStructure == DataStorageStructureTypes.Tree)
+        //        return await GetDataTreeStructureAsync(result);
 
-                return await result;
+        //        return await result;
 
-        }
+        //}
     }
 }

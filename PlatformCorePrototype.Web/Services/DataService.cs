@@ -63,12 +63,12 @@ namespace PlatformCorePrototype.Web.Services
             return await result;
         }
 
-        public async Task<List<dynamic>> GetDataAsync(QueryBuilder queryBuilder)
-        {
-            var qd = Mapper.Map<MongoQueryDefinition>(queryBuilder);
-            var service = new MongoDataService();
-            var result=service.GetDataAsync(qd);
-            return await result;
-        }
+        //public async Task<List<dynamic>> GetDataAsync(IMongoQueryStrategy queryBuilder)
+        //{
+        //    var qd = Mapper.Map<MongoQueryDefinition>(queryBuilder);
+        //    var service = new MongoDataService();
+        //    var result=service.GetDataAsync(qd);
+        //    return await result;
+        //}
     }
 }

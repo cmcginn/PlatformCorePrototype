@@ -1,15 +1,10 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Driver;
 using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public interface IMongoQueryStrategy<T>:IQueryStrategy<T>
+    public interface IMongoTreeQueryStrategy<T> : ITreeQueryStrategy<T>,IMongoQueryStrategy<T>
     {
 
     }

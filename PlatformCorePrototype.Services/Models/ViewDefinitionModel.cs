@@ -10,6 +10,6 @@ namespace PlatformCorePrototype.Services.Models
 {
     public class ViewDefinitionModel:ViewDefinitionMetadata
     {
-        public QueryBuilder QueryBuilder { get; set; }
+       // public IMongoQueryStrategy QueryBuilder { get; set; }
     }
 }
