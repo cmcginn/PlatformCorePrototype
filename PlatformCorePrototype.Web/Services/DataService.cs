@@ -37,7 +37,7 @@ namespace PlatformCorePrototype.Web.Services
                 codeFilter.Column = new DataColumnMetadata
                 {
                     ColumnName = "Code",
-                    DataType = Globals.StringDatatypeName
+                    DataType = Globals.StringDataTypeName
                 };
                 codeFilter.DisplayOrder = 0;
                 codeFilter.SelectionMode = "multi";

@@ -78,7 +78,7 @@
 //        {
 //            var target = GetTarget();
 //            var filterSpec1 = new FilterSpecification();
-//            filterSpec1.Column = new DataColumnMetadata {ColumnName = "Test1", DataType = Globals.StringDatatypeName};
+//            filterSpec1.Column = new DataColumnMetadata {ColumnName = "Test1", DataType = Globals.StringDataTypeName};
 //            filterSpec1.FilterValues.Add(new FilterValue
 //            {
 //                Active = true,
@@ -98,7 +98,7 @@
 //            var target = GetTarget();
          
 //            var filterSpec1 = new FilterSpecification();
-//            filterSpec1.Column = new DataColumnMetadata { ColumnName = "Test1", DataType = Globals.StringDatatypeName };
+//            filterSpec1.Column = new DataColumnMetadata { ColumnName = "Test1", DataType = Globals.StringDataTypeName };
 //            filterSpec1.FilterValues.Add(new FilterValue
 //            {
 //                Active = true,
@@ -106,7 +106,7 @@
 //                Value = "test"
 //            });
 //            var filterSpec2 = new FilterSpecification();
-//            filterSpec2.Column = new DataColumnMetadata {ColumnName = "Test2", DataType = Globals.StringDatatypeName};
+//            filterSpec2.Column = new DataColumnMetadata {ColumnName = "Test2", DataType = Globals.StringDataTypeName};
 //            filterSpec2.FilterValues.Add(new FilterValue
 //            {
 //                Active = true,

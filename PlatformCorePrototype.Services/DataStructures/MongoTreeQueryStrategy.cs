@@ -18,10 +18,10 @@ namespace PlatformCorePrototype.Services.DataStructures
     {
         public bool IncludeChildren { get; set; }
 
-        protected FilterDefinition<dynamic> GetParentFilterDefinition()
+        protected FilterDefinition<T> GetParentFilterDefinition()
         {
-            var builder = new FilterDefinitionBuilder<dynamic>();
-            FilterDefinition<dynamic> result = null;
+            var builder = new FilterDefinitionBuilder<T>();
+            FilterDefinition<T> result = null;
             var activeFilters = Filters.Where(x => x.FilterValues.Any(y => y.Active)).ToList();
             if (activeFilters.Any())
             {
@@ -36,7 +36,7 @@ namespace PlatformCorePrototype.Services.DataStructures
                         BsonValue elementValue;
                         switch (activeFilter.Column.DataType)
                         {
-                            case Globals.StringDatatypeName:
+                            case Globals.StringDataTypeName:
                                 valuesList.Add(new BsonString(activeFilterValue.Value));
                                 break;
                         }
@@ -62,29 +62,29 @@ namespace PlatformCorePrototype.Services.DataStructures
             result.Add(projection);
             return result;
         }
-        protected async Task<List<dynamic>> GetParentsAsync()
+        protected async Task<List<T>> GetParentsAsync()
         {
             var collection = GetCollection();
-            var asyncResult = collection.AggregateAsync<dynamic>(GetParentPipeline()).Result;
-            return await asyncResult.ToListAsync<dynamic>();
+            var asyncResult = collection.AggregateAsync<T>(GetParentPipeline()).Result;
+            return await asyncResult.ToListAsync<T>();
         }
-        protected FilterDefinition<dynamic> GetChildrenFilterDefinition()
+        protected FilterDefinition<T> GetChildrenFilterDefinition()
         {
-            var parents = GetParentsAsync().Result.Select(x => x._id).ToList();
-            var builder = new FilterDefinitionBuilder<dynamic>();
+            var parents = GetParentsAsync().Result.Select(x => x).ToList();
+            var builder = new FilterDefinitionBuilder<T>();
             var result = builder.In("Parents", parents);
             return result;
         }
-        protected FilterDefinition<dynamic> GetFilterDefinition()
+        protected FilterDefinition<T> GetFilterDefinition()
         {
-            FilterDefinition<dynamic> result = null;
+            FilterDefinition<T> result = null;
             if (!IncludeChildren)
                 result = GetParentFilterDefinition();
             else
             {
-                var builder = new FilterDefinitionBuilder<dynamic>();
+                var builder = new FilterDefinitionBuilder<T>();
                 result =
-                    builder.Or(new List<FilterDefinition<dynamic>>
+                    builder.Or(new List<FilterDefinition<T>>
                     {
                         GetParentFilterDefinition(),
                         GetChildrenFilterDefinition()
@@ -111,15 +111,15 @@ namespace PlatformCorePrototype.Services.DataStructures
             var asyncResult = collection.AggregateAsync<T>(pl).Result;
             return await asyncResult.ToListAsync<T>();
         }
-        protected BsonDocument ToDocument(FilterDefinition<dynamic> source){
-            var serializer = BsonSerializer.SerializerRegistry.GetSerializer<dynamic>();
+        protected BsonDocument ToDocument(FilterDefinition<T> source){
+            var serializer = BsonSerializer.SerializerRegistry.GetSerializer<T>();
             return source.Render(serializer, BsonSerializer.SerializerRegistry);
         }
-        IMongoCollection<dynamic> GetCollection()
+        IMongoCollection<T> GetCollection()
         {
             var client = new MongoClient(DataSourceLocation);
             var db = client.GetDatabase(DataSourceName);
-            var result = db.GetCollection<dynamic>(CollectionName);
+            var result = db.GetCollection<T>(CollectionName);
             return result;
         }
         public string CollectionName { get; set; }

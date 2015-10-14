@@ -64,7 +64,7 @@ namespace PlatformCorePrototype.Tests.DataStructures
         {
             var result = new List<FilterSpecification>();
             var filter1 = new FilterSpecification();
-            filter1.Column = new DataColumnMetadata { ColumnName = "TestColumn1", DataType = Globals.StringDatatypeName };
+            filter1.Column = new DataColumnMetadata { ColumnName = "TestColumn1", DataType = Globals.StringDataTypeName };
             filter1.DisplayOrder = 0;
             filter1.FilterType = FilterTypes.Value;
             filter1.FilterValues = new List<FilterValue>
@@ -80,7 +80,7 @@ namespace PlatformCorePrototype.Tests.DataStructures
         {
             var result = new List<FilterSpecification>();
             var filter1 = new FilterSpecification();
-            filter1.Column = new DataColumnMetadata { ColumnName = "Code", DataType = Globals.StringDatatypeName };
+            filter1.Column = new DataColumnMetadata { ColumnName = "Code", DataType = Globals.StringDataTypeName };
             filter1.DisplayOrder = 0;
             filter1.FilterType = FilterTypes.Value;
             filter1.FilterValues = new List<FilterValue>

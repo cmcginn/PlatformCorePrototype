@@ -34,7 +34,8 @@ namespace PlatformCorePrototype.Core
             }
         }
 
-        public const string StringDatatypeName = "System.String";
+        public const string DoubleDataTypeName = "System.Double";
+        public const string StringDataTypeName = "System.String";
         public const string IntegerDataTypeName = "System.Int32";
         public const string CollectionDataTypeName = "List<DataColumnMetadata>";
         public const string ObjectDataTypeName = "System.Object";

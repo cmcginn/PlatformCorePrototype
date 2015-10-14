@@ -16,6 +16,11 @@ namespace PlatformCorePrototype.Tests
     public class TestUtils : ServiceTestBase
     {
         [TestMethod]
+        public void UpsertLinkedListDataCollectionMetadataTest()
+        {
+            UpsertLinkedListCollectionMetadata();
+        }
+        [TestMethod]
         public void UpsertTreeDataCollectionMetadataTest()
         {
             UpsertTreeDataCollectionMetadata();
@@ -37,7 +42,17 @@ namespace PlatformCorePrototype.Tests
             Task.WaitAll(upsertTask);
 
         }
+        static void UpsertLinkedListCollectionMetadata(LinkedListDataCollectionMetadata dataCollectionMetadata)
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<DataCollectionMetadata>("collectionMetadata");
+            FilterDefinition<DataCollectionMetadata> filter = new BsonDocument("_id", dataCollectionMetadata.Id);
+            var deleteTask = items.DeleteOneAsync(filter).Result;
+            var upsertTask = items.InsertOneAsync(dataCollectionMetadata);
+            Task.WaitAll(upsertTask);
 
+        }
         static void UpsertViewDefinitionMetadata(ViewDefinitionMetadata viewDefinitionMetadata)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
@@ -53,13 +68,12 @@ namespace PlatformCorePrototype.Tests
             {
                     Id = "segments",
                     DataSourceLocation = Globals.MongoConnectionString,
-                    DataSourceName="prototype",
-                    DataStorageStructure= DataStorageStructureTypes.Tree
+                    DataSourceName="prototype"
             };
             var code = new DataColumnMetadata
             {
                 ColumnName = "Code",
-                DataType = Globals.StringDatatypeName
+                DataType = Globals.StringDataTypeName
 
             };
             dataCollectionMetadata.Columns.Add(code);
@@ -89,6 +103,86 @@ namespace PlatformCorePrototype.Tests
 
             //var codeFilter = new 
         }
+
+        static void UpsertLinkedListCollectionMetadata()
+        {
+            var linkedListCollectionMetadata = new LinkedListDataCollectionMetadata
+            {
+                Id = "linkedlistmap",
+                DataSourceLocation = Globals.MongoConnectionString,
+                DataSourceName = "prototype",
+                
+            };
+
+            var sourceCollectionMetadata = new DataCollectionMetadata
+            {
+                Id = "linkedlistdata",
+                DataSourceLocation = Globals.MongoConnectionString,
+                DataSourceName = "prototype"
+            };
+            var account = new DataColumnMetadata
+            {
+                ColumnName = "Account",
+                DataType = Globals.IntegerDataTypeName
+            };
+            var salesPerson = new DataColumnMetadata
+            {
+                ColumnName = "SalesPerson",
+                DataType = Globals.StringDataTypeName
+            };
+            var product = new DataColumnMetadata
+            {
+                ColumnName = "Product",
+                DataType = Globals.StringDataTypeName
+            };
+            var amount = new DataColumnMetadata
+            {
+                ColumnName = "Amount",
+                DataType = Globals.DoubleDataTypeName
+            };
+            sourceCollectionMetadata.Columns.Add(account);
+            sourceCollectionMetadata.Columns.Add(salesPerson);
+            sourceCollectionMetadata.Columns.Add(product);
+            sourceCollectionMetadata.Columns.Add(amount);
+
+
+
+            var mapCollectionMetadata = new LinkedListDataCollectionMetadata
+            {
+                Id = "linkedlistmap",
+                DataSourceLocation = Globals.MongoConnectionString,
+                DataSourceName = "prototype"
+            };
+            var navigationColumn = new DataColumnMetadata
+            {
+                ColumnName = "Navigation",
+                DataType = Globals.CollectionDataTypeName
+            };
+
+            var navigationColumnPathMember = new DataColumnMetadata
+            {
+                ColumnName = "Path",
+                DataType = Globals.StringDataTypeName
+            };
+            navigationColumn.Columns.Add(navigationColumnPathMember);
+            var valueColumn = new DataColumnMetadata
+            {
+                ColumnName = "Account",
+                DataType = Globals.IntegerDataTypeName
+            };
+            mapCollectionMetadata.Columns.Add(navigationColumn);
+            mapCollectionMetadata.Columns.Add(valueColumn);
+
+
+            linkedListCollectionMetadata.NavigationColumnName = navigationColumn.ColumnName;
+            linkedListCollectionMetadata.ValueColumnName = valueColumn.ColumnName;
+            linkedListCollectionMetadata.SourceCollectionMetadata = sourceCollectionMetadata;
+            linkedListCollectionMetadata.MapCollectionMetadata = mapCollectionMetadata;
+
+            UpsertLinkedListCollectionMetadata(linkedListCollectionMetadata);
+
+        }
+        
         
     }
 }

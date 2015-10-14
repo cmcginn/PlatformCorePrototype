@@ -27,7 +27,7 @@
 //            var source = new ViewDefinitionMetadata();
 //            var codeFilter = new FilterSpecification
 //            {
-//                Column = new DataColumnMetadata { ColumnName = "Code", DataType = Globals.StringDatatypeName },
+//                Column = new DataColumnMetadata { ColumnName = "Code", DataType = Globals.StringDataTypeName },
 //                FilterType = FilterTypes.Value,
 //                DisplayOrder = 0
 //            };
@@ -48,7 +48,7 @@
 //                {
 //                    new FilterSpecification
 //                    {
-//                        Column=new DataColumnMetadata{ ColumnName="Code", DataType=Globals.StringDatatypeName},
+//                        Column=new DataColumnMetadata{ ColumnName="Code", DataType=Globals.StringDataTypeName},
 //                         DisplayOrder=0,
 //                          FilterType= FilterTypes.Value,
 //                           SelectionMode="multi",

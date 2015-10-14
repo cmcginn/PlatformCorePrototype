@@ -41,7 +41,7 @@
 //                        BsonValue elementValue;
 //                        switch (activeFilter.Column.DataType)
 //                        {
-//                            case Globals.StringDatatypeName:
+//                            case Globals.StringDataTypeName:
 //                                valuesList.Add(new BsonString(activeFilterValue.Value));
 //                                break;
 //                        }
