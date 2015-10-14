@@ -106,19 +106,12 @@ namespace PlatformCorePrototype.Tests
 
         static void UpsertLinkedListCollectionMetadata()
         {
-            var linkedListCollectionMetadata = new LinkedListDataCollectionMetadata
-            {
-                Id = "linkedlistmap",
-                DataSourceLocation = Globals.MongoConnectionString,
-                DataSourceName = "prototype",
-                
-            };
-
-            var sourceCollectionMetadata = new DataCollectionMetadata
+            var collectionMetadata = new LinkedListDataCollectionMetadata
             {
                 Id = "linkedlistdata",
                 DataSourceLocation = Globals.MongoConnectionString,
-                DataSourceName = "prototype"
+                DataSourceName = "prototype",
+                MapCollectionName="linkedlistmap"
             };
             var account = new DataColumnMetadata
             {
@@ -140,46 +133,12 @@ namespace PlatformCorePrototype.Tests
                 ColumnName = "Amount",
                 DataType = Globals.DoubleDataTypeName
             };
-            sourceCollectionMetadata.Columns.Add(account);
-            sourceCollectionMetadata.Columns.Add(salesPerson);
-            sourceCollectionMetadata.Columns.Add(product);
-            sourceCollectionMetadata.Columns.Add(amount);
-
-
-
-            var mapCollectionMetadata = new LinkedListDataCollectionMetadata
-            {
-                Id = "linkedlistmap",
-                DataSourceLocation = Globals.MongoConnectionString,
-                DataSourceName = "prototype"
-            };
-            var navigationColumn = new DataColumnMetadata
-            {
-                ColumnName = "Navigation",
-                DataType = Globals.CollectionDataTypeName
-            };
-
-            var navigationColumnPathMember = new DataColumnMetadata
-            {
-                ColumnName = "Path",
-                DataType = Globals.StringDataTypeName
-            };
-            navigationColumn.Columns.Add(navigationColumnPathMember);
-            var valueColumn = new DataColumnMetadata
-            {
-                ColumnName = "Account",
-                DataType = Globals.IntegerDataTypeName
-            };
-            mapCollectionMetadata.Columns.Add(navigationColumn);
-            mapCollectionMetadata.Columns.Add(valueColumn);
-
-
-            linkedListCollectionMetadata.NavigationColumnName = navigationColumn.ColumnName;
-            linkedListCollectionMetadata.ValueColumnName = valueColumn.ColumnName;
-            linkedListCollectionMetadata.SourceCollectionMetadata = sourceCollectionMetadata;
-            linkedListCollectionMetadata.MapCollectionMetadata = mapCollectionMetadata;
-
-            UpsertLinkedListCollectionMetadata(linkedListCollectionMetadata);
+            collectionMetadata.Columns.Add(account);
+            collectionMetadata.Columns.Add(salesPerson);
+            collectionMetadata.Columns.Add(product);
+            collectionMetadata.Columns.Add(amount);
+            collectionMetadata.KeyColumn = account;
+            UpsertLinkedListCollectionMetadata(collectionMetadata);
 
         }
         

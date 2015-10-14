@@ -8,11 +8,8 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public class LinkedListDataCollectionMetadata:DataCollectionMetadata
     {
-        public DataCollectionMetadata SourceCollectionMetadata { get; set; }
-        public DataCollectionMetadata MapCollectionMetadata { get; set; }
-        public string ValueColumnName { get; set; }
-        public string NavigationColumnName{ get; set; }
-
+        public string MapCollectionName { get; set; }
+        public DataColumnMetadata KeyColumn { get; set; }
 
     }
 }
