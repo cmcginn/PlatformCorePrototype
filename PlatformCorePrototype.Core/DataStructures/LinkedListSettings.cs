@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class LinkedListDataCollectionMetadata:DataCollectionMetadata
+    public class LinkedListSettings
     {
         public string MapCollectionName { get; set; }
         public DataColumnMetadata KeyColumn { get; set; }

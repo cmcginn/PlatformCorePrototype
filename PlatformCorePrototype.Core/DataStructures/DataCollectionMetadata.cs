@@ -21,5 +21,7 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _Columns ?? (_Columns = new List<DataColumnMetadata>()); }
             set { _Columns = value; }
         }
+
+        public LinkedListSettings LinkedListSettings { get; set; }
     }
 }

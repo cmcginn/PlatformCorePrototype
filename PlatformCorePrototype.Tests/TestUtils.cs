@@ -42,17 +42,7 @@ namespace PlatformCorePrototype.Tests
             Task.WaitAll(upsertTask);
 
         }
-        static void UpsertLinkedListCollectionMetadata(LinkedListDataCollectionMetadata dataCollectionMetadata)
-        {
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<DataCollectionMetadata>("collectionMetadata");
-            FilterDefinition<DataCollectionMetadata> filter = new BsonDocument("_id", dataCollectionMetadata.Id);
-            var deleteTask = items.DeleteOneAsync(filter).Result;
-            var upsertTask = items.InsertOneAsync(dataCollectionMetadata);
-            Task.WaitAll(upsertTask);
 
-        }
         static void UpsertViewDefinitionMetadata(ViewDefinitionMetadata viewDefinitionMetadata)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
@@ -106,12 +96,12 @@ namespace PlatformCorePrototype.Tests
 
         static void UpsertLinkedListCollectionMetadata()
         {
-            var collectionMetadata = new LinkedListDataCollectionMetadata
+            var collectionMetadata = new DataCollectionMetadata
             {
                 Id = "linkedlistdata",
                 DataSourceLocation = Globals.MongoConnectionString,
                 DataSourceName = "prototype",
-                MapCollectionName="linkedlistmap"
+                LinkedListSettings = new LinkedListSettings{ MapCollectionName="linkedlistmap"}
             };
             var account = new DataColumnMetadata
             {
@@ -137,8 +127,9 @@ namespace PlatformCorePrototype.Tests
             collectionMetadata.Columns.Add(salesPerson);
             collectionMetadata.Columns.Add(product);
             collectionMetadata.Columns.Add(amount);
-            collectionMetadata.KeyColumn = account;
-            UpsertLinkedListCollectionMetadata(collectionMetadata);
+            collectionMetadata.LinkedListSettings.KeyColumn = account;
+            //collectionMetadata.KeyColumn = account;
+            UpsertCollectionMetadata(collectionMetadata);
 
         }
         

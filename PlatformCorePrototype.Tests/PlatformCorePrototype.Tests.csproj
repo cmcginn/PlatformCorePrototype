@@ -74,11 +74,13 @@
   <ItemGroup>
     <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
     <Compile Include="DataStructures\MongoTreeQueryStrategyTests.cs" />
+    <Compile Include="DataStructures\MongoLinkedListQueryStrategyTests.cs" />
     <Compile Include="Helpers\TreeExtensionsTests.cs" />
     <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="MyBsonDocumentSerializer.cs" />
     <Compile Include="Services\MongoDataServiceTests.cs" />
     <Compile Include="Services\ServiceTestBase.cs" />
+    <Compile Include="SystemTests\LinkedListTests.cs" />
     <Compile Include="TestData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
