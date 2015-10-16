@@ -7,6 +7,7 @@ using AutoMapper;
 using MongoDB.Bson;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services;
 using PlatformCorePrototype.Services.DataStructures;
 using PlatformCorePrototype.Services.Models;
@@ -73,12 +74,12 @@ namespace PlatformCorePrototype.Web.Services
         //    return await result;
         //}
 
-        //public async Task<List<dynamic>> GetDataAsync(IMongoQueryStrategy queryBuilder)
+        //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
         //{
-        //    var qd = Mapper.Map<MongoQueryDefinition>(queryBuilder);
-        //    var service = new MongoDataService();
-        //    var result=service.GetDataAsync(qd);
-        //    return await result;
+        //    //var qd = Mapper.Map<MongoQueryDefinition>(queryBuilder);
+        //    //var service = new MongoDataService();
+        //    //var result = service.GetDataAsync(qd);
+        //    //return await result;
         //}
     }
 }

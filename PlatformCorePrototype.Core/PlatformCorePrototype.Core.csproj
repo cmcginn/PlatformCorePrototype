@@ -64,6 +64,9 @@
     <Compile Include="DataStructures\TreeDataColumnMetadata.cs" />
     <Compile Include="DataStructures\ViewDefinitionMetadata.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Models\IQueryBuilder.cs" />
+    <Compile Include="Models\LinkedListQueryBuilder.cs" />
+    <Compile Include="Models\QueryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDataService.cs" />
   </ItemGroup>

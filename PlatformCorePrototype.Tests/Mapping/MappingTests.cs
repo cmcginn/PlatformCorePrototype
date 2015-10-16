@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services.DataStructures;
 using PlatformCorePrototype.Services.Mapping;
 using PlatformCorePrototype.Services.Models;
@@ -55,6 +56,12 @@ namespace PlatformCorePrototype.Tests.Mapping
             LinkedListViewDefinitionModel actaul = Mapper.Map<LinkedListViewDefinitionModel>(source);
         }
 
+        [TestMethod]
+        public void IQueryBuilderToMongoLinkedListQueryStrategyTest()
+        {
+            IQueryBuilder source = new LinkedListQueryBuilder();
+        
+        }
        
     }
 }

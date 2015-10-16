@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlatformCorePrototype.Core.DataStructures;
-using PlatformCorePrototype.Core.Models;
 
-namespace PlatformCorePrototype.Services.Models
+namespace PlatformCorePrototype.Core.Models
 {
-    public interface IViewDefinitionModel:IViewDefinitionMetadata
+    public interface IQueryBuilder
     {
-
+        string ViewId { get; set; }
+        List<FilterSpecification> SelectedFilters{get;set;}
+       
     }
 }
