@@ -16,8 +16,9 @@ namespace PlatformCorePrototype.Web.Api
         //Get:api/ApiController/{viewId}
         public async Task<ViewDefinitionModel> Get(string id)
         {
-            var result = await service.GetViewDefinitionAsync(id);
-            return result;
+            throw new System.NotImplementedException();
+            // var result = await service.GetViewDefinitionAsync(id);
+            //return result;
         }
 
     }

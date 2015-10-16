@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlatformCorePrototype.Core.DataStructures;
-using PlatformCorePrototype.Services.DataStructures;
 
 namespace PlatformCorePrototype.Services.Models
 {
-    public class ViewDefinitionModel:ViewDefinitionMetadata,IViewDefinitionModel
+    public interface IViewDefinitionModel:IViewDefinitionMetadata
     {
-   
-    
+
     }
 }

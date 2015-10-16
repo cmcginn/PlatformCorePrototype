@@ -27,6 +27,11 @@ namespace PlatformCorePrototype.Tests
         }
 
         [TestMethod]
+        public void UpsertLinkedListViewDefinitionMetadataTest()
+        {
+            UpsertLinkedListViewDefinitionMetadata();
+        }
+        [TestMethod]
         public void UpsertSegmentsView1ViewDefinitionMetadataTest()
         {
             UpsertSegmentsView1ViewDefinitionMetadata();
@@ -56,9 +61,9 @@ namespace PlatformCorePrototype.Tests
         {
             var dataCollectionMetadata = new DataCollectionMetadata
             {
-                    Id = "segments",
-                    DataSourceLocation = Globals.MongoConnectionString,
-                    DataSourceName="prototype"
+                Id = "segments",
+                DataSourceLocation = Globals.MongoConnectionString,
+                DataSourceName = "prototype"
             };
             var code = new DataColumnMetadata
             {
@@ -86,7 +91,7 @@ namespace PlatformCorePrototype.Tests
                 DisplayOrder = 0
 
             };
-            viewDefinitionMetadata.Filters.Add(codeFilter);
+            // viewDefinitionMetadata.Filters.Add(codeFilter);
             viewDefinitionMetadata.Id = "segments_view1";
             viewDefinitionMetadata.MetadataCollectionId = dataCollectionMetada.Id;
             UpsertViewDefinitionMetadata(viewDefinitionMetadata);
@@ -101,7 +106,7 @@ namespace PlatformCorePrototype.Tests
                 Id = "linkedlistdata",
                 DataSourceLocation = Globals.MongoConnectionString,
                 DataSourceName = "prototype",
-                LinkedListSettings = new LinkedListSettings{ MapCollectionName="linkedlistmap"}
+                LinkedListSettings = new LinkedListSettings { MapCollectionName = "linkedlistmap" }
             };
             var account = new DataColumnMetadata
             {
@@ -132,7 +137,28 @@ namespace PlatformCorePrototype.Tests
             UpsertCollectionMetadata(collectionMetadata);
 
         }
-        
-        
+
+        static void UpsertLinkedListViewDefinitionMetadata()
+        {
+            var viewDefinitionMetadata = new LinkedListViewDefinitionMetadata
+            {
+                Id = "linkedlist_account_view1",
+                MetadataCollectionId = "linkedlistdata"
+            };
+            viewDefinitionMetadata.Paths = new List<LinkedListPathSpecification>
+            {
+                new LinkedListPathSpecification {Level = 0, Name = "Account", DisplayName="Account"},
+                new LinkedListPathSpecification {Level = 1, Name = "SalesPerson", DisplayName="Sales Person"},
+                new LinkedListPathSpecification {Level = 2, Name = "Product", DisplayName="Product"}
+            };
+
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<LinkedListViewDefinitionMetadata>("viewDefinitionMetadata");
+
+            Task.WaitAll(items.InsertOneAsync(viewDefinitionMetadata));
+
+        }
+
     }
 }

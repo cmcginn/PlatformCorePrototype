@@ -12,10 +12,10 @@ namespace PlatformCorePrototype.Tests
 {
     public class TestHelper:ServiceTestBase
     {
-        public static DataCollectionMetadata GetDataCollectionMetadata(string collectionName)
-        {
-            var svc = new MongoDataService();
-            return svc.GetDataCollectionMetadata(collectionName).Result;
-        }
+        //public static DataCollectionMetadata GetDataCollectionMetadata(string collectionName)
+        //{
+        //    var svc = new MongoDataService();
+        //    return svc.GetDataCollectionMetadata(collectionName).Result;
+        //}
     }
 }

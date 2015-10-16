@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson.Serialization;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Services.Configuration;
+using PlatformCorePrototype.Web.Mapping;
 
 namespace PlatformCorePrototype.Tests.Services
 {
@@ -17,6 +18,7 @@ namespace PlatformCorePrototype.Tests.Services
         [ClassInitialize]
         public static void Initialize(TestContext ctx)
         {
+            MappingConfiguration.ConfigureMappings();
             MongoClassMapRegistration.RegisterClassMaps();
         }
 

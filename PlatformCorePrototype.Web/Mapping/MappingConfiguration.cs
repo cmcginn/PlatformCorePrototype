@@ -9,14 +9,21 @@ namespace PlatformCorePrototype.Web.Mapping
 {
     public class MappingConfiguration
     {
+        private static bool _Initialized;
         public static void ConfigureMappings()
         {
+            if (_Initialized)
+                return;
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile<QueryBuilderToMongoQueryDefinitionProfile>();
-                cfg.AddProfile<ViewDefinitionMetadataToViewDefinitionProfile>();
+                cfg.AddProfile<ViewDefinitionMetadataToViewDefinitionModelProfile>();
+                cfg.AddProfile<LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelProfile>();
+                //cfg.AddProfile<IViewDefinitionMetadataToViewDefinitionMetadataProfile>();
+                //cfg.AddProfile<ViewDefinitionMetadataToViewDefinitionModelProfile>();
+
             });
-           
+            Mapper.AssertConfigurationIsValid();
+            _Initialized = true;
            
         }
     }

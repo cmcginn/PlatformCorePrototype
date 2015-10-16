@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class ViewDefinitionMetadata
+    public class ViewDefinitionMetadata :IViewDefinitionMetadata
     {
         public string Id { get; set; }
 

@@ -17,7 +17,8 @@ namespace PlatformCorePrototype.Web.Api
         //POST:api/FilterValuesController
         public async Task<List<FilterSpecification>> Post(ViewDefinitionModel value)
         {
-            return await service.GetFilterValuesAsync(value);
+            throw new System.NotImplementedException();
+            //return await service.GetFilterValuesAsync(value);
         }
     }
 }
