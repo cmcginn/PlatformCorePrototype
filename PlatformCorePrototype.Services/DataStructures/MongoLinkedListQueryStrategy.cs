@@ -63,6 +63,7 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         protected async Task<List<LinkedListMap<V>>> GetLinkListMaps()
         {
+//TODO if include children assing path contains instead of path equals
             var pipeline = new List<BsonDocument> {GetMapFilterPipeline().First()};
             var db = GetDatabase();
             var collection = db.GetCollection<BsonDocument>(LinkedListSettings.MapCollectionName);

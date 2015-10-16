@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Core.Services;
 using PlatformCorePrototype.Services.DataStructures;
 
@@ -99,6 +100,52 @@ namespace PlatformCorePrototype.Services
             var viewDefinitionMetadataTask = items.Find(x => x.Id == viewId);
             var result = await viewDefinitionMetadataTask.SingleAsync();
             return result;
+        }
+
+        public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
+        {
+            Task<List<dynamic>> result = null;
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            DataCollectionMetadata dataCollectionMetadata = null;
+            //first need view definition
+            if (queryBuilder.GetType() == typeof (LinkedListQueryBuilder))
+            {
+
+                var linkedListQueryBuilder = queryBuilder as LinkedListQueryBuilder;
+                var viewDefinitionMetadataTask = GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(queryBuilder.ViewId);
+                LinkedListViewDefinitionMetadata viewDefinitionMetadata = null;
+
+                var t1 = viewDefinitionMetadataTask.ContinueWith<Task<List<dynamic>>>((t) =>
+                {
+                    Task<List<dynamic>> asyncResult = null;
+                    viewDefinitionMetadata = t.Result as LinkedListViewDefinitionMetadata;
+                    dataCollectionMetadata =
+                        GetDataCollectionMetadata(viewDefinitionMetadata.MetadataCollectionId).Result;
+                    if (dataCollectionMetadata.LinkedListSettings.KeyColumn.DataType == Globals.IntegerDataTypeName)
+                    {
+                        var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
+                        strategy.Filters = queryBuilder.SelectedFilters;
+                        strategy.CollectionName = dataCollectionMetadata.Id;
+                        strategy.DataSourceLocation = dataCollectionMetadata.DataSourceLocation;
+                        strategy.DataSourceName = dataCollectionMetadata.DataSourceName;
+                        strategy.LinkedListSettings = dataCollectionMetadata.LinkedListSettings;
+                        //strategy.Path = linkedListQueryBuilder.SelectedPaths.Select(x=>x.Name).ToList();
+                        strategy.LinkedListMap = new LinkedListMap<int>();
+                        if (!String.IsNullOrEmpty(linkedListQueryBuilder.SelectedKey))
+                            strategy.LinkedListMap.Key = int.Parse(linkedListQueryBuilder.SelectedKey);
+                        strategy.LinkedListMap.Navigation =
+                            linkedListQueryBuilder.SelectedPaths.Select(x => x.Name).ToList();
+                        asyncResult = strategy.RunQuery();
+                    }
+                    return asyncResult;
+                });
+                result = await t1;
+
+
+            }
+            return await result;
+
         }
         //public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
         //{
