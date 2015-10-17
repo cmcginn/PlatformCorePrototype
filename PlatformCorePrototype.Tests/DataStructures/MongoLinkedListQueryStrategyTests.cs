@@ -45,7 +45,7 @@ namespace PlatformCorePrototype.Tests.DataStructures
         }
     }
     [TestClass]
-    public class MongoLinkedListQueryStrategyTests:ServiceTestBase
+    public class MongoLinkedListQueryStrategyTests:TestBase
     {
         MongoLinkedListQueryStrategyAccessor GetAccessor()
         {

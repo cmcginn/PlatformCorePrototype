@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -147,6 +148,13 @@ namespace PlatformCorePrototype.Services
             return await result;
 
         }
+
+#region refactored
+
+     
+#endregion
+
+       // public async 
         //public async Task<List<dynamic>> GetDataAsync(IMongoQueryDefinition queryDefinition)
         //{
 

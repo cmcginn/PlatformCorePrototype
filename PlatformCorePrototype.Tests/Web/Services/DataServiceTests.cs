@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PlatformCorePrototype.Services.Models;
+using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Tests.Services;
 using PlatformCorePrototype.Web.Mapping;
 using PlatformCorePrototype.Web.Services;
@@ -9,7 +9,7 @@ using PlatformCorePrototype.Web.Services;
 namespace PlatformCorePrototype.Tests.Web.Services
 {
     [TestClass]
-    public class DataServiceTests : ServiceTestBase
+    public class DataServiceTests : TestBase
     {
         DataService GetTarget()
         {

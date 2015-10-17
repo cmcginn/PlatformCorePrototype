@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
-using PlatformCorePrototype.Services.Mapping;
+
 
 namespace PlatformCorePrototype.Web.Mapping
 {
@@ -16,12 +16,9 @@ namespace PlatformCorePrototype.Web.Mapping
                 return;
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile<ViewDefinitionMetadataToViewDefinitionModelProfile>();
-                cfg.AddProfile<LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelProfile>();
-                //cfg.AddProfile<IViewDefinitionMetadataToViewDefinitionMetadataProfile>();
-                //cfg.AddProfile<ViewDefinitionMetadataToViewDefinitionModelProfile>();
-
+                Core.Configuration.MappingConfiguration.Configure(cfg);
             });
+ 
             Mapper.AssertConfigurationIsValid();
             _Initialized = true;
            

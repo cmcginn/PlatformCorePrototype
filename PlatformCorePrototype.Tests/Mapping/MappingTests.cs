@@ -7,27 +7,27 @@ using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services.DataStructures;
-using PlatformCorePrototype.Services.Mapping;
-using PlatformCorePrototype.Services.Models;
+
+
 using PlatformCorePrototype.Tests.Services;
 using PlatformCorePrototype.Web.Mapping;
 
 namespace PlatformCorePrototype.Tests.Mapping
 {
     [TestClass]
-    public class MappingTests:ServiceTestBase
+    public class MappingTests:TestBase
     {
         [TestMethod]
         public void IViewDefinitionMetadataToViewDefinitionMetadataTest()
         {
-            MappingConfiguration.ConfigureMappings();
-            IViewDefinitionMetadata source = new ViewDefinitionMetadata();
+           // MappingConfiguration.ConfigureMappings();
+            ViewDefinitionMetadata source = new ViewDefinitionMetadata();
             ViewDefinitionMetadata actual = Mapper.Map<ViewDefinitionMetadata>(source);
         }
         [TestMethod]
         public void ViewDefinitionMetadataToViewDefinitionModelTest()
         {
-           MappingConfiguration.ConfigureMappings();
+
            
              ViewDefinitionMetadata source = new ViewDefinitionMetadata();
              ViewDefinitionModel actual = Mapper.Map<ViewDefinitionModel>(source);
@@ -51,7 +51,7 @@ namespace PlatformCorePrototype.Tests.Mapping
         [TestMethod]
         public void LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelTest()
         {
-            MappingConfiguration.ConfigureMappings();
+          
             LinkedListViewDefinitionMetadata source = new LinkedListViewDefinitionMetadata();
             source.Paths = new List<LinkedListPathSpecification>
             {

@@ -10,17 +10,17 @@ using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services;
 using PlatformCorePrototype.Services.DataStructures;
-using PlatformCorePrototype.Services.Models;
+
 
 namespace PlatformCorePrototype.Web.Services
 {
     public class DataService
     {
-        public async Task<IViewDefinitionModel> GetViewDefinitionAsync(string viewId)
+        public async Task<ViewDefinitionModel> GetViewDefinitionAsync(string viewId)
         {
 
             var service = new MongoDataService();
-            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<IViewDefinitionModel>(t =>
+            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<ViewDefinitionModel>(t =>
             {
                 if (t.Result.GetType() == typeof(LinkedListViewDefinitionMetadata))
                 {

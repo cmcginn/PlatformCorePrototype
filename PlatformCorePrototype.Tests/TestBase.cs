@@ -7,16 +7,15 @@ using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Services.Configuration;
 using PlatformCorePrototype.Web.Mapping;
 
-namespace PlatformCorePrototype.Tests.Services
+namespace PlatformCorePrototype.Tests
 {
     /// <summary>
     /// Summary description for ServiceTestBase
     /// </summary>
     [TestClass]
-    public class ServiceTestBase
+    public class TestBase
     {
-        [ClassInitialize]
-        public static void Initialize(TestContext ctx)
+        public TestBase()
         {
             MappingConfiguration.ConfigureMappings();
             MongoClassMapRegistration.RegisterClassMaps();

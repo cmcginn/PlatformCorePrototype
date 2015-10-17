@@ -10,7 +10,7 @@ using PlatformCorePrototype.Tests.Services;
 
 namespace PlatformCorePrototype.Tests
 {
-    public class TestHelper:ServiceTestBase
+    public class TestHelper:TestBase
     {
         //public static DataCollectionMetadata GetDataCollectionMetadata(string collectionName)
         //{

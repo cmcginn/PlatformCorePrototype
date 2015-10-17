@@ -47,7 +47,7 @@ namespace PlatformCorePrototype.Tests.DataStructures
         }
     }
     [TestClass]
-    public class MongoTreeQueryStrategyTests:ServiceTestBase
+    public class MongoTreeQueryStrategyTests:TestBase
     {
         MongoTreeQueryStrategyAccessor GetTarget()
         {

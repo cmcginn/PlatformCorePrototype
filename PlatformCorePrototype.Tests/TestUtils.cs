@@ -13,7 +13,7 @@ using PlatformCorePrototype.Tests.Services;
 namespace PlatformCorePrototype.Tests
 {
     [TestClass]
-    public class TestUtils : ServiceTestBase
+    public class TestUtils : TestBase
     {
         [TestMethod]
         public void UpsertLinkedListDataCollectionMetadataTest()

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using PlatformCorePrototype.Services.Models;
+using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Web.Services;
 
 namespace PlatformCorePrototype.Web.Api
@@ -14,7 +14,7 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //Get:api/ApiController/{viewId}
-        public async Task<IViewDefinitionModel> Get(string id)
+        public async Task<ViewDefinitionModel> Get(string id)
         {
            
             var result = await service.GetViewDefinitionAsync(id);

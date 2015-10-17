@@ -26,7 +26,7 @@ namespace PlatformCorePrototype.Tests.Services
     /// Summary description for DataServiceTests
     /// </summary>
     [TestClass]
-    public class MongoDataServiceTests : ServiceTestBase
+    public class MongoDataServiceTests : TestBase
     {
         public MongoDataServiceTests()
         {
