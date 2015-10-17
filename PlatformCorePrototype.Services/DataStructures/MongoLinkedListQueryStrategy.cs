@@ -13,6 +13,36 @@ namespace PlatformCorePrototype.Services.DataStructures
 {
     public class MongoLinkedListQueryStrategy<T,V>:IMongoLinkedListQueryStrategy<T,V>
     {
+        protected FilterDefinition<T> GetMapWithChildrenFilterDefinition()
+        {
+            var builder = new FilterDefinitionBuilder<T>();
+            FilterDefinition<T> result = null;
+            if (LinkedListMap != null)
+            {
+                result = new BsonDocument();
+                if (LinkedListMap.Navigation.Any())
+                {
+                    var val = new BsonArray();
+                    var counter = 0;
+                    LinkedListMap.Navigation.ForEach(x =>
+                    {
+                    
+                        result &= builder.Eq(String.Format("Navigation.{0}", counter), x);
+                        counter += 1;
+                    });
+    
+
+                }
+                V d = default(V);
+                if (!LinkedListMap.Key.Equals(d))
+                {
+                    result &= builder.Eq("Key", LinkedListMap.Key);
+                }
+            }
+
+
+            return result;
+        }
         protected FilterDefinition<T> GetMapFilterDefinition()
         {
             var builder = new FilterDefinitionBuilder<T>();
@@ -43,8 +73,12 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         protected List<BsonDocument> GetMapFilterPipeline()
         {
-            var result = new List<BsonDocument>(); 
-            var matchDefinition = GetMapFilterDefinition();
+            var result = new List<BsonDocument>();
+            FilterDefinition<T> matchDefinition = null;
+            if (IncludeChildren)
+                matchDefinition = GetMapWithChildrenFilterDefinition();
+            else
+                matchDefinition = GetMapFilterDefinition();
             if (matchDefinition != null)
             {
                 result.Add(new BsonDocument { { "$match", ToDocument(matchDefinition) } });

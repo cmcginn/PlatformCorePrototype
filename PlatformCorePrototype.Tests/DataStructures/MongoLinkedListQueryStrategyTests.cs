@@ -37,6 +37,12 @@ namespace PlatformCorePrototype.Tests.DataStructures
             return this.GetListMatchDocument();
      
         }
+
+        public BsonDocument GetMapWithChildrenFilterDefinitionAccessor()
+        {
+            var doc = this.GetMapWithChildrenFilterDefinition();
+            return this.ToDocument(doc);
+        }
     }
     [TestClass]
     public class MongoLinkedListQueryStrategyTests:ServiceTestBase
@@ -102,6 +108,19 @@ namespace PlatformCorePrototype.Tests.DataStructures
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void GetMapWithChildrenFilterDefinitionAccessor()
+        {
+            var target = GetAccessor();
+            target.LinkedListMap = new LinkedListMap<int>
+            {
+                Key = 1000,
+                Navigation = new List<string> { "Account", "Product", "SalesPerson" }
+            };
+            var actual = target.GetMapWithChildrenFilterDefinitionAccessor().ToString();
+            //var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 }";
+            //Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void GetMapFilterPipelineTest()
         {
              var target = GetAccessor();
@@ -155,6 +174,19 @@ namespace PlatformCorePrototype.Tests.DataStructures
             target.LinkedListMap = new LinkedListMap<int>
             {
                 Navigation = new List<string> { "Account", "SalesPerson" }
+            };
+            var actual = target.RunQuery().Result;
+            Assert.IsTrue(actual.Any());
+        }
+
+        [TestMethod]
+        public void RunQueryTest_WhenIncludeChildren()
+        {
+            var target = GetAccessor();
+            target.IncludeChildren = true;
+            target.LinkedListMap = new LinkedListMap<int>
+            {
+                Navigation = new List<string> { "Account" }
             };
             var actual = target.RunQuery().Result;
             Assert.IsTrue(actual.Any());
