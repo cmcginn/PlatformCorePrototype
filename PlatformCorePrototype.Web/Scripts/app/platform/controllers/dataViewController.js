@@ -55,7 +55,11 @@
             $scope.viewDefinition = data;
             $log.debug('getViewDefinitionAsync result');
             $log.debug($scope.viewDefinition);
-            getFilterValues();
+            //$scope.$broadcast('viewDefinitionReceived', {
+            //    viewId: viewId,
+            //    data: $scope.viewDefinition
+            //});
+            //getFilterValues();
         });
     };
     

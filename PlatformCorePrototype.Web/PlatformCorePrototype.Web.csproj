@@ -267,6 +267,7 @@
     <Content Include="Scripts\app\platform\controllers\dataViewController.js" />
     <Content Include="Scripts\app\platform\controllers\scratchController.js" />
     <Content Include="Scripts\app\platform\directives\filter-control.js" />
+    <Content Include="Scripts\app\platform\directives\js-tree-control.js" />
     <Content Include="Scripts\app\platform\directives\object-properties-table-control.js" />
     <Content Include="Scripts\app\platform\directives\templates\filter-control.html" />
     <Content Include="Scripts\app\platform\directives\templates\object-properties-table-control.html" />
@@ -1344,6 +1345,17 @@
     <Content Include="Vendor\jquery\src\var\support.js" />
     <Content Include="Vendor\jquery\src\var\toString.js" />
     <Content Include="Vendor\jquery\src\wrap.js" />
+    <Content Include="Vendor\jsTree3\jstree.js" />
+    <Content Include="Vendor\jsTree3\jstree.min.js" />
+    <Content Include="Vendor\jsTree3\themes\custom\32px.png" />
+    <Content Include="Vendor\jsTree3\themes\custom\40px.png" />
+    <Content Include="Vendor\jsTree3\themes\custom\style.css" />
+    <Content Include="Vendor\jsTree3\themes\custom\throbber.gif" />
+    <Content Include="Vendor\jsTree3\themes\default\32px.png" />
+    <Content Include="Vendor\jsTree3\themes\default\40px.png" />
+    <Content Include="Vendor\jsTree3\themes\default\style.css" />
+    <Content Include="Vendor\jsTree3\themes\default\style.min.css" />
+    <Content Include="Vendor\jsTree3\themes\default\throbber.gif" />
     <Content Include="Vendor\ladda\css\prism.css" />
     <Content Include="Vendor\ladda\dist\ladda-themeless.css" />
     <Content Include="Vendor\ladda\dist\ladda-themeless.min.css" />

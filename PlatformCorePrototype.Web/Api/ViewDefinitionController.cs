@@ -14,11 +14,11 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //Get:api/ApiController/{viewId}
-        public async Task<ViewDefinitionModel> Get(string id)
+        public async Task<IViewDefinitionModel> Get(string id)
         {
-            throw new System.NotImplementedException();
-            // var result = await service.GetViewDefinitionAsync(id);
-            //return result;
+           
+            var result = await service.GetViewDefinitionAsync(id);
+            return result;
         }
 
     }

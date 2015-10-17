@@ -16,7 +16,7 @@ namespace PlatformCorePrototype.Core.Models
             get { return _SelectedPaths ?? (_SelectedPaths = new List<LinkedListPathSpecification>()); }
             set { _SelectedPaths = value; }
         }
-
+        public bool IncludeChildren { get; set; }
         public string SelectedKey { get; set; }
     }
 }

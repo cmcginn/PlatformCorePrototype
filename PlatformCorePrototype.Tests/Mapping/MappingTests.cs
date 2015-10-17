@@ -53,14 +53,19 @@ namespace PlatformCorePrototype.Tests.Mapping
         {
             MappingConfiguration.ConfigureMappings();
             LinkedListViewDefinitionMetadata source = new LinkedListViewDefinitionMetadata();
-            LinkedListViewDefinitionModel actaul = Mapper.Map<LinkedListViewDefinitionModel>(source);
+            source.Paths = new List<LinkedListPathSpecification>
+            {
+                new LinkedListPathSpecification {DisplayName = "Account", Level = 0, Name = "Account"}
+            };
+            LinkedListViewDefinitionModel actual = Mapper.Map<LinkedListViewDefinitionModel>(source);
+            Assert.IsTrue(actual.Paths.Any());
         }
 
         [TestMethod]
         public void IQueryBuilderToMongoLinkedListQueryStrategyTest()
         {
             IQueryBuilder source = new LinkedListQueryBuilder();
-        
+            
         }
        
     }

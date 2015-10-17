@@ -17,7 +17,6 @@
             }).state('platform.scratch', {
                 url: '/Scratch',
                 templateUrl: helper.basepath('Home/Scratch'),
-                resolve: helper.resolveFor('angularBootstrapNavTree'),
                 title: 'Home'
             });
     }

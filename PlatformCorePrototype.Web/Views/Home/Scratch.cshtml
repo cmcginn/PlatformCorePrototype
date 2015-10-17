@@ -2,8 +2,31 @@
 @{
     Layout = null;
 }
-
-<h3>
+<h3>Scratch</h3>
+<div id="jstree_demo_div"></div>
+<script>
+    $(function () {
+        $('#jstree_demo_div').jstree({
+            'core': {
+                'data': [
+                   'Simple root node',
+                   {
+                       'text': 'Root node 2',
+                       'state': {
+                           'opened': true,
+                           'selected': true
+                       },
+                       'children': [
+                         { 'text': 'Child 1' },
+                         'Child 2'
+                       ]
+                   }
+                ]
+            }
+        });
+    });
+</script>
+@*<h3>
     Nav-Tree
     <small>An AngularJS directive that creates a Tree based on a Bootstrap "nav" list.</small>
 </h3>
@@ -39,4 +62,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

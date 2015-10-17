@@ -4,11 +4,17 @@
     "heading": "true",
     "translate": "sidebar.heading.HEADER"
   },
-  {
-    "text": "Single View",
-    "sref": "app.singleview",
+    {
+        "text": "Single View",
+        "sref": "app.singleview",
+        "icon": "fa fa-file-o",
+        "translate": "sidebar.nav.SINGLEVIEW"
+    },
+     {
+    "text": "Scratch",
+    "sref": "platform.scratch",
     "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.SINGLEVIEW"
+    "translate": "Scratch"
   },
   {
     "text": "Menu",
