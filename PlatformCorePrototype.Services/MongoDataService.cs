@@ -48,9 +48,9 @@ namespace PlatformCorePrototype.Services
             var t2 = t1.ContinueWith<Task<ViewDefinitionMetadata>>((t) =>
             {
                 var dataCollectionMetadata = t.Result.Result;
-                if (dataCollectionMetadata.LinkedListSettings != null)
-                    return GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(viewId);
-                else
+                //if (dataCollectionMetadata.LinkedListSettings != null)
+                //    return GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(viewId);
+               // else
                     return GetViewDefinitionMetadataAsync<ViewDefinitionMetadata>(viewId);
 
 
@@ -123,22 +123,22 @@ namespace PlatformCorePrototype.Services
                     viewDefinitionMetadata = t.Result as LinkedListViewDefinitionMetadata;
                     dataCollectionMetadata =
                         GetDataCollectionMetadata(viewDefinitionMetadata.MetadataCollectionId).Result;
-                    if (dataCollectionMetadata.LinkedListSettings.KeyColumn.DataType == Globals.IntegerDataTypeName)
-                    {
-                        var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
-                        strategy.Filters = queryBuilder.SelectedFilters;
-                        strategy.CollectionName = dataCollectionMetadata.Id;
-                        strategy.DataSourceLocation = dataCollectionMetadata.DataSourceLocation;
-                        strategy.DataSourceName = dataCollectionMetadata.DataSourceName;
-                        strategy.LinkedListSettings = dataCollectionMetadata.LinkedListSettings;
-                        //strategy.Path = linkedListQueryBuilder.SelectedPaths.Select(x=>x.Name).ToList();
-                        strategy.LinkedListMap = new LinkedListMap<int>();
-                        if (!String.IsNullOrEmpty(linkedListQueryBuilder.SelectedKey))
-                            strategy.LinkedListMap.Key = int.Parse(linkedListQueryBuilder.SelectedKey);
-                        strategy.LinkedListMap.Navigation =
-                            linkedListQueryBuilder.SelectedPaths.Select(x => x.Name).ToList();
-                        asyncResult = strategy.RunQuery();
-                    }
+                    //if (dataCollectionMetadata.LinkedListSettings.KeyColumn.DataType == Globals.IntegerDataTypeName)
+                    //{
+                    //    var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
+                    //    strategy.Filters = queryBuilder.SelectedFilters;
+                    //    strategy.CollectionName = dataCollectionMetadata.Id;
+                    //    strategy.DataSourceLocation = dataCollectionMetadata.DataSourceLocation;
+                    //    strategy.DataSourceName = dataCollectionMetadata.DataSourceName;
+                    //    strategy.LinkedListSettings = dataCollectionMetadata.LinkedListSettings;
+                    //    //strategy.Path = linkedListQueryBuilder.SelectedPaths.Select(x=>x.Name).ToList();
+                    //    strategy.LinkedListMap = new LinkedListMap<int>();
+                    //    if (!String.IsNullOrEmpty(linkedListQueryBuilder.SelectedKey))
+                    //        strategy.LinkedListMap.Key = int.Parse(linkedListQueryBuilder.SelectedKey);
+                    //    strategy.LinkedListMap.Navigation =
+                    //        linkedListQueryBuilder.SelectedPaths.Select(x => x.Name).ToList();
+                    //    asyncResult = strategy.RunQuery();
+                    //}
                     return asyncResult;
                 });
                 result = await t1;
@@ -151,7 +151,7 @@ namespace PlatformCorePrototype.Services
 
 #region refactored
 
-     
+    // public async Task<DataStorageStructureTypes>
 #endregion
 
        // public async 

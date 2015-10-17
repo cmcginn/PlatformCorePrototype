@@ -16,20 +16,20 @@ namespace PlatformCorePrototype.Web.Services
 {
     public class DataService
     {
-        public async Task<ViewDefinitionModel> GetViewDefinitionAsync(string viewId)
+        public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
         {
 
             var service = new MongoDataService();
-            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<ViewDefinitionModel>(t =>
+            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<ViewDefinition>(t =>
             {
                 if (t.Result.GetType() == typeof(LinkedListViewDefinitionMetadata))
                 {
-                    var taskResult = Mapper.Map<LinkedListViewDefinitionModel>(t.Result);
+                    var taskResult = Mapper.Map<LinkedListViewDefinition>(t.Result);
                     return taskResult;
                 }
                 else
                 {
-                    var taskResult = Mapper.Map<ViewDefinitionModel>(t.Result);
+                    var taskResult = Mapper.Map<ViewDefinition>(t.Result);
                     return taskResult;
                 }
 

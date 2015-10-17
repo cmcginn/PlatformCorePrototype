@@ -14,7 +14,7 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //POST:api/FilterValuesController
-        public async Task<List<FilterSpecification>> Post(ViewDefinitionModel value)
+        public async Task<List<FilterSpecification>> Post(ViewDefinition value)
         {
             throw new System.NotImplementedException();
             //return await service.GetFilterValuesAsync(value);

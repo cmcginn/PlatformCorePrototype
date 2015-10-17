@@ -49,6 +49,7 @@
     <Compile Include="Configuration\MappingConfiguration.cs" />
     <Compile Include="DataStructures\DataCollectionMetadata.cs" />
     <Compile Include="DataStructures\DataColumnMetadata.cs" />
+    <Compile Include="DataStructures\DataDefinition.cs" />
     <Compile Include="DataStructures\DataSourceSettings.cs" />
     <Compile Include="DataStructures\DataStorageStructureTypes.cs" />
     <Compile Include="DataStructures\FilterSpecification.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="DataStructures\IQueryDefinition.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
     <Compile Include="DataStructures\ITreeQueryStrategy.cs" />
+    <Compile Include="DataStructures\LinkedListDataCollectionMetadata.cs" />
     <Compile Include="DataStructures\LinkedListPathSpecification.cs" />
     <Compile Include="DataStructures\LinkedListSettings.cs" />
     <Compile Include="DataStructures\LinkedListMap.cs" />
@@ -69,9 +71,9 @@
     <Compile Include="Globals.cs" />
     <Compile Include="DataStructures\IQueryBuilder.cs" />
     <Compile Include="DataStructures\LinkedListQueryBuilder.cs" />
-    <Compile Include="DataStructures\LinkedListViewDefinitionModel.cs" />
+    <Compile Include="DataStructures\LinkedListViewDefinition.cs" />
     <Compile Include="DataStructures\QueryBuilder.cs" />
-    <Compile Include="DataStructures\ViewDefinitionModel.cs" />
+    <Compile Include="DataStructures\ViewDefinition.cs" />
     <Compile Include="Mapping\LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelProfile.cs" />
     <Compile Include="Mapping\ViewDefinitionMetadataToViewDefinitionModelProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

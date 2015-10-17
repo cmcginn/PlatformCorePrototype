@@ -14,8 +14,9 @@ namespace PlatformCorePrototype.Core.Mapping
     {
         protected override void Configure()
         {
-            Mapper.CreateMap<ViewDefinitionMetadata, ViewDefinitionModel>()
+            Mapper.CreateMap<ViewDefinitionMetadata, ViewDefinition>()
                 .ForMember(dest => dest.QueryBuilder, (s) => s.Ignore())
+                .ForMember(dest=>dest.DataDefinition,(s)=>s.UseValue(new DataDefinition{ DataStorageType = DataStorageStructureTypes.Default}))
                 .AfterMap((source, dest) =>
                 {
                     dest.QueryBuilder = new QueryBuilder {ViewId = source.Id};

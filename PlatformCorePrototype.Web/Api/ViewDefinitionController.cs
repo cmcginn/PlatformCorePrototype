@@ -14,7 +14,7 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //Get:api/ApiController/{viewId}
-        public async Task<ViewDefinitionModel> Get(string id)
+        public async Task<ViewDefinition> Get(string id)
         {
            
             var result = await service.GetViewDefinitionAsync(id);

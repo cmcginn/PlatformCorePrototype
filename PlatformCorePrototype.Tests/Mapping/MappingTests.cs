@@ -30,7 +30,7 @@ namespace PlatformCorePrototype.Tests.Mapping
 
            
              ViewDefinitionMetadata source = new ViewDefinitionMetadata();
-             ViewDefinitionModel actual = Mapper.Map<ViewDefinitionModel>(source);
+             ViewDefinition actual = Mapper.Map<ViewDefinition>(source);
             
         }
 
@@ -57,7 +57,7 @@ namespace PlatformCorePrototype.Tests.Mapping
             {
                 new LinkedListPathSpecification {DisplayName = "Account", Level = 0, Name = "Account"}
             };
-            LinkedListViewDefinitionModel actual = Mapper.Map<LinkedListViewDefinitionModel>(source);
+            LinkedListViewDefinition actual = Mapper.Map<LinkedListViewDefinition>(source);
             Assert.IsTrue(actual.Paths.Any());
         }
 

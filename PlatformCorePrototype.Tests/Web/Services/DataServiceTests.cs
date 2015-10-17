@@ -24,7 +24,7 @@ namespace PlatformCorePrototype.Tests.Web.Services
             var actual = target.GetViewDefinitionAsync("linkedlist_account_view1").Result;
 
             Assert.IsNotNull(actual);
-            var vd = actual as LinkedListViewDefinitionModel;
+            var vd = actual as LinkedListViewDefinition;
             Assert.IsTrue(vd.Paths.Any());
 
 

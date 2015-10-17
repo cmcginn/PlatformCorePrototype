@@ -9,9 +9,9 @@ using PlatformCorePrototype.Core.Models;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class ViewDefinitionModel:ViewDefinitionMetadata
+    public class ViewDefinition:ViewDefinitionMetadata
     {
         public QueryBuilder QueryBuilder { get; set; }
-    
+        public DataDefinition DataDefinition { get; set; }
     }
 }

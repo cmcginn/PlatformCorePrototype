@@ -9,7 +9,7 @@ using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class LinkedListViewDefinitionModel:ViewDefinitionModel
+    public class LinkedListViewDefinition:ViewDefinition
     {
         private List<LinkedListPathSpecification> _Paths;
 

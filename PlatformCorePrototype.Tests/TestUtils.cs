@@ -101,12 +101,12 @@ namespace PlatformCorePrototype.Tests
 
         static void UpsertLinkedListCollectionMetadata()
         {
-            var collectionMetadata = new DataCollectionMetadata
+            var collectionMetadata = new LinkedListDataCollectionMetadata
             {
                 Id = "linkedlistdata",
                 DataSourceLocation = Globals.MongoConnectionString,
                 DataSourceName = "prototype",
-                LinkedListSettings = new LinkedListSettings { MapCollectionName = "linkedlistmap" }
+                MapCollectionName = "linkedlistmap"
             };
             var account = new DataColumnMetadata
             {
@@ -128,11 +128,14 @@ namespace PlatformCorePrototype.Tests
                 ColumnName = "Amount",
                 DataType = Globals.DoubleDataTypeName
             };
+
+            collectionMetadata.KeyColumn = account;
+
             collectionMetadata.Columns.Add(account);
             collectionMetadata.Columns.Add(salesPerson);
             collectionMetadata.Columns.Add(product);
             collectionMetadata.Columns.Add(amount);
-            collectionMetadata.LinkedListSettings.KeyColumn = account;
+            //collectionMetadata.LinkedListSettings.KeyColumn = account;
             //collectionMetadata.KeyColumn = account;
             UpsertCollectionMetadata(collectionMetadata);
 
