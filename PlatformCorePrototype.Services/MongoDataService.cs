@@ -167,25 +167,36 @@ namespace PlatformCorePrototype.Services
         }
         public async Task<List<dynamic>> GetDataAsync(IQueryStrategy<dynamic> strategy)
         {
-            var storageType = await GetDataStorageStructureTypeForView(strategy.ViewId);
-            if (storageType == DataStorageStructureTypes.LinkedList)
-            {
+            //var storageType = await GetDataStorageStructureTypeForView(strategy.ViewId);
+            //if (storageType == DataStorageStructureTypes.LinkedList)
+           // {
                 var t1 = GetLinkedListViewDefinitionMetadata(strategy.ViewId);
                 var t2 = t1.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
                 {
                     strategy.ViewDefinitionMetadata = t.Result;
                     return GetLinkedListDataCollectionMetadata(t.Result.MetadataCollectionId);
                 });
-                var t3 = t2.ContinueWith<Task<List<dynamic>>>((t) =>
-                {
-                    strategy.CollectionMetadata = t.Result.Result;
+            var t3 = t2.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
+            {
+                return t.Result;
+            });
+            var t4 = t3.ContinueWith<Task<List<dynamic>>>((t) =>
+            {
+                strategy.CollectionMetadata = t.Result.Result;
+                return strategy.RunQuery();
+            });
+                //var t3 = t2.ContinueWith<Task<List<dynamic>>>((t) =>
+                //{
+                //    strategy.CollectionMetadata = t.Result.Result;
                     
-                    return strategy.RunQuery();
-                });
-                return t3.Result.Result;
-            }
+                //    return strategy.RunQuery();
+                //});
+            var tasks = new List<Task> {t3, t4};
+            Task.WaitAll(tasks.ToArray());
+            return await t4.Result;
+            //}
 
-            return null;
+            //return null;
         }
 
         public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
@@ -215,8 +226,9 @@ namespace PlatformCorePrototype.Services
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var collection = db.GetCollection<LinkedListViewDefinitionMetadata>("viewDefinitionMetadata");
-            var result = await collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
-            return result;
+            var result =collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
+            Task.WaitAll(result);
+            return await result;
         }
         public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadata(string viewId)
         {

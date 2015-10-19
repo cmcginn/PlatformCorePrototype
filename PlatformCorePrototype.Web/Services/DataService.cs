@@ -24,12 +24,24 @@ namespace PlatformCorePrototype.Web.Services
             return await result;
         }
 
-        public List<dynamic> GetDataAsync(IQueryBuilder queryBuilder)
+        public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
         {
+            Task<List<dynamic>> myT = null;
             var strategy = Mapper.Map<MongoLinkedListQueryStrategy<dynamic, int>>(queryBuilder);
             var service = new MongoDataService();
-            var result = service.GetDataAsync(strategy).Result;
-            return result;
+            var t = Task.Run(() =>
+            {
+                var s = service.GetDataAsync(strategy);
+                myT = s;
+            });
+            Task.WaitAll(t);
+            return await myT;
+            //var task = new Task<Task<List<dynamic>>>((t) =>
+            //{
+            //    return service.GetDataAsync(strategy);
+            //});
+            //  var result = 
+            //  return await result;
         }
         //public async Task<List<FilterSpecification>> GetFilterValuesAsync(ViewDefinitionModel view)
         //{
