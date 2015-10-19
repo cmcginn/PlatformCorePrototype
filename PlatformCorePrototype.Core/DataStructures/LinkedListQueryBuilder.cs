@@ -9,14 +9,17 @@ namespace PlatformCorePrototype.Core.Models
 {
     public class LinkedListQueryBuilder:QueryBuilder
     {
-        private List<LinkedListPathSpecification> _SelectedPaths;
+       
+        public LinkedListPathSpecification SelectedPath { get; set; }
+        private List<LinkedListPathSpecification> _AvailablePaths;
 
-        public List<LinkedListPathSpecification> SelectedPaths
-        {
-            get { return _SelectedPaths ?? (_SelectedPaths = new List<LinkedListPathSpecification>()); }
-            set { _SelectedPaths = value; }
-        }
         public bool IncludeChildren { get; set; }
         public string SelectedKey { get; set; }
+
+        public List<LinkedListPathSpecification> AvailablePaths
+        {
+            get { return _AvailablePaths ?? (_AvailablePaths = new List<LinkedListPathSpecification>()); }
+            set { _AvailablePaths = value; }
+        }
     }
 }

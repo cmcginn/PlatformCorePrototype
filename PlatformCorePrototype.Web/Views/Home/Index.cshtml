@@ -6,7 +6,7 @@
 <div ng-controller="DataViewController" ng-init="init('linkedlist_account_view1')">
     <div class="row">
         <div class="col-xs-3" ng-repeat="filter in viewDefinition.filters">
-            <div filter-control data-filter-selection-mode="filter.selectionMode" data-filter-id="filter.column.columnName" data-filter-display-name="filter.column.displayName" data-filter-values="filter.filterValues">
+            <div filter-control data-filter-selection-mode="filter.selectionMode" data-filter-id="filter.column.columnNavigation" data-filter-display-name="filter.column.displayNavigation" data-filter-values="filter.filterValues">
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <div js-tree-control data-paths="viewDefinition.paths"></div>
+            <div js-tree-control data-path="viewDefinition.queryBuilder.selectedPath"></div>
         </div>
     </div>
     @*<div tree-control data-tree-data-received="'treeDataReceived'" data-key-property="'_id'" data-display-property="'name'"></div>*@

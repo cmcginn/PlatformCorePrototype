@@ -47,7 +47,17 @@ namespace PlatformCorePrototype.Tests
             Task.WaitAll(upsertTask);
 
         }
+        static void UpsertLinkedListCollectionMetadata(LinkedListDataCollectionMetadata dataCollectionMetadata)
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<LinkedListDataCollectionMetadata>("collectionMetadata");
+            FilterDefinition<LinkedListDataCollectionMetadata> filter = new BsonDocument("_id", dataCollectionMetadata.Id);
+            var deleteTask = items.DeleteOneAsync(filter).Result;
+            var upsertTask = items.InsertOneAsync(dataCollectionMetadata);
+            Task.WaitAll(upsertTask);
 
+        }
         static void UpsertViewDefinitionMetadata(ViewDefinitionMetadata viewDefinitionMetadata)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
@@ -106,7 +116,8 @@ namespace PlatformCorePrototype.Tests
                 Id = "linkedlistdata",
                 DataSourceLocation = Globals.MongoConnectionString,
                 DataSourceName = "prototype",
-                MapCollectionName = "linkedlistmap"
+                MapCollectionName = "linkedlistmap",
+                DataStorageType = DataStorageStructureTypes.LinkedList
             };
             var account = new DataColumnMetadata
             {
@@ -137,7 +148,7 @@ namespace PlatformCorePrototype.Tests
             collectionMetadata.Columns.Add(amount);
             //collectionMetadata.LinkedListSettings.KeyColumn = account;
             //collectionMetadata.KeyColumn = account;
-            UpsertCollectionMetadata(collectionMetadata);
+            UpsertLinkedListCollectionMetadata(collectionMetadata);
 
         }
 
@@ -150,9 +161,8 @@ namespace PlatformCorePrototype.Tests
             };
             viewDefinitionMetadata.Paths = new List<LinkedListPathSpecification>
             {
-                new LinkedListPathSpecification {Level = 0, Name = "Account", DisplayName="Account"},
-                new LinkedListPathSpecification {Level = 1, Name = "SalesPerson", DisplayName="Sales Person"},
-                new LinkedListPathSpecification {Level = 2, Name = "Product", DisplayName="Product"}
+                new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson.Product"},
+                new LinkedListPathSpecification {DisplayOrder = 1, Navigation = "Account.Product"}
             };
 
             var client = new MongoClient(Globals.MongoConnectionString);

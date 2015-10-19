@@ -41,7 +41,7 @@ namespace PlatformCorePrototype.Tests.Mapping
             {
                 Paths = new List<LinkedListPathSpecification>
                 {
-                    new LinkedListPathSpecification {DisplayName = "Test", Name = "Test", Level = 0}
+                    new LinkedListPathSpecification {Navigation = "Test", DisplayOrder = 0}
                 }
             };
             LinkedListViewDefinitionMetadata actual = Mapper.Map<LinkedListViewDefinitionMetadata>(source);
@@ -49,23 +49,12 @@ namespace PlatformCorePrototype.Tests.Mapping
         }
 
         [TestMethod]
-        public void LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelTest()
+        public void LinkedListQueryBuilderToMongoLinkedListQueryStrategyTest()
         {
-          
-            LinkedListViewDefinitionMetadata source = new LinkedListViewDefinitionMetadata();
-            source.Paths = new List<LinkedListPathSpecification>
-            {
-                new LinkedListPathSpecification {DisplayName = "Account", Level = 0, Name = "Account"}
-            };
-            LinkedListViewDefinition actual = Mapper.Map<LinkedListViewDefinition>(source);
-            Assert.IsTrue(actual.Paths.Any());
-        }
-
-        [TestMethod]
-        public void IQueryBuilderToMongoLinkedListQueryStrategyTest()
-        {
-            IQueryBuilder source = new LinkedListQueryBuilder();
-            
+            var source = new LinkedListQueryBuilder();
+            source.SelectedPath = new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson"};
+            MongoLinkedListQueryStrategy<dynamic, int> actual =
+                Mapper.Map<MongoLinkedListQueryStrategy<dynamic, int>>(source);
         }
        
     }

@@ -15,7 +15,7 @@
             return result;
         }
         function getData(cb) {
-            var d = dataService.getDataAsync($scope.viewDefinition.queryBuilder);
+            var d = dataService.getLinkedListDataAsync($scope.viewDefinition.queryBuilder);
             d.then(function(data) {
                 $log.debug('getDataAsync result');
                 $log.debug(data);
@@ -43,10 +43,10 @@
     }
     $scope.refreshData = function () {
         var callback = function () {
-            $log.debug('Brodcasting treeDataReceived');
-            $scope.$broadcast('treeDataReceived', { viewId: $scope.viewId, data: $scope.viewDefinition.data });
+            //$log.debug('Brodcasting treeDataReceived');
+            //$scope.$broadcast('treeDataReceived', { viewId: $scope.viewId, data: $scope.viewDefinition.data });
         }
-        getData(callback);
+        getData();
     };
     $scope.init = function (viewId) {
         $scope.viewId = viewId;
@@ -55,6 +55,7 @@
             $scope.viewDefinition = data;
             $log.debug('getViewDefinitionAsync result');
             $log.debug($scope.viewDefinition);
+            $scope.refreshData();
             //$scope.$broadcast('viewDefinitionReceived', {
             //    viewId: viewId,
             //    data: $scope.viewDefinition

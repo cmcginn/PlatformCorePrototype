@@ -22,7 +22,7 @@ namespace PlatformCorePrototype.Core.DataStructures
             set { _Columns = value; }
         }
 
-        public virtual DataStorageStructureTypes DataStorageType { get { return DataStorageStructureTypes.Default; } }
-        //public LinkedListSettings LinkedListSettings { get; set; }
+        public DataStorageStructureTypes DataStorageType { get; set; }
+
     }
 }

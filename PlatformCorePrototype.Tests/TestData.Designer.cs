@@ -63,23 +63,22 @@ namespace PlatformCorePrototype.Tests {
         /// <summary>
         ///   Looks up a localized string similar to { 
         ///    &quot;_id&quot; : {
-        ///        &quot;ColumnName&quot; : &quot;Child 1 Level 2&quot;, 
+        ///        &quot;ColumnNavigation&quot; : &quot;Child 1 DisplayOrder 2&quot;, 
         ///        &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27d&quot;)
         ///    }, 
         ///    &quot;Value&quot; : &quot;TestNodeChild&quot;, 
         ///    &quot;Ancestors&quot; : [
         ///        {
-        ///            &quot;ColumnName&quot; : &quot;Root&quot;, 
+        ///            &quot;ColumnNavigation&quot; : &quot;Root&quot;, 
         ///            &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27a&quot;)
         ///        }, 
         ///        {
-        ///            &quot;ColumnName&quot; : &quot;Child 2 Level 1&quot;, 
+        ///            &quot;ColumnNavigation&quot; : &quot;Child 2 DisplayOrder 1&quot;, 
         ///            &quot;_id&quot; : ObjectId(&quot;56154ccccd158746a441b27c&quot;)
         ///        }
         ///    ], 
-        ///    &quot;Level&quot; : NumberInt(2), 
-        ///    &quot;Path&quot; : &quot;Root.Child 2 Level 1&quot;
-        ///}.
+        ///    &quot;DisplayOrder&quot; : NumberInt(2), 
+        ///    &quot;Pa [rest of string was truncated]&quot;;.
         /// </summary>
         public static string NestedTreeNodeBson {
             get {

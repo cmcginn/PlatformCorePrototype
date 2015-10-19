@@ -51,10 +51,10 @@ namespace PlatformCorePrototype.Tests.DataStructures
         {
             var result = new MongoLinkedListQueryStrategyAccessor
             {
-                CollectionName = "linkedlistdata",
-                DataSourceName = "prototype",
-                DataSourceLocation = Globals.MongoConnectionString,
-                LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
+                //CollectionName = "linkedlistdata",
+                //DataSourceName = "prototype",
+                //DataSourceLocation = Globals.MongoConnectionString,
+               // LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
       
             };
             return result;

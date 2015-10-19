@@ -117,15 +117,11 @@ namespace PlatformCorePrototype.Services.DataStructures
         }
         IMongoCollection<T> GetCollection()
         {
-            var client = new MongoClient(DataSourceLocation);
-            var db = client.GetDatabase(DataSourceName);
-            var result = db.GetCollection<T>(CollectionName);
+            var client = new MongoClient(CollectionMetadata.DataSourceLocation);
+            var db = client.GetDatabase(CollectionMetadata.DataSourceName);
+            var result = db.GetCollection<T>(CollectionMetadata.Id);
             return result;
         }
-        public string CollectionName { get; set; }
-        public string DataSourceName { get; set; }
-        public string DataSourceLocation { get; set; }
-
         public List<FilterSpecification> Filters
         {
             get { return _Filters ?? (_Filters = new List<FilterSpecification>()); }
@@ -133,5 +129,12 @@ namespace PlatformCorePrototype.Services.DataStructures
         }
 
         private List<FilterSpecification> _Filters;
+
+        public DataCollectionMetadata CollectionMetadata { get; set; }
+
+        public ViewDefinitionMetadata ViewDefinitionMetadata { get; set; }
+
+
+        public string ViewId { get; set; }
     }
 }

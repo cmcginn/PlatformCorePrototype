@@ -13,5 +13,13 @@ namespace PlatformCorePrototype.Core.Models
         private List<FilterSpecification> _SelectedFilters;
         public List<FilterSpecification> SelectedFilters { get; set; }
 
+        public List<FilterSpecification> AvailableFilters
+        {
+            get { return _AvailableFilters ?? (_AvailableFilters = new List<FilterSpecification>()); }
+            set { _AvailableFilters = value; }
+        }
+
+        private List<FilterSpecification> _AvailableFilters;
+
     }
 }

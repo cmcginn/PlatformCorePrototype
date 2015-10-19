@@ -8,8 +8,8 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public class LinkedListPathSpecification
     {
-        public string DisplayName { get; set; }
-        public string Name { get; set; }
-        public int Level { get; set; }
+
+        public string Navigation { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }

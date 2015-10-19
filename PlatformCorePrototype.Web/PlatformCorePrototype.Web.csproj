@@ -206,6 +206,7 @@
   <ItemGroup>
     <Compile Include="Api\DocumentController.cs" />
     <Compile Include="Api\FilterValuesController.cs" />
+    <Compile Include="Api\LinkedListQueryBuilderController.cs" />
     <Compile Include="Api\QueryBuilderController.cs" />
     <Compile Include="Api\ViewDefinitionController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -224,6 +225,7 @@
     </Compile>
     <Compile Include="Infrastructure\MongoBsonContractResolver.cs" />
     <Compile Include="Infrastructure\JsonNetBsonDocumentConverter.cs" />
+    <Compile Include="Mapping\LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile.cs" />
     <Compile Include="Mapping\MappingConfiguration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

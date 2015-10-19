@@ -17,6 +17,7 @@ namespace PlatformCorePrototype.Web.Mapping
             Mapper.Initialize(cfg =>
             {
                 Core.Configuration.MappingConfiguration.Configure(cfg);
+                cfg.AddProfile<LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile>();
             });
  
             Mapper.AssertConfigurationIsValid();

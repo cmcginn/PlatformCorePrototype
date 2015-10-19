@@ -120,22 +120,22 @@
   <data name="NestedTreeNodeBson" xml:space="preserve">
     <value>{ 
     "_id" : {
-        "ColumnName" : "Child 1 Level 2", 
+        "ColumnNavigation" : "Child 1 DisplayOrder 2", 
         "_id" : ObjectId("56154ccccd158746a441b27d")
     }, 
     "Value" : "TestNodeChild", 
     "Ancestors" : [
         {
-            "ColumnName" : "Root", 
+            "ColumnNavigation" : "Root", 
             "_id" : ObjectId("56154ccccd158746a441b27a")
         }, 
         {
-            "ColumnName" : "Child 2 Level 1", 
+            "ColumnNavigation" : "Child 2 DisplayOrder 1", 
             "_id" : ObjectId("56154ccccd158746a441b27c")
         }
     ], 
-    "Level" : NumberInt(2), 
-    "Path" : "Root.Child 2 Level 1"
+    "DisplayOrder" : NumberInt(2), 
+    "Path" : "Root.Child 2 DisplayOrder 1"
 }</value>
   </data>
 </root>

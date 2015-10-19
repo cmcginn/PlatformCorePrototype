@@ -18,26 +18,19 @@ namespace PlatformCorePrototype.Web.Services
     {
         public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
         {
-
+    
             var service = new MongoDataService();
-            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<ViewDefinition>(t =>
-            {
-                if (t.Result.GetType() == typeof(LinkedListViewDefinitionMetadata))
-                {
-                    var taskResult = Mapper.Map<LinkedListViewDefinition>(t.Result);
-                    return taskResult;
-                }
-                else
-                {
-                    var taskResult = Mapper.Map<ViewDefinition>(t.Result);
-                    return taskResult;
-                }
-
-            });
-
+            var result = service.GetViewDefinitionAsync(viewId);
             return await result;
         }
 
+        public List<dynamic> GetDataAsync(IQueryBuilder queryBuilder)
+        {
+            var strategy = Mapper.Map<MongoLinkedListQueryStrategy<dynamic, int>>(queryBuilder);
+            var service = new MongoDataService();
+            var result = service.GetDataAsync(strategy).Result;
+            return result;
+        }
         //public async Task<List<FilterSpecification>> GetFilterValuesAsync(ViewDefinitionModel view)
         //{
         //    var result = new Task<List<FilterSpecification>>(() =>

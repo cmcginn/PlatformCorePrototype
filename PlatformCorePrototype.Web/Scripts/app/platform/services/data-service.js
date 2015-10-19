@@ -34,6 +34,18 @@
                 });
             });
         },
+        getLinkedListDataAsync:function(queryBuilder) {
+            return $q(function (resolve, reject) {
+                $http.post(appProperties.apiBasePath + '/LinkedListQueryBuilder/', queryBuilder).
+                    success(function (data, status, headers, config) {
+                        resolve(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            });
+        },
         getDataAsync: function (queryBuilder) {
             return $q(function(resolve, reject) {
                 $http.post(appProperties.apiBasePath + '/QueryBuilder/', queryBuilder).

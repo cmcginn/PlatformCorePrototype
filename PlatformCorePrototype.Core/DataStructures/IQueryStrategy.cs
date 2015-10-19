@@ -8,10 +8,10 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public interface IQueryStrategy<T>
     {
-        string CollectionName { get; set; }
-        string DataSourceName { get; set; }
-        string DataSourceLocation { get; set; }
+        DataCollectionMetadata CollectionMetadata { get; set; }
+        ViewDefinitionMetadata ViewDefinitionMetadata { get; set; }
         List<FilterSpecification> Filters { get; set; }
+        string ViewId { get; set; }
         Task<List<T>> RunQuery();
     }
 }

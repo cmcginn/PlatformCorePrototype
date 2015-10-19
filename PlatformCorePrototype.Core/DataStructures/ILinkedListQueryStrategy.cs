@@ -11,6 +11,6 @@ namespace PlatformCorePrototype.Core.DataStructures
         bool IncludeChildren { get; set; }
         LinkedListMap<V> LinkedListMap { get; set; }
         List<string> Path { get; set; }
-        LinkedListSettings LinkedListSettings { get; set; }
+        //LinkedListSettings LinkedListSettings { get; set; }
     }
 }

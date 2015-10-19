@@ -90,8 +90,8 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         IMongoDatabase GetDatabase()
         {
-            var client = new MongoClient(DataSourceLocation);
-            var result = client.GetDatabase(DataSourceName);
+            var client = new MongoClient(CollectionMetadata.DataSourceLocation);
+            var result = client.GetDatabase(CollectionMetadata.DataSourceName);
             return result;
         }
 
@@ -100,7 +100,7 @@ namespace PlatformCorePrototype.Services.DataStructures
 //TODO if include children assing path contains instead of path equals
             var pipeline = new List<BsonDocument> {GetMapFilterPipeline().First()};
             var db = GetDatabase();
-            var collection = db.GetCollection<BsonDocument>(LinkedListSettings.MapCollectionName);
+            var collection = db.GetCollection<BsonDocument>(((LinkedListDataCollectionMetadata)CollectionMetadata).MapCollectionName);
 
             var asyncResult = collection.AggregateAsync<BsonDocument>(pipeline);
             var result = asyncResult.ContinueWith<List<LinkedListMap<V>>>((t) =>
@@ -205,8 +205,8 @@ namespace PlatformCorePrototype.Services.DataStructures
                 ids.Add(val);
       
             });
-
-            result = builder.In(LinkedListSettings.KeyColumn.ColumnName, ids);
+            if(ids.Any())
+                result = builder.In(((LinkedListDataCollectionMetadata)CollectionMetadata).KeyColumn.ColumnName, ids);
             return result;
         }
 
@@ -228,12 +228,6 @@ namespace PlatformCorePrototype.Services.DataStructures
             set { _Path = value; }
         }
 
-        public string CollectionName { get; set; }
-
-        public string DataSourceName { get; set; }
-
-        public string DataSourceLocation { get; set; }
-
         private List<FilterSpecification> _Filters;
         public List<FilterSpecification> Filters
         {
@@ -251,13 +245,20 @@ namespace PlatformCorePrototype.Services.DataStructures
             if (matchDocument != null)
                 pl.Add(matchDocument);
             var db = GetDatabase();
-            var collection = db.GetCollection<T>(CollectionName);
+            var collection = db.GetCollection<T>(CollectionMetadata.Id);
             var asyncResult = collection.AggregateAsync<T>(pl);
             var result = asyncResult.Result.ToListAsync<T>();
             return await result;
         }
 
 
-        public LinkedListSettings LinkedListSettings { get; set; }
+       // public LinkedListSettings LinkedListSettings { get; set; }
+
+        public DataCollectionMetadata CollectionMetadata { get; set; }
+
+        public ViewDefinitionMetadata ViewDefinitionMetadata { get; set; }
+
+
+        public string ViewId { get; set; }
     }
 }

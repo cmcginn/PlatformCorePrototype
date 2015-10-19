@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
@@ -31,34 +32,34 @@ namespace PlatformCorePrototype.Services
             return result;
         }
 
-        public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)
-        {
+        //public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)
+        //{
 
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<BsonDocument>("viewDefinitionMetadata");
-            var viewDefinitionMetadataTask = items.FindAsync(x => x["_id"] == viewId);
+        //    var client = new MongoClient(Globals.MongoConnectionString);
+        //    var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+        //    var items = db.GetCollection<BsonDocument>("viewDefinitionMetadata");
+        //    var viewDefinitionMetadataTask = items.FindAsync(x => x["_id"] == viewId);
 
-            var t1 = viewDefinitionMetadataTask.ContinueWith<Task<DataCollectionMetadata>>((t) =>
-            {
-                var collectionMetadataId = t.Result.ToListAsync().Result.Single()["MetadataCollectionId"].ToString();
-                var asyncResult = GetDataCollectionMetadata(collectionMetadataId);
-                return asyncResult;
-            });
-            var t2 = t1.ContinueWith<Task<ViewDefinitionMetadata>>((t) =>
-            {
-                var dataCollectionMetadata = t.Result.Result;
-                //if (dataCollectionMetadata.LinkedListSettings != null)
-                //    return GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(viewId);
-               // else
-                    return GetViewDefinitionMetadataAsync<ViewDefinitionMetadata>(viewId);
+        //    var t1 = viewDefinitionMetadataTask.ContinueWith<Task<DataCollectionMetadata>>((t) =>
+        //    {
+        //        var collectionMetadataId = t.Result.ToListAsync().Result.Single()["MetadataCollectionId"].ToString();
+        //        var asyncResult = GetDataCollectionMetadata(collectionMetadataId);
+        //        return asyncResult;
+        //    });
+        //    var t2 = t1.ContinueWith<Task<ViewDefinitionMetadata>>((t) =>
+        //    {
+        //        var dataCollectionMetadata = t.Result.Result;
+        //        //if (dataCollectionMetadata.LinkedListSettings != null)
+        //        //    return GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(viewId);
+        //       // else
+        //            return GetViewDefinitionMetadataAsync<ViewDefinitionMetadata>(viewId);
 
 
-            });
+        //    });
 
-            var result = await t2.Result;
-            return result;
-        }
+        //    var result = await t2.Result;
+        //    return result;
+        //}
         public async Task<List<dynamic>> GetDataTreeStructureAsync(Task<List<dynamic>> source)
         {
             var result = source.ContinueWith<List<dynamic>>(task =>
@@ -103,55 +104,149 @@ namespace PlatformCorePrototype.Services
             return result;
         }
 
-        public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
+        
+        //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
+        //{
+        //    Task<List<dynamic>> result = null;
+        //    var client = new MongoClient(Globals.MongoConnectionString);
+        //    var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+        //    DataCollectionMetadata dataCollectionMetadata = null;
+        //    //first need view definition
+        //    if (queryBuilder.GetType() == typeof (LinkedListQueryBuilder))
+        //    {
+
+        //        var linkedListQueryBuilder = queryBuilder as LinkedListQueryBuilder;
+        //        var viewDefinitionMetadataTask = GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(queryBuilder.ViewId);
+        //        LinkedListViewDefinitionMetadata viewDefinitionMetadata = null;
+
+        //        var t1 = viewDefinitionMetadataTask.ContinueWith<Task<List<dynamic>>>((t) =>
+        //        {
+        //            Task<List<dynamic>> asyncResult = null;
+        //            viewDefinitionMetadata = t.Result as LinkedListViewDefinitionMetadata;
+        //            dataCollectionMetadata =
+        //                GetDataCollectionMetadata(viewDefinitionMetadata.MetadataCollectionId).Result;
+        //            //if (dataCollectionMetadata.LinkedListSettings.KeyColumn.DataType == Globals.IntegerDataTypeName)
+        //            //{
+        //            //    var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
+        //            //    strategy.Filters = queryBuilder.SelectedFilters;
+        //            //    strategy.CollectionName = dataCollectionMetadata.Id;
+        //            //    strategy.DataSourceLocation = dataCollectionMetadata.DataSourceLocation;
+        //            //    strategy.DataSourceName = dataCollectionMetadata.DataSourceName;
+        //            //    strategy.LinkedListSettings = dataCollectionMetadata.LinkedListSettings;
+        //            //    //strategy.Path = linkedListQueryBuilder.SelectedPaths.Select(x=>x.Navigation).ToList();
+        //            //    strategy.LinkedListMap = new LinkedListMap<int>();
+        //            //    if (!String.IsNullOrEmpty(linkedListQueryBuilder.SelectedKey))
+        //            //        strategy.LinkedListMap.Key = int.Parse(linkedListQueryBuilder.SelectedKey);
+        //            //    strategy.LinkedListMap.Navigation =
+        //            //        linkedListQueryBuilder.SelectedPaths.Select(x => x.Navigation).ToList();
+        //            //    asyncResult = strategy.RunQuery();
+        //            //}
+        //            return asyncResult;
+        //        });
+        //        result = await t1;
+
+
+        //    }
+        //    return await result;
+
+        //}
+
+        
+#region refactored
+        public async Task<LinkedListDataCollectionMetadata> GetLinkedListDataCollectionMetadata(string collectionName)
         {
-            Task<List<dynamic>> result = null;
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            DataCollectionMetadata dataCollectionMetadata = null;
-            //first need view definition
-            if (queryBuilder.GetType() == typeof (LinkedListQueryBuilder))
+            var items = db.GetCollection<LinkedListDataCollectionMetadata>("collectionMetadata");
+            var builder = new FilterDefinitionBuilder<LinkedListDataCollectionMetadata>();
+            var md = items.Find(Builders<LinkedListDataCollectionMetadata>.Filter.Eq(x => x.Id, collectionName));
+
+            var result = await md.SingleAsync();
+
+            return result;
+        }
+        public async Task<List<dynamic>> GetDataAsync(IQueryStrategy<dynamic> strategy)
+        {
+            var storageType = await GetDataStorageStructureTypeForView(strategy.ViewId);
+            if (storageType == DataStorageStructureTypes.LinkedList)
             {
-
-                var linkedListQueryBuilder = queryBuilder as LinkedListQueryBuilder;
-                var viewDefinitionMetadataTask = GetViewDefinitionMetadataAsync<LinkedListViewDefinitionMetadata>(queryBuilder.ViewId);
-                LinkedListViewDefinitionMetadata viewDefinitionMetadata = null;
-
-                var t1 = viewDefinitionMetadataTask.ContinueWith<Task<List<dynamic>>>((t) =>
+                var t1 = GetLinkedListViewDefinitionMetadata(strategy.ViewId);
+                var t2 = t1.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
                 {
-                    Task<List<dynamic>> asyncResult = null;
-                    viewDefinitionMetadata = t.Result as LinkedListViewDefinitionMetadata;
-                    dataCollectionMetadata =
-                        GetDataCollectionMetadata(viewDefinitionMetadata.MetadataCollectionId).Result;
-                    //if (dataCollectionMetadata.LinkedListSettings.KeyColumn.DataType == Globals.IntegerDataTypeName)
-                    //{
-                    //    var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
-                    //    strategy.Filters = queryBuilder.SelectedFilters;
-                    //    strategy.CollectionName = dataCollectionMetadata.Id;
-                    //    strategy.DataSourceLocation = dataCollectionMetadata.DataSourceLocation;
-                    //    strategy.DataSourceName = dataCollectionMetadata.DataSourceName;
-                    //    strategy.LinkedListSettings = dataCollectionMetadata.LinkedListSettings;
-                    //    //strategy.Path = linkedListQueryBuilder.SelectedPaths.Select(x=>x.Name).ToList();
-                    //    strategy.LinkedListMap = new LinkedListMap<int>();
-                    //    if (!String.IsNullOrEmpty(linkedListQueryBuilder.SelectedKey))
-                    //        strategy.LinkedListMap.Key = int.Parse(linkedListQueryBuilder.SelectedKey);
-                    //    strategy.LinkedListMap.Navigation =
-                    //        linkedListQueryBuilder.SelectedPaths.Select(x => x.Name).ToList();
-                    //    asyncResult = strategy.RunQuery();
-                    //}
-                    return asyncResult;
+                    strategy.ViewDefinitionMetadata = t.Result;
+                    return GetLinkedListDataCollectionMetadata(t.Result.MetadataCollectionId);
                 });
-                result = await t1;
-
-
+                var t3 = t2.ContinueWith<Task<List<dynamic>>>((t) =>
+                {
+                    strategy.CollectionMetadata = t.Result.Result;
+                    
+                    return strategy.RunQuery();
+                });
+                return t3.Result.Result;
             }
-            return await result;
 
+            return null;
         }
 
-#region refactored
+        public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
+        {
+            var t1 = GetViewDefinitionMetadataAsync(viewId);
+            var t2 = t1.ContinueWith<ViewDefinition>((t) =>
+            {
+                var asyncResult =  Mapper.Map<ViewDefinition>(t.Result);
+                asyncResult.QueryBuilder.ViewId = viewId;
+                return asyncResult;
+            });
+            var result = await t2;
+            return result;
+        }
+        public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)
+        {
+     
+            var storageType = await GetDataStorageStructureTypeForView(viewId);
+            if (storageType == DataStorageStructureTypes.LinkedList)
+                return await GetLinkedListViewDefinitionMetadata(viewId);
+            else
+                return await GetViewDefinitionMetadata(viewId);
 
-    // public async Task<DataStorageStructureTypes>
+        }
+        public async Task<LinkedListViewDefinitionMetadata> GetLinkedListViewDefinitionMetadata(string viewId)
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var collection = db.GetCollection<LinkedListViewDefinitionMetadata>("viewDefinitionMetadata");
+            var result = await collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
+            return result;
+        }
+        public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadata(string viewId)
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var collection = db.GetCollection<ViewDefinitionMetadata>("viewDefinitionMetadata");
+            var result = await collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
+            return result;
+        }
+        public async Task<DataStorageStructureTypes> GetDataStorageStructureTypeForView(string viewId)
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var views = db.GetCollection<BsonDocument>("viewDefinitionMetadata");
+            var dataCollections = db.GetCollection<BsonDocument>("collectionMetadata");
+            var t1 = views.Find(x => x["_id"] == viewId).Project(x => x["MetadataCollectionId"]).SingleOrDefaultAsync();
+            var t2 = t1.ContinueWith<Task<BsonValue>>((t) =>
+            {
+                return dataCollections.Find(x => x["_id"] == t.Result).Project(x => x["DataStorageType"]).SingleOrDefaultAsync();
+            });
+            var t3 = t2.ContinueWith<DataStorageStructureTypes>((t) =>
+            {
+                var s = t.Result.Result.ToString();
+                var typeId = (DataStorageStructureTypes) (int.Parse(s));
+                return typeId;
+            });
+            var result = await t3;
+            return result;
+        }
+
 #endregion
 
        // public async 

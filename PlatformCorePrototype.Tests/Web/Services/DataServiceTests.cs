@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Services;
 using PlatformCorePrototype.Tests.Services;
 using PlatformCorePrototype.Web.Mapping;
 using PlatformCorePrototype.Web.Services;
@@ -17,17 +19,14 @@ namespace PlatformCorePrototype.Tests.Web.Services
         }
 
         [TestMethod]
-        public void GetViewDefinitionAsyncTest()
+        public void  GetDataAsyncTest()
         {
-            MappingConfiguration.ConfigureMappings();
-            var target = GetTarget();
-            var actual = target.GetViewDefinitionAsync("linkedlist_account_view1").Result;
+            var mds = new MongoDataService();
+            var vd = mds.GetViewDefinitionAsync("linkedlist_account_view1").Result;
 
-            Assert.IsNotNull(actual);
-            var vd = actual as LinkedListViewDefinition;
-            Assert.IsTrue(vd.Paths.Any());
-
-
+          var target = GetTarget();
+          var actual = target.GetDataAsync(vd.QueryBuilder).ToList();
+            //Assert.IsTrue(actual.Any());
         }
     }
 }
