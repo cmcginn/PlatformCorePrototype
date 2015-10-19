@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class ViewDefinitionMetadata 
+    public class ViewDefinitionMetadata : IViewDefinitionMetadata
     {
-        public string Id { get; set; }
-
-        public string MetadataCollectionId { get; set; }
+        public string ViewId { get; set; }
 
         private List<FilterSpecification> _Filters;
 

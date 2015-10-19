@@ -19,8 +19,8 @@ namespace PlatformCorePrototype.Core.Mapping
                 .ForMember(dest=>dest.DataDefinition,(s)=>s.UseValue(new DataDefinition{ DataStorageType = DataStorageStructureTypes.Default}))
                 .AfterMap((source, dest) =>
                 {
-                    dest.QueryBuilder = new QueryBuilder {ViewId = source.Id, AvailableFilters=source.Filters};
-                    dest.DataDefinition.CollectionName = source.MetadataCollectionId;
+                    dest.QueryBuilder = new QueryBuilder {ViewId = source.ViewId, AvailableFilters=source.Filters};
+                    //dest.DataDefinition.CollectionName = source.MetadataCollectionId;
                 });
         }
     }

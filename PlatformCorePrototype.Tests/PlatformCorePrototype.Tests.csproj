@@ -79,6 +79,7 @@
     <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="MyBsonDocumentSerializer.cs" />
     <Compile Include="Services\MongoDataServiceTests.cs" />
+    <Compile Include="SystemTests\FullPipelineExample.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="SystemTests\LinkedListTests.cs" />
     <Compile Include="TestData.Designer.cs">

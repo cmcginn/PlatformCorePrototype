@@ -55,10 +55,12 @@
     <Compile Include="DataStructures\FilterSpecification.cs" />
     <Compile Include="DataStructures\FilterTypes.cs" />
     <Compile Include="DataStructures\FilterValue.cs" />
+    <Compile Include="DataStructures\IDataCollectionMetadata.cs" />
     <Compile Include="DataStructures\ILinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\IQueryDefinition.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
     <Compile Include="DataStructures\ITreeQueryStrategy.cs" />
+    <Compile Include="DataStructures\IViewDefinitionMetadata.cs" />
     <Compile Include="DataStructures\LinkedListDataCollectionMetadata.cs" />
     <Compile Include="DataStructures\LinkedListPathSpecification.cs" />
     <Compile Include="DataStructures\LinkedListSettings.cs" />

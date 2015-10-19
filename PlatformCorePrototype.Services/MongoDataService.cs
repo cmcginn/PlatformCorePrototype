@@ -99,7 +99,7 @@ namespace PlatformCorePrototype.Services
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var items = db.GetCollection<T>("viewDefinitionMetadata");
-            var viewDefinitionMetadataTask = items.Find(x => x.Id == viewId);
+            var viewDefinitionMetadataTask = items.Find(x => x.ViewId == viewId);
             var result = await viewDefinitionMetadataTask.SingleAsync();
             return result;
         }
@@ -174,7 +174,7 @@ namespace PlatformCorePrototype.Services
                 var t2 = t1.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
                 {
                     strategy.ViewDefinitionMetadata = t.Result;
-                    return GetLinkedListDataCollectionMetadata(t.Result.MetadataCollectionId);
+                    return GetLinkedListDataCollectionMetadata("VIEWID");
                 });
             var t3 = t2.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
             {
@@ -226,7 +226,7 @@ namespace PlatformCorePrototype.Services
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var collection = db.GetCollection<LinkedListViewDefinitionMetadata>("viewDefinitionMetadata");
-            var result =collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
+            var result =collection.Find(x => x.ViewId == viewId).SingleOrDefaultAsync();
             Task.WaitAll(result);
             return await result;
         }
@@ -235,7 +235,7 @@ namespace PlatformCorePrototype.Services
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var collection = db.GetCollection<ViewDefinitionMetadata>("viewDefinitionMetadata");
-            var result = await collection.Find(x => x.Id == viewId).SingleOrDefaultAsync();
+            var result = await collection.Find(x => x.ViewId == viewId).SingleOrDefaultAsync();
             return result;
         }
         public async Task<DataStorageStructureTypes> GetDataStorageStructureTypeForView(string viewId)

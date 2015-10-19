@@ -206,7 +206,7 @@ namespace PlatformCorePrototype.Services.DataStructures
       
             });
             if(ids.Any())
-                result = builder.In(((LinkedListDataCollectionMetadata)CollectionMetadata).KeyColumn.ColumnName, ids);
+                result = builder.In(((LinkedListDataCollectionMetadata)CollectionMetadata).KeyColumnName, ids);
             return result;
         }
 
