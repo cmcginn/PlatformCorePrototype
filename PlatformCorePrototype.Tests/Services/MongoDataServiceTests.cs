@@ -104,7 +104,7 @@ namespace PlatformCorePrototype.Tests.Services
             var target = GetTarget();
             var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
             strategy.ViewId = "linkedlist_account_view1";
-            strategy.LinkedListMap = new LinkedListMap<int> {Navigation = new List<string> {"Account", "SalesPerson"}};
+           // strategy.LinkedListMap = new LinkedListMap<int> {Navigation = new List<string> {"Account", "SalesPerson"}};
             //strategy.LinkedListSettings = new LinkedListSettings
             //{
             //    KeyColumn = new DataColumnMetadata {ColumnName = "Account", DataType = Globals.IntegerDataTypeName},

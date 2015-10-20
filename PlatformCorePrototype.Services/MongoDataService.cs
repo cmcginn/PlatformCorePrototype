@@ -17,19 +17,20 @@ namespace PlatformCorePrototype.Services
 {
 
 
-    public class MongoDataService : IDataService
+    public class MongoDataService 
     {
-        public async Task<DataCollectionMetadata> GetDataCollectionMetadata(string collectionName)
+        public async Task<IDataCollectionMetadata> GetDataCollectionMetadata(string collectionName)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<DataCollectionMetadata>("collectionMetadata");
-            var builder = new FilterDefinitionBuilder<DataCollectionMetadata>();
-            var md = items.Find(Builders<DataCollectionMetadata>.Filter.Eq(x => x.Id, collectionName));
-
-            var result = await md.SingleAsync();
-
-            return result;
+            var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            var builder = new FilterDefinitionBuilder<BsonDocument>();
+            var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], collectionName));
+            var result = md.SingleAsync().ContinueWith<IDataCollectionMetadata>((t) =>
+            {
+                return Mapper.Map<BsonDocument, IDataCollectionMetadata>(t.Result);
+            });
+            return await result;
         }
 
         //public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)
@@ -167,33 +168,34 @@ namespace PlatformCorePrototype.Services
         }
         public async Task<List<dynamic>> GetDataAsync(IQueryStrategy<dynamic> strategy)
         {
+            throw new System.NotImplementedException();
             //var storageType = await GetDataStorageStructureTypeForView(strategy.ViewId);
             //if (storageType == DataStorageStructureTypes.LinkedList)
-           // {
-                var t1 = GetLinkedListViewDefinitionMetadata(strategy.ViewId);
-                var t2 = t1.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
-                {
-                    strategy.ViewDefinitionMetadata = t.Result;
-                    return GetLinkedListDataCollectionMetadata("VIEWID");
-                });
-            var t3 = t2.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
-            {
-                return t.Result;
-            });
-            var t4 = t3.ContinueWith<Task<List<dynamic>>>((t) =>
-            {
-                strategy.CollectionMetadata = t.Result.Result;
-                return strategy.RunQuery();
-            });
-                //var t3 = t2.ContinueWith<Task<List<dynamic>>>((t) =>
-                //{
-                //    strategy.CollectionMetadata = t.Result.Result;
-                    
-                //    return strategy.RunQuery();
-                //});
-            var tasks = new List<Task> {t3, t4};
-            Task.WaitAll(tasks.ToArray());
-            return await t4.Result;
+            // {
+            //    var t1 = GetLinkedListViewDefinitionMetadata(strategy.ViewId);
+            //    var t2 = t1.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
+            //    {
+            //        strategy.ViewDefinitionMetadata = t.Result;
+            //        return GetLinkedListDataCollectionMetadata("VIEWID");
+            //    });
+            //var t3 = t2.ContinueWith<Task<LinkedListDataCollectionMetadata>>((t) =>
+            //{
+            //    return t.Result;
+            //});
+            //var t4 = t3.ContinueWith<Task<List<dynamic>>>((t) =>
+            //{
+            //    strategy.CollectionMetadata = t.Result.Result;
+            //    return strategy.RunQuery();
+            //});
+            //    //var t3 = t2.ContinueWith<Task<List<dynamic>>>((t) =>
+            //    //{
+            //    //    strategy.CollectionMetadata = t.Result.Result;
+
+            //    //    return strategy.RunQuery();
+            //    //});
+            //var tasks = new List<Task> {t3, t4};
+            //Task.WaitAll(tasks.ToArray());
+            //return await t4.Result;
             //}
 
             //return null;

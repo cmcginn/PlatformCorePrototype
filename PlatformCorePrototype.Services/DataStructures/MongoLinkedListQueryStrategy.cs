@@ -17,28 +17,39 @@ namespace PlatformCorePrototype.Services.DataStructures
         {
             var builder = new FilterDefinitionBuilder<T>();
             FilterDefinition<T> result = null;
-            if (LinkedListMap != null)
+            if (Path.Any())
             {
                 result = new BsonDocument();
-                if (LinkedListMap.Navigation.Any())
+                var counter = 0;
+                Path.ForEach(p =>
                 {
-                    var val = new BsonArray();
-                    var counter = 0;
-                    LinkedListMap.Navigation.ForEach(x =>
-                    {
+                    result &= builder.Eq(String.Format("Navigation.{0}", counter), p);
+                });
+            }
+            //if(Key.Equals(null))
+            
+            //if (LinkedListMap != null)
+            //{
+            //    result = new BsonDocument();
+            //    if (LinkedListMap.Navigation.Any())
+            //    {
+            //        var val = new BsonArray();
+            //        var counter = 0;
+            //        LinkedListMap.Navigation.ForEach(x =>
+            //        {
                     
-                        result &= builder.Eq(String.Format("Navigation.{0}", counter), x);
-                        counter += 1;
-                    });
+            //            result &= builder.Eq(String.Format("Navigation.{0}", counter), x);
+            //            counter += 1;
+            //        });
     
 
-                }
-                V d = default(V);
-                if (!LinkedListMap.Key.Equals(d))
-                {
-                    result &= builder.Eq("Key", LinkedListMap.Key);
-                }
-            }
+            //    }
+            //    V d = default(V);
+            //    if (!LinkedListMap.Key.Equals(d))
+            //    {
+            //        result &= builder.Eq("Key", LinkedListMap.Key);
+            //    }
+            //}
 
 
             return result;
@@ -47,25 +58,36 @@ namespace PlatformCorePrototype.Services.DataStructures
         {
             var builder = new FilterDefinitionBuilder<T>();
             FilterDefinition<T> result = null;
-            if (LinkedListMap != null)
+            if (Path.Any())
             {
-                result = new BsonDocument();
-                if (LinkedListMap.Navigation.Any())
+                var counter = 1;
+                result = builder.Eq("Navigation.0", Path.First());
+                Path.Skip(1).ToList().ForEach(p =>
                 {
-                    var val = new BsonArray();
-                    LinkedListMap.Navigation.ForEach(x =>
-                    {
-                        val.Add(x);
-                    });
-                    result &= builder.Eq("Navigation", val);
-
-                }
-                V d = default(V);
-                if (!LinkedListMap.Key.Equals(d))
-                {
-                    result &= builder.Eq("Key", LinkedListMap.Key);
-                }
+                    result &= builder.Eq(String.Format("Navigation.{0}", counter), p);
+                    counter += 1;
+                });
             }
+                //result = builder.Eq("Navigation", String.Join(".", Path));
+            //if (LinkedListMap != null)
+            //{
+            //    result = new BsonDocument();
+            //    if (LinkedListMap.Navigation.Any())
+            //    {
+            //        var val = new BsonArray();
+            //        LinkedListMap.Navigation.ForEach(x =>
+            //        {
+            //            val.Add(x);
+            //        });
+            //        result &= builder.Eq("Navigation", val);
+
+            //    }
+            //    V d = default(V);
+            //    if (!LinkedListMap.Key.Equals(d))
+            //    {
+            //        result &= builder.Eq("Key", LinkedListMap.Key);
+            //    }
+            //}
             
 
             return result;
@@ -218,7 +240,7 @@ namespace PlatformCorePrototype.Services.DataStructures
                 result = new BsonDocument {{"$match", ToDocument(filterDefinition)}};
             return result;
         }
-        public LinkedListMap<V> LinkedListMap { get; set; }
+        //public LinkedListMap<V> LinkedListMap { get; set; }
 
         private List<string> _Path;
 
@@ -254,11 +276,13 @@ namespace PlatformCorePrototype.Services.DataStructures
 
        // public LinkedListSettings LinkedListSettings { get; set; }
 
-        public DataCollectionMetadata CollectionMetadata { get; set; }
+        public IDataCollectionMetadata CollectionMetadata { get; set; }
 
-        public ViewDefinitionMetadata ViewDefinitionMetadata { get; set; }
 
 
         public string ViewId { get; set; }
+
+
+        public V Key { get; set; }
     }
 }

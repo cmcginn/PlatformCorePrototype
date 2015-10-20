@@ -130,7 +130,7 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         private List<FilterSpecification> _Filters;
 
-        public DataCollectionMetadata CollectionMetadata { get; set; }
+        public IDataCollectionMetadata CollectionMetadata { get; set; }
 
         public ViewDefinitionMetadata ViewDefinitionMetadata { get; set; }
 
