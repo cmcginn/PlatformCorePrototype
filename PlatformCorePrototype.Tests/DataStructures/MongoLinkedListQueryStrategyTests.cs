@@ -30,6 +30,8 @@ namespace PlatformCorePrototype.Tests.DataStructures
 
         public List<BsonDocument> GetQueryPipelineAccessor()
         {
+          
+
             return this.GetQueryPipeline().Result;
         }
     }
@@ -42,10 +44,10 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var items = db.GetCollection<BsonDocument>("collectionMetadata");
             var builder = new FilterDefinitionBuilder<BsonDocument>();
-            // var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument { { "ViewId", "linkedlist_account_view1" } });
-            // var collectionMetadataDocument = items.Find(fd).SingleAsync().Result;
-            // var collectionMetadata = Mapper.Map<LinkedListDataCollectionMetadata>(collectionMetadataDocument);
             var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("linkedlistdata");
+            var queryBuilder =
+                Mapper.Map<IViewDefinitionMetadata, IQueryBuilder>(
+                    dataCollectionMetadata.Views.Single(x => x.ViewId == "linkedlist_account_view1"));
            // var qb = new LinkedListQueryBuilder();
             //qb.ViewId = "linkedlist_account_view1";
          
@@ -64,12 +66,14 @@ namespace PlatformCorePrototype.Tests.DataStructures
         [TestMethod]
         public void TestMethod1()
         {
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            //var client = new MongoClient(Globals.MongoConnectionString);
+            //var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            //var items = db.GetCollection<BsonDocument>("collectionMetadata");
             //var builder = new FilterDefinitionBuilder<BsonDocument>();
-            var doc = items.FindAsync(new BsonDocument()).Result.ToListAsync().Result.First();
-
+           // //var doc = items.FindAsync(new BsonDocument()).Result.ToListAsync().Result.First();
+           // var fd = builder.Regex("Navigation", "^Account.SalesPerson[.]+");
+           // var actual = TestHelper.ToDocument(fd).ToString();
+            var target = GetAccessor();
         }
 
 
@@ -85,10 +89,25 @@ namespace PlatformCorePrototype.Tests.DataStructures
           //  target.Path = new List<string> { "Account", "SalesPerson" };
             var definition = target.GetNavigationFilterDefinitionAccessor();
             var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
-            var expected = "{ \"Navigation\" : \"Account.SalesPerson\" }";
+            
+            var expected = "{ \"Navigation\" : /^Account.SalesPerson/ }";
             Assert.AreEqual(expected, actual);
         }
-
+        [TestMethod]
+        public void GetNavigationFilterDefinitionTest_WhenExcludeChildren()
+        {
+            var target = GetAccessor();
+            target.QueryBuilder = new LinkedListQueryBuilder()
+            {
+                SelectedPath = new LinkedListPathSpecification {Navigation = "Account.SalesPerson"},
+                ExcludeChildren = true
+            };
+            var definition = target.GetNavigationFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
+            var expected = "{ \"Navigation\" : \"Account.SalesPerson\" }";
+      
+            Assert.AreEqual(expected, actual);
+        }
         [TestMethod]
         public void GetNavigationFilterDefinitionTest_WhenNoNavigation()
         {
@@ -100,11 +119,17 @@ namespace PlatformCorePrototype.Tests.DataStructures
         [TestMethod]
         public void GetLinkedListMapsFilterDefinitionTest()
         {
+      
             var target = GetAccessor();
+            target.QueryBuilder = new LinkedListQueryBuilder()
+            {
+                SelectedPath = new LinkedListPathSpecification { Navigation = "Account.SalesPerson" },
+                ViewId = "linkedlist_account_view1"
+            };
             var result = target.GetLinkedListMapsFilterDefinitionAccessor();
             var actual = TestHelper.ToDocument<dynamic>(result).ToString();
             var expected =
-                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010] } }";
+                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } }";
             Assert.AreEqual(expected, actual);
 
         }
@@ -113,12 +138,16 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetQueryPipelineTest()
         {
             var target = GetAccessor();
-         //   target.Path = new List<string> {"Account", "SalesPerson"};
+            target.QueryBuilder = new LinkedListQueryBuilder()
+            {
+                SelectedPath = new LinkedListPathSpecification { Navigation = "Account.SalesPerson" },
+                ViewId = "linkedlist_account_view1"
+            };
             var result = target.GetQueryPipelineAccessor();
            
             var actualMatchDocument = result.First().ToString();
             var expectedMatchDocument =
-                "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005] } } }";
+                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } }";
             Assert.AreEqual(expectedMatchDocument, actualMatchDocument);
         }
 
@@ -126,7 +155,10 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetQueryPipelineTest_WhenNoCriteria_AssetPipelineNull()
         {
             var target = GetAccessor();
-           
+            target.QueryBuilder = new LinkedListQueryBuilder()
+            {
+                ViewId = "linkedlist_account_view1"
+            };
             var result = target.GetQueryPipelineAccessor();
             Assert.IsFalse(result.Any());
 

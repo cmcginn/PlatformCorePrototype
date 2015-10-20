@@ -6,5 +6,8 @@ namespace PlatformCorePrototype.Core.DataStructures
     {
         string ViewId { get; set; }
         List<FilterSpecification> Filters { get; set; }
+        List<SlicerSpecification> Slicers { get; set; }
+        List<MeasureSpecification> Measures { get; set; }
+
     }
 }

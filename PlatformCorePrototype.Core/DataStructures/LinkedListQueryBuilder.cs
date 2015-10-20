@@ -13,7 +13,7 @@ namespace PlatformCorePrototype.Core.Models
         public LinkedListPathSpecification SelectedPath { get; set; }
         private List<LinkedListPathSpecification> _AvailablePaths;
 
-        public bool IncludeChildren { get; set; }
+        public bool ExcludeChildren { get; set; }
         public object SelectedKey { get; set; }
 
         public List<LinkedListPathSpecification> AvailablePaths

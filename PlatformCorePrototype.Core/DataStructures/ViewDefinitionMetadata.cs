@@ -17,5 +17,21 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _Filters ?? (_Filters = new List<FilterSpecification>()); }
             set { _Filters = value; }
         }
+
+        public List<SlicerSpecification> Slicers
+        {
+            get { return _Slicers ?? (_Slicers = new List<SlicerSpecification>()); }
+            set { _Slicers = value; }
+        }
+
+        public List<MeasureSpecification> Measures
+        {
+            get { return _Measures ?? (_Measures = new List<MeasureSpecification>()); }
+            set { _Measures = value; }
+        }
+
+        private List<SlicerSpecification> _Slicers;
+
+        private List<MeasureSpecification> _Measures;
     }
 }

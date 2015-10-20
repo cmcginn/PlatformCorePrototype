@@ -17,12 +17,14 @@ namespace PlatformCorePrototype.Web.Mapping
                 return;
             Mapper.Initialize(cfg =>
             {
-
+                cfg.AddProfile<BsonDocumentToMeasureSpecificationProfile>();
+                cfg.AddProfile<BsonDocumentToSlicerSpecificationProfile>();
                 cfg.AddProfile<BsonDocumentToFilterSpecification>();
                 cfg.AddProfile<BsonDocumentToViewDefinitionMetadata>();
                 cfg.AddProfile<BsonDocumentToDataColumnMetadataProfile>();
                 cfg.AddProfile<BsonDocumentToDataCollectionMetadataProfile>();
                 cfg.AddProfile<BsonDocumentToLinkedListDataCollectionMetadataProfile>();
+                cfg.AddProfile<ViewDefinitionMetadataToIQueryBuilderProfile>();
                 //Core.Configuration.MappingConfiguration.Configure(cfg);
                 //cfg.AddProfile<LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile>();
             });

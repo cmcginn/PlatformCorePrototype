@@ -19,6 +19,8 @@ namespace PlatformCorePrototype.Core.Models
             set { _AvailableFilters = value; }
         }
 
+
+
         private List<FilterSpecification> _AvailableFilters;
 
         private List<SlicerSpecification> _SelectedSlicers;
@@ -39,6 +41,26 @@ namespace PlatformCorePrototype.Core.Models
             set
             {
                 _SelectedMeasures = value;
+            }
+        }
+
+        private List<MeasureSpecification> _AvailableMeasures;
+        public List<MeasureSpecification> AvailableMeasures
+        {
+            get { return _AvailableMeasures ?? (_AvailableMeasures = new List<MeasureSpecification>()); }
+            set
+            {
+                _AvailableMeasures = value;
+            }
+        }
+
+        private List<SlicerSpecification> _AvailableSlicers;
+        public List<SlicerSpecification> AvailableSlicers
+        {
+            get { return _AvailableSlicers ?? (_AvailableSlicers = new List<SlicerSpecification>()); }
+            set
+            {
+                _AvailableSlicers = value;
             }
         }
     }
