@@ -51,21 +51,28 @@ namespace PlatformCorePrototype.Services.DataStructures
         {
       
             FilterDefinition<T> result = null;
-            if (LinkedListQueryBuilder.SelectedPath != null &!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
+            if (LinkedListQueryBuilder.SelectedPath != null)
             {
-                var builder = new FilterDefinitionBuilder<T>();
-                if (LinkedListQueryBuilder.ExcludeChildren)
+                if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
                 {
-             
-                    result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);
+
+
+                    var builder = new FilterDefinitionBuilder<T>();
+                    if (LinkedListQueryBuilder.ExcludeChildren)
+                    {
+
+                        result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);
+                    }
+                    else
+                    {
+                        var expr =
+                            new BsonRegularExpression(String.Format("^{0}",
+                                LinkedListQueryBuilder.SelectedPath.Navigation));
+                        result = builder.Regex("Navigation", expr);
+                    }
                 }
-                else
-                {
-                    var expr = new BsonRegularExpression(String.Format("^{0}", LinkedListQueryBuilder.SelectedPath.Navigation));
-                    result = builder.Regex("Navigation",expr);
-                }
-               
-               
+
+
             }
             return result;
         }

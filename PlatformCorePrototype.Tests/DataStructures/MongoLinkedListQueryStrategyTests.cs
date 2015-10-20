@@ -45,22 +45,14 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var items = db.GetCollection<BsonDocument>("collectionMetadata");
             var builder = new FilterDefinitionBuilder<BsonDocument>();
             var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("linkedlistdata");
-            var queryBuilder =
-                Mapper.Map<IViewDefinitionMetadata, IQueryBuilder>(
-                    dataCollectionMetadata.Views.Single(x => x.ViewId == "linkedlist_account_view1"));
+
            // var qb = new LinkedListQueryBuilder();
             //qb.ViewId = "linkedlist_account_view1";
-         
-            var result = new MongoLinkedListQueryStrategyAccessor
-            {
-                
-               // CollectionMetadata = dataCollectionMetadata
-                //CollectionName = "linkedlistdata",
-                //DataSourceName = "prototype",
-                //DataSourceLocation = Globals.MongoConnectionString,
-                // LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
 
-            };
+            var result = new MongoLinkedListQueryStrategyAccessor();
+            result.QueryBuilder =
+                Mapper.Map<IViewDefinitionMetadata, IQueryBuilder>(
+                    dataCollectionMetadata.Views.Single(x => x.ViewId == "linkedlist_account_view1"));
             return result;
         }
         [TestMethod]
@@ -81,10 +73,8 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetNavigationFilterDefinitionTest()
         {
             var target = GetAccessor();
-            target.QueryBuilder = new LinkedListQueryBuilder()
-            {
-                SelectedPath = new LinkedListPathSpecification {Navigation = "Account.SalesPerson"}
-            };
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
          
           //  target.Path = new List<string> { "Account", "SalesPerson" };
             var definition = target.GetNavigationFilterDefinitionAccessor();
@@ -97,11 +87,9 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetNavigationFilterDefinitionTest_WhenExcludeChildren()
         {
             var target = GetAccessor();
-            target.QueryBuilder = new LinkedListQueryBuilder()
-            {
-                SelectedPath = new LinkedListPathSpecification {Navigation = "Account.SalesPerson"},
-                ExcludeChildren = true
-            };
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            qb.ExcludeChildren = true;
             var definition = target.GetNavigationFilterDefinitionAccessor();
             var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
             var expected = "{ \"Navigation\" : \"Account.SalesPerson\" }";
@@ -112,6 +100,8 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetNavigationFilterDefinitionTest_WhenNoNavigation()
         {
             var target = GetAccessor();
+            //var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            //qb.SelectedPath = qb.AvailablePaths.First();
             var actual = target.GetNavigationFilterDefinitionAccessor();
             Assert.IsNull(actual);
         }
@@ -121,11 +111,8 @@ namespace PlatformCorePrototype.Tests.DataStructures
         {
       
             var target = GetAccessor();
-            target.QueryBuilder = new LinkedListQueryBuilder()
-            {
-                SelectedPath = new LinkedListPathSpecification { Navigation = "Account.SalesPerson" },
-                ViewId = "linkedlist_account_view1"
-            };
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
             var result = target.GetLinkedListMapsFilterDefinitionAccessor();
             var actual = TestHelper.ToDocument<dynamic>(result).ToString();
             var expected =
@@ -138,11 +125,8 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetQueryPipelineTest()
         {
             var target = GetAccessor();
-            target.QueryBuilder = new LinkedListQueryBuilder()
-            {
-                SelectedPath = new LinkedListPathSpecification { Navigation = "Account.SalesPerson" },
-                ViewId = "linkedlist_account_view1"
-            };
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
             var result = target.GetQueryPipelineAccessor();
            
             var actualMatchDocument = result.First().ToString();
@@ -155,10 +139,6 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetQueryPipelineTest_WhenNoCriteria_AssetPipelineNull()
         {
             var target = GetAccessor();
-            target.QueryBuilder = new LinkedListQueryBuilder()
-            {
-                ViewId = "linkedlist_account_view1"
-            };
             var result = target.GetQueryPipelineAccessor();
             Assert.IsFalse(result.Any());
 
