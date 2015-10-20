@@ -1,198 +1,151 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using AutoMapper;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using MongoDB.Bson;
-//using MongoDB.Driver;
-//using PlatformCorePrototype.Core;
-//using PlatformCorePrototype.Core.DataStructures;
-//using PlatformCorePrototype.Services.DataStructures;
-//using PlatformCorePrototype.Tests.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using PlatformCorePrototype.Core;
+using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Services.DataStructures;
+using PlatformCorePrototype.Tests.Services;
 
-//namespace PlatformCorePrototype.Tests.DataStructures
-//{
+namespace PlatformCorePrototype.Tests.DataStructures
+{
 
-//    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic, int>
-//    {
-//        public BsonDocument GetMapFilterDefinitionDocument()
-//        {
-//            var doc = this.GetMapFilterDefinition();
-//            return this.ToDocument(doc);
-//        }
+    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic, int>
+    {
+        public FilterDefinition<dynamic> GetNavigationFilterDefinitionAccessor()
+        {
+            return this.GetNavigationFilterDefinition();
+        }
 
-//        public List<BsonDocument> GetMapFilterPipelineDocuments()
-//        {
-//            var docs = this.GetMapFilterPipeline();
-//            return docs;
-//        }
+        public FilterDefinition<dynamic> GetLinkedListMapsFilterDefinitionAccessor()
+        {
+            return this.GetLinkedListMapsFilterDefinition().Result;
+        }
 
-//        public async Task<List<LinkedListMap<int>>> GetLinkListMapsAccessor()
-//        {
-//            return await this.GetLinkListMaps();
-//        }
+        public List<BsonDocument> GetQueryPipelineAccessor()
+        {
+            return this.GetQueryPipeline().Result;
+        }
+    }
+    [TestClass]
+    public class MongoLinkedListQueryStrategyTests : TestBase
+    {
+        MongoLinkedListQueryStrategyAccessor GetAccessor()
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            var builder = new FilterDefinitionBuilder<BsonDocument>();
+            // var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument { { "ViewId", "linkedlist_account_view1" } });
+            // var collectionMetadataDocument = items.Find(fd).SingleAsync().Result;
+            // var collectionMetadata = Mapper.Map<LinkedListDataCollectionMetadata>(collectionMetadataDocument);
+            var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("linkedlistdata");
+            var result = new MongoLinkedListQueryStrategyAccessor
+            {
+                CollectionMetadata = dataCollectionMetadata
+                //CollectionName = "linkedlistdata",
+                //DataSourceName = "prototype",
+                //DataSourceLocation = Globals.MongoConnectionString,
+                // LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
 
-//        public BsonDocument GetListFilterDefinitionDocument()
-//        {
-//            return this.GetListMatchDocument();
-     
-//        }
+            };
+            return result;
+        }
+        [TestMethod]
+        public void TestMethod1()
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            //var builder = new FilterDefinitionBuilder<BsonDocument>();
+            var doc = items.FindAsync(new BsonDocument()).Result.ToListAsync().Result.First();
 
-//        public BsonDocument GetMapWithChildrenFilterDefinitionAccessor()
-//        {
-//            var doc = this.GetMapWithChildrenFilterDefinition();
-//            return this.ToDocument(doc);
-//        }
-//    }
-//    [TestClass]
-//    public class MongoLinkedListQueryStrategyTests:TestBase
-//    {
-//        MongoLinkedListQueryStrategyAccessor GetAccessor()
-//        {
-//            var client = new MongoClient(Globals.MongoConnectionString);
-//            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-//            var items = db.GetCollection<BsonDocument>("collectionMetadata");
-//            var builder = new FilterDefinitionBuilder<BsonDocument>();
-//            var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument { { "ViewId", "linkedlist_account_view1" } });
-//            var collectionMetadataDocument = items.Find(fd).SingleAsync().Result;
-//            var collectionMetadata = Mapper.Map<LinkedListDataCollectionMetadata>(collectionMetadataDocument);
-//           //var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("")
-//            var result = new MongoLinkedListQueryStrategyAccessor
-//            {
-//                CollectionMetadata = collectionMetadata
-//                //CollectionName = "linkedlistdata",
-//                //DataSourceName = "prototype",
-//                //DataSourceLocation = Globals.MongoConnectionString,
-//               // LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
-      
-//            };
-//            return result;
-//        }
-//        [TestMethod]
-//        public void TestMethod1()
-//        {
-//            var target = GetAccessor();
-//           // target.LinkedListMap.Key = 1000;
+        }
 
-//        }
 
-//        [TestMethod]
-//        public void GetMapFilterDefinitionDocument_WhenPathOnly_AndIncludeChildrenIsFalse()
-//        {
-//            var target = GetAccessor();
-//            target.Path = new List<string> {"Account", "Product", "SalesPerson"};
-//            var actual = target.GetMapFilterDefinitionDocument().ToString();
-//            var expected = "{ \"Navigation\" : \"Account.Product.SalesPerson\" }";
-//            Assert.AreEqual(expected, actual);
-//        }
+        [TestMethod]
+        public void GetNavigationFilterDefinitionTest()
+        {
+            var target = GetAccessor();
+            target.Path = new List<string> { "Account", "SalesPerson" };
+            var definition = target.GetNavigationFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
+            var expected = "{ \"Navigation.0\" : \"Account\", \"Navigation.1\" : \"SalesPerson\" }";
+            Assert.AreEqual(expected, actual);
+        }
 
-//        //[TestMethod]
-//        //public void GetMapFilterDefinitionDocument_WhenKeyOnly()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Key = 1000
-//        //    };
-//        //    var actual = target.GetMapFilterDefinitionDocument().ToString();
-//        //    var expected = "{ \"Key\" : 1000 }";
-//        //    Assert.AreEqual(expected, actual);
-//        //}
+        [TestMethod]
+        public void GetNavigationFilterDefinitionTest_WhenNoNavigation()
+        {
+            var target = GetAccessor();
+            var actual = target.GetNavigationFilterDefinitionAccessor();
+            Assert.IsNull(actual);
+        }
 
-//        //[TestMethod]
-//        //public void GetMapFilterDefinitionDocument()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Key = 1000,
-//        //        Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-//        //    };
-//        //    var actual = target.GetMapFilterDefinitionDocument().ToString();
-//        //    var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 }";
-//        //    Assert.AreEqual(expected, actual);
-//        //}
-//        //[TestMethod]
-//        //public void GetMapWithChildrenFilterDefinitionAccessor()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Key = 1000,
-//        //        Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-//        //    };
-//        //    var actual = target.GetMapWithChildrenFilterDefinitionAccessor().ToString();
-//        //    //var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 }";
-//        //    //Assert.AreEqual(expected, actual);
-//        //}
-//        //[TestMethod]
-//        //public void GetMapFilterPipelineTest()
-//        //{
-//        //     var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Key = 1000,
-//        //        Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-//        //    };
-//        //    var actual = target.GetMapFilterPipelineDocuments();
-//        //    var match = actual.First().ToString();
-//        //    var project = actual.ElementAt(1).ToString();
-//        //    var expected =
-//        //        "{ \"$match\" : { \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 } }";
-//        //    Assert.AreEqual(expected, match, "Match documents not equal");
-//        //    expected = "{ \"$project\" : { \"$project\" : { \"_id\" : 0, \"Key\" : \"$Key\" } } }";
-//        //    Assert.AreEqual(expected, project, "Projection documents not equal");
+        [TestMethod]
+        public void GetLinkedListMapsFilterDefinitionTest()
+        {
+            var target = GetAccessor();
+            var result = target.GetLinkedListMapsFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(result).ToString();
+            var expected =
+                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010] } }";
+            Assert.AreEqual(expected, actual);
 
-//        //}
-//        //[TestMethod]
-//        //public void GetLinkListMapsTest()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
+        }
 
-//        //        Navigation = new List<string> { "Account", "SalesPerson" }
-//        //    };
-//        //    var actual = target.GetLinkListMapsAccessor().Result;
-//        //    Assert.IsTrue(actual.Any());
+        [TestMethod]
+        public void GetQueryPipelineTest()
+        {
+            var target = GetAccessor();
+            target.Path = new List<string> {"Account", "SalesPerson"};
+            var result = target.GetQueryPipelineAccessor();
+           
+            var actualMatchDocument = result.First().ToString();
+            var expectedMatchDocument =
+                "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005] } } }";
+            Assert.AreEqual(expectedMatchDocument, actualMatchDocument);
+        }
 
-      
-//        //}
+        [TestMethod]
+        public void GetQueryPipelineTest_WhenNoCriteria_AssetPipelineNull()
+        {
+            var target = GetAccessor();
+           
+            var result = target.GetQueryPipelineAccessor();
+            Assert.IsFalse(result.Any());
 
-//        //[TestMethod]
-//        //public void GetListFilterDefinitionDocument()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Navigation = new List<string> { "Account", "SalesPerson" }
-//        //    };
-//        //    var actual = target.GetListFilterDefinitionDocument().ToString();
-//        //    var expected = "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005] } } }";
-//        //    Assert.AreEqual(expected, actual);
-//        //}
+        }
+        //[TestMethod]
+        //public void GetLinkedListQueryPipelineTest()
+        //{
+        //    var target = GetAccessor();
+        //    target.Path = new List<string> { "Account", "SalesPerson" };
+        //    var result = target.GetLinkedListQueryPipelineAccessor().First();
+        //    var actual = TestHelper.ToDocument<BsonDocument>(result).ToString();
+        //    var expected = "{ \"$match\" : { \"Navigation.0\" : \"Account\", \"Navigation.1\" : \"SalesPerson\" } }";
+        //    Assert.AreEqual(expected, actual);
 
-//        [TestMethod]
-//        public void RunQueryTest()
-//        {
-//            var target = GetAccessor();
-//            target.Path = new List<string> {"Account","SalesPerson"};
-//            var actual = target.RunQuery().Result;
-//            Assert.IsTrue(actual.Any());
-//        }
 
-//        //[TestMethod]
-//        //public void RunQueryTest_WhenIncludeChildren()
-//        //{
-//        //    var target = GetAccessor();
-//        //    target.IncludeChildren = true;
-//        //    target.LinkedListMap = new LinkedListMap<int>
-//        //    {
-//        //        Navigation = new List<string> { "Account" }
-//        //    };
-//        //    var actual = target.RunQuery().Result;
-//        //    Assert.IsTrue(actual.Any());
-//        //}
-//    }
-//}
+        //}
+
+        //[TestMethod]
+        //public void GetLinkedListQueryPipelineTest_WhenNoNavigation()
+        //{
+        //    var target = GetAccessor();
+
+        //    var result = target.GetLinkedListQueryPipelineAccessor();
+            
+        //    Assert.IsNull(result);
+
+
+        //}
+
+
+    }
+}

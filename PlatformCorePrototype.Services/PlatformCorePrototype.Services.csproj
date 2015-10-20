@@ -62,6 +62,7 @@
     <Compile Include="DataStructures\IMongoTreeQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoLinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoTreeQueryStrategy.cs" />
+    <Compile Include="Helpers\BsonExtensions.cs" />
     <Compile Include="Mapping\BsonDocumentToDataCollectionMetadataProfile.cs" />
     <Compile Include="MongoDataService.cs" />
     <Compile Include="DataStructures\Ancestor.cs" />

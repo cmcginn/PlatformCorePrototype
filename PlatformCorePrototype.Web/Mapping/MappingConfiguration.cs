@@ -17,6 +17,7 @@ namespace PlatformCorePrototype.Web.Mapping
                 return;
             Mapper.Initialize(cfg =>
             {
+
                 cfg.AddProfile<BsonDocumentToFilterSpecification>();
                 cfg.AddProfile<BsonDocumentToViewDefinitionMetadata>();
                 cfg.AddProfile<BsonDocumentToDataColumnMetadataProfile>();
