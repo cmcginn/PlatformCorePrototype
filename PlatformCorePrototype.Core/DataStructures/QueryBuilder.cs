@@ -21,5 +21,25 @@ namespace PlatformCorePrototype.Core.Models
 
         private List<FilterSpecification> _AvailableFilters;
 
+        private List<SlicerSpecification> _SelectedSlicers;
+
+        public List<SlicerSpecification> SelectedSlicers
+        {
+            get { return _SelectedSlicers ?? (_SelectedSlicers = new List<SlicerSpecification>()); }
+            set
+            {
+                _SelectedSlicers = value;
+            }
+        }
+
+        private List<MeasureSpecification> _SelectedMeasures;
+        public List<MeasureSpecification> SelectedMeasures
+        {
+            get { return _SelectedMeasures ?? (_SelectedMeasures = new List<MeasureSpecification>()); }
+            set
+            {
+                _SelectedMeasures = value;
+            }
+        }
     }
 }

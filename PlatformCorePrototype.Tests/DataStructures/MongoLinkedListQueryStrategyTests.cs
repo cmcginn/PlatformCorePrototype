@@ -9,13 +9,14 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services.DataStructures;
 using PlatformCorePrototype.Tests.Services;
 
 namespace PlatformCorePrototype.Tests.DataStructures
 {
 
-    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic, int>
+    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic>
     {
         public FilterDefinition<dynamic> GetNavigationFilterDefinitionAccessor()
         {
@@ -45,9 +46,13 @@ namespace PlatformCorePrototype.Tests.DataStructures
             // var collectionMetadataDocument = items.Find(fd).SingleAsync().Result;
             // var collectionMetadata = Mapper.Map<LinkedListDataCollectionMetadata>(collectionMetadataDocument);
             var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("linkedlistdata");
+           // var qb = new LinkedListQueryBuilder();
+            //qb.ViewId = "linkedlist_account_view1";
+         
             var result = new MongoLinkedListQueryStrategyAccessor
             {
-                CollectionMetadata = dataCollectionMetadata
+                
+               // CollectionMetadata = dataCollectionMetadata
                 //CollectionName = "linkedlistdata",
                 //DataSourceName = "prototype",
                 //DataSourceLocation = Globals.MongoConnectionString,
@@ -72,10 +77,15 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetNavigationFilterDefinitionTest()
         {
             var target = GetAccessor();
-            target.Path = new List<string> { "Account", "SalesPerson" };
+            target.QueryBuilder = new LinkedListQueryBuilder()
+            {
+                SelectedPath = new LinkedListPathSpecification {Navigation = "Account.SalesPerson"}
+            };
+         
+          //  target.Path = new List<string> { "Account", "SalesPerson" };
             var definition = target.GetNavigationFilterDefinitionAccessor();
             var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
-            var expected = "{ \"Navigation.0\" : \"Account\", \"Navigation.1\" : \"SalesPerson\" }";
+            var expected = "{ \"Navigation\" : \"Account.SalesPerson\" }";
             Assert.AreEqual(expected, actual);
         }
 
@@ -103,7 +113,7 @@ namespace PlatformCorePrototype.Tests.DataStructures
         public void GetQueryPipelineTest()
         {
             var target = GetAccessor();
-            target.Path = new List<string> {"Account", "SalesPerson"};
+         //   target.Path = new List<string> {"Account", "SalesPerson"};
             var result = target.GetQueryPipelineAccessor();
            
             var actualMatchDocument = result.First().ToString();

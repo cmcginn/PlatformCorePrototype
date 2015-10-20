@@ -11,6 +11,7 @@ namespace PlatformCorePrototype.Core.Models
     {
         string ViewId { get; set; }
         List<FilterSpecification> SelectedFilters{get;set;}
-       
+        List<SlicerSpecification> SelectedSlicers { get; set; }
+        List<MeasureSpecification> SelectedMeasures { get; set; }
     }
 }

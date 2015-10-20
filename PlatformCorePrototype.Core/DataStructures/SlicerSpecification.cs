@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatformCorePrototype.Core.Models;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface IQueryStrategy<T>
+    public class SlicerSpecification
     {
-        IQueryBuilder QueryBuilder { get; set; }
+        public DataColumnMetadata Column { get; set; }
+        public int DisplayOrder { get; set; }
 
-        Task<List<T>> RunQuery();
+        
     }
 }

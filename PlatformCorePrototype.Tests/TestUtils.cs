@@ -227,7 +227,7 @@ namespace PlatformCorePrototype.Tests
              };
             viewDefinitionMetadata.Paths = new List<LinkedListPathSpecification>
             {
-                new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson.Product"},
+                new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson"},
                 new LinkedListPathSpecification {DisplayOrder = 1, Navigation = "Account.Product"}
             };
 

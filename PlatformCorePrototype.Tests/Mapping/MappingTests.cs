@@ -48,14 +48,14 @@ namespace PlatformCorePrototype.Tests.Mapping
             Assert.IsTrue(actual.Paths.Any());
         }
 
-        [TestMethod]
-        public void LinkedListQueryBuilderToMongoLinkedListQueryStrategyTest()
-        {
-            var source = new LinkedListQueryBuilder();
-            source.SelectedPath = new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson"};
-            MongoLinkedListQueryStrategy<dynamic, int> actual =
-                Mapper.Map<MongoLinkedListQueryStrategy<dynamic, int>>(source);
-        }
+        //[TestMethod]
+        //public void LinkedListQueryBuilderToMongoLinkedListQueryStrategyTest()
+        //{
+        //    var source = new LinkedListQueryBuilder();
+        //    source.SelectedPath = new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson"};
+        //    MongoLinkedListQueryStrategy<dynamic, int> actual =
+        //        Mapper.Map<MongoLinkedListQueryStrategy<dynamic, int>>(source);
+        //}
        
     }
 }

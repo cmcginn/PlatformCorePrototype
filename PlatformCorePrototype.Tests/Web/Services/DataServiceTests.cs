@@ -25,7 +25,7 @@ namespace PlatformCorePrototype.Tests.Web.Services
             var vd = mds.GetViewDefinitionAsync("linkedlist_account_view1").Result;
 
           var target = GetTarget();
-          var actual = target.GetDataAsync(vd.QueryBuilder).Result.ToList();
+         // var actual = target.GetDataAsync(vd.QueryBuilder).Result.ToList();
             //Assert.IsTrue(actual.Any());
         }
     }

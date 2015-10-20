@@ -15,11 +15,11 @@ namespace PlatformCorePrototype.Web.Api
     {
         private DataService service = new DataService();
         //POST:api/QueryBuilder
-        public async Task<List<dynamic>> Post(LinkedListQueryBuilder value)
-        {
-           // throw new System.NotImplementedException();
-             var result =  await service.GetDataAsync(value);
-            return result;
-        }
+        //public async Task<List<dynamic>> Post(LinkedListQueryBuilder value)
+        //{
+        //    throw new System.NotImplementedException();
+        //    // var result =  await service.GetDataAsync(value);
+        //   // return result;
+        //}
     }
 }

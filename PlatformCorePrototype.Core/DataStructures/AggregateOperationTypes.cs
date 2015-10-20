@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PlatformCorePrototype.Core.Models;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface IQueryStrategy<T>
+    public enum AggregateOperationTypes
     {
-        IQueryBuilder QueryBuilder { get; set; }
-
-        Task<List<T>> RunQuery();
+        Sum=0,
+        Average=1
     }
 }

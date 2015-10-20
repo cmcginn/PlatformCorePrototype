@@ -7,19 +7,20 @@ using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Core.Models
 {
-    public class LinkedListQueryBuilder:QueryBuilder
+    public class LinkedListQueryBuilder:QueryBuilder,ILinkedListQueryBuilder
     {
        
         public LinkedListPathSpecification SelectedPath { get; set; }
         private List<LinkedListPathSpecification> _AvailablePaths;
 
         public bool IncludeChildren { get; set; }
-        public string SelectedKey { get; set; }
+        public object SelectedKey { get; set; }
 
         public List<LinkedListPathSpecification> AvailablePaths
         {
             get { return _AvailablePaths ?? (_AvailablePaths = new List<LinkedListPathSpecification>()); }
             set { _AvailablePaths = value; }
         }
+
     }
 }

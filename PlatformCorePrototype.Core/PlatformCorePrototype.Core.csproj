@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\MappingConfiguration.cs" />
+    <Compile Include="DataStructures\AggregateOperationTypes.cs" />
     <Compile Include="DataStructures\DataCollectionMetadata.cs" />
     <Compile Include="DataStructures\DataColumnMetadata.cs" />
     <Compile Include="DataStructures\DataDefinition.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="DataStructures\FilterTypes.cs" />
     <Compile Include="DataStructures\FilterValue.cs" />
     <Compile Include="DataStructures\IDataCollectionMetadata.cs" />
+    <Compile Include="DataStructures\ILinkedListQueryBuilder.cs" />
     <Compile Include="DataStructures\ILinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\IQueryDefinition.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
@@ -68,6 +70,8 @@
     <Compile Include="DataStructures\LinkedListViewDefinitionMetadata.cs" />
     <Compile Include="DataStructures\QueryDefinition.cs" />
     <Compile Include="DataStructures\QueryStrategy.cs" />
+    <Compile Include="DataStructures\MeasureSpecification.cs" />
+    <Compile Include="DataStructures\SlicerSpecification.cs" />
     <Compile Include="DataStructures\TreeDataColumnMetadata.cs" />
     <Compile Include="DataStructures\ViewDefinitionMetadata.cs" />
     <Compile Include="Globals.cs" />
