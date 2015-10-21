@@ -56,27 +56,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\MongoClassMapRegistration.cs" />
     <Compile Include="DataStructures\IMongoLinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\IMongoTreeQueryDefinition.cs" />
     <Compile Include="DataStructures\IMongoTreeQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoLinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoTreeQueryStrategy.cs" />
-    <Compile Include="Mapping\IViewDefinitionMetadataToViewDefinitionMetadataProfile.cs" />
-    <Compile Include="Mapping\ViewDefinitionMetadataToViewDefinitionModelProfile.cs" />
-    <Compile Include="Models\LinkedListViewDefinitionModel.cs" />
-    <Compile Include="Mapping\IViewDefinitionModelToLinkedListViewDefinitionModelProfile.cs" />
-    <Compile Include="Mapping\ViewDefinitionMetadataToLinkedListViewDefinitionMetadata.cs" />
-    <Compile Include="Mapping\LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelProfile.cs" />
-    <Compile Include="Mapping\QueryBuilderToMongoQueryDefinitionProfile.cs" />
-    <Compile Include="Models\IViewDefinitionModel.cs" />
+    <Compile Include="Helpers\BsonExtensions.cs" />
+    <Compile Include="Mapping\BsonDocumentMappings.cs" />
     <Compile Include="MongoDataService.cs" />
     <Compile Include="DataStructures\Ancestor.cs" />
     <Compile Include="DataStructures\MongoQueryDefinition.cs" />
     <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
-    <Compile Include="DataStructures\TreeNode.cs" />
     <Compile Include="Helpers\TreeExtensions.cs" />
-    <Compile Include="Models\ViewDefinitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +79,9 @@
       <Name>PlatformCorePrototype.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

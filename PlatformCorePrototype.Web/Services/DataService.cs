@@ -10,34 +10,40 @@ using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services;
 using PlatformCorePrototype.Services.DataStructures;
-using PlatformCorePrototype.Services.Models;
+
 
 namespace PlatformCorePrototype.Web.Services
 {
     public class DataService
     {
-        public async Task<IViewDefinitionModel> GetViewDefinitionAsync(string viewId)
+        public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
         {
-
-            var service = new MongoDataService();
-            var result = service.GetViewDefinitionMetadataAsync(viewId).ContinueWith<IViewDefinitionModel>(t =>
-            {
-                if (t.Result.GetType() == typeof(LinkedListViewDefinitionMetadata))
-                {
-                    var taskResult = Mapper.Map<LinkedListViewDefinitionModel>(t.Result);
-                    return taskResult;
-                }
-                else
-                {
-                    var taskResult = Mapper.Map<ViewDefinitionModel>(t.Result);
-                    return taskResult;
-                }
-
-            });
-
-            return await result;
+            throw new System.NotImplementedException();
+    
+            //var service = new MongoDataService();
+            //var result = service.GetViewDefinitionAsync(viewId);
+            //return await result;
         }
 
+        //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
+        //{
+        //    Task<List<dynamic>> myT = null;
+        //    var strategy = Mapper.Map<MongoLinkedListQueryStrategy<dynamic>>(queryBuilder);
+        //    var service = new MongoDataService();
+        //    var t = Task.Run(() =>
+        //    {
+        //        var s = service.GetDataAsync(strategy);
+        //        myT = s;
+        //    });
+        //    Task.WaitAll(t);
+        //    return await myT;
+        //    //var task = new Task<Task<List<dynamic>>>((t) =>
+        //    //{
+        //    //    return service.GetDataAsync(strategy);
+        //    //});
+        //    //  var result = 
+        //    //  return await result;
+        //}
         //public async Task<List<FilterSpecification>> GetFilterValuesAsync(ViewDefinitionModel view)
         //{
         //    var result = new Task<List<FilterSpecification>>(() =>

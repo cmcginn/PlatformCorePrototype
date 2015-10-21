@@ -14,7 +14,8 @@
                 title: 'Home',
                 templateUrl: helper.basepath('Home/Index'),
                 resolve: helper.resolveFor('isteven-multi-select', 'whirl', 'ngDialog')
-            }).state('platform.scratch', {
+            })
+            .state('platform.scratch', {
                 url: '/Scratch',
                 templateUrl: helper.basepath('Home/Scratch'),
                 title: 'Home'

@@ -77,7 +77,7 @@ namespace PlatformCorePrototype.Tests
         /// <summary>
         /// Tries to get the serialization info for a member.
         /// </summary>
-        /// <param name="memberName">Name of the member.</param>
+        /// <param name="memberName">Navigation of the member.</param>
         /// <param name="serializationInfo">The serialization information.</param>
         /// <returns>
         ///   <c>true</c> if the serialization info exists; otherwise <c>false</c>.

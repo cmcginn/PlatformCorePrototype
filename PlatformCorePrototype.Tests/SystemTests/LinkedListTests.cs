@@ -6,7 +6,7 @@ using PlatformCorePrototype.Tests.Services;
 namespace PlatformCorePrototype.Tests.SystemTests
 {
     [TestClass]
-    public class LinkedListTests:ServiceTestBase
+    public class LinkedListTests:TestBase
     {
         [TestMethod]
         public void GetDataCollectionMetadataTest()

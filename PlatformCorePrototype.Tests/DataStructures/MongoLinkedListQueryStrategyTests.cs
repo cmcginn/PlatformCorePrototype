@@ -1,195 +1,255 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services.DataStructures;
 using PlatformCorePrototype.Tests.Services;
 
 namespace PlatformCorePrototype.Tests.DataStructures
 {
 
-    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic, int>
+    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy
     {
-        public BsonDocument GetMapFilterDefinitionDocument()
+        public FilterDefinition<dynamic> GetNavigationFilterDefinitionAccessor()
         {
-            var doc = this.GetMapFilterDefinition();
-            return this.ToDocument(doc);
+            return this.GetNavigationFilterDefinition();
         }
 
-        public List<BsonDocument> GetMapFilterPipelineDocuments()
+        public FilterDefinition<dynamic> GetLinkedListMapsFilterDefinitionAccessor()
         {
-            var docs = this.GetMapFilterPipeline();
-            return docs;
+            return this.GetLinkedListMapsFilterDefinition().Result;
         }
 
-        public async Task<List<LinkedListMap<int>>> GetLinkListMapsAccessor()
+        public List<BsonDocument> GetQueryPipelineAccessor()
         {
-            return await this.GetLinkListMaps();
+          
+
+            return this.GetQueryPipeline().Result;
         }
 
-        public BsonDocument GetListFilterDefinitionDocument()
+        public BsonDocument GetQueryGroupDocumentAccessor()
         {
-            return this.GetListMatchDocument();
-     
+            return this.GetQueryGroupDocument();
         }
 
-        public BsonDocument GetMapWithChildrenFilterDefinitionAccessor()
+        public List<BsonElement> GetQueryMeasureElementsAccessor()
         {
-            var doc = this.GetMapWithChildrenFilterDefinition();
-            return this.ToDocument(doc);
+            return this.GetQueryMeasureElements();
+        }
+
+        public List<BsonElement> GetQueryGroupIdElementsAccessor()
+        {
+            return this.GetQueryGroupIdElements();
         }
     }
     [TestClass]
-    public class MongoLinkedListQueryStrategyTests:ServiceTestBase
+    public class MongoLinkedListQueryStrategyTests : TestBase
     {
         MongoLinkedListQueryStrategyAccessor GetAccessor()
         {
-            var result = new MongoLinkedListQueryStrategyAccessor
-            {
-                CollectionName = "linkedlistdata",
-                DataSourceName = "prototype",
-                DataSourceLocation = Globals.MongoConnectionString,
-                LinkedListSettings = new LinkedListSettings {  KeyColumn=new DataColumnMetadata{ ColumnName="Account", DataType=Globals.IntegerDataTypeName}, MapCollectionName="linkedlistmap"}
-      
-            };
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            var builder = new FilterDefinitionBuilder<BsonDocument>();
+            var dataCollectionMetadata = TestHelper.GetDataCollectionMetadata("linkedlistdata");
+
+           // var qb = new LinkedListQueryBuilder();
+            //qb.ViewId = "linkedlist_account_view1";
+
+            var result = new MongoLinkedListQueryStrategyAccessor();
+            result.QueryBuilder =
+                Mapper.Map<IViewDefinitionMetadata, IQueryBuilder>(
+                    dataCollectionMetadata.Views.Single(x => x.ViewId == "linkedlist_account_view1"));
             return result;
         }
         [TestMethod]
         public void TestMethod1()
         {
-            var target = GetAccessor();
-            target.LinkedListMap.Key = 1000;
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<ExpandoObject>("linkedlistdata");
+            var builder = new FilterDefinitionBuilder<ExpandoObject>();
+            var r = items.Aggregate();
+            dynamic grouping = new ExpandoObject();
 
+            var g = r.Group<ExpandoObject>(BsonDocument.Parse("{ '_id' : { 's0' : '$SalesPerson', 's1' : '$Product' }, 'f0' : { '$sum' : '$Amount' } }"));
+            r=r.AppendStage<ExpandoObject>(
+                BsonDocument.Parse(
+                    "{'$group':{ '_id' : { 's0' : '$SalesPerson', 's1' : '$Product' }, 'f0' : { '$sum' : '$Amount' } }}"));
+            var result = r.ToListAsync().Result;
         }
 
-        [TestMethod]
-        public void GetMapFilterDefinitionDocument_WhenPathOnly()
-        {
-            var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-        
-                Navigation = new List<string> {"Account", "Product", "SalesPerson"}
-            };
-            var actual = target.GetMapFilterDefinitionDocument().ToString();
-            var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"] }";
-            Assert.AreEqual(expected, actual);
-        }
 
         [TestMethod]
-        public void GetMapFilterDefinitionDocument_WhenKeyOnly()
+        public void GetNavigationFilterDefinitionTest()
         {
             var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Key = 1000
-            };
-            var actual = target.GetMapFilterDefinitionDocument().ToString();
-            var expected = "{ \"Key\" : 1000 }";
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void GetMapFilterDefinitionDocument()
-        {
-            var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Key = 1000,
-                Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-            };
-            var actual = target.GetMapFilterDefinitionDocument().ToString();
-            var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 }";
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+         
+          //  target.Path = new List<string> { "Account", "SalesPerson" };
+            var definition = target.GetNavigationFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
+            
+            var expected = "{ \"Navigation\" : /^Account.SalesPerson/ }";
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
-        public void GetMapWithChildrenFilterDefinitionAccessor()
+        public void GetNavigationFilterDefinitionTest_WhenExcludeChildren()
         {
             var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Key = 1000,
-                Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-            };
-            var actual = target.GetMapWithChildrenFilterDefinitionAccessor().ToString();
-            //var expected = "{ \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 }";
-            //Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void GetMapFilterPipelineTest()
-        {
-             var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Key = 1000,
-                Navigation = new List<string> { "Account", "Product", "SalesPerson" }
-            };
-            var actual = target.GetMapFilterPipelineDocuments();
-            var match = actual.First().ToString();
-            var project = actual.ElementAt(1).ToString();
-            var expected =
-                "{ \"$match\" : { \"Navigation\" : [\"Account\", \"Product\", \"SalesPerson\"], \"Key\" : 1000 } }";
-            Assert.AreEqual(expected, match, "Match documents not equal");
-            expected = "{ \"$project\" : { \"$project\" : { \"_id\" : 0, \"Key\" : \"$Key\" } } }";
-            Assert.AreEqual(expected, project, "Projection documents not equal");
-
-        }
-        [TestMethod]
-        public void GetLinkListMapsTest()
-        {
-            var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-
-                Navigation = new List<string> { "Account", "SalesPerson" }
-            };
-            var actual = target.GetLinkListMapsAccessor().Result;
-            Assert.IsTrue(actual.Any());
-
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            qb.ExcludeChildren = true;
+            var definition = target.GetNavigationFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(definition).ToString();
+            var expected = "{ \"Navigation\" : \"Account.SalesPerson\" }";
       
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void GetNavigationFilterDefinitionTest_WhenNoNavigation()
+        {
+            var target = GetAccessor();
+            //var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            //qb.SelectedPath = qb.AvailablePaths.First();
+            var actual = target.GetNavigationFilterDefinitionAccessor();
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
-        public void GetListFilterDefinitionDocument()
+        public void GetLinkedListMapsFilterDefinitionTest()
+        {
+      
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            var result = target.GetLinkedListMapsFilterDefinitionAccessor();
+            var actual = TestHelper.ToDocument<dynamic>(result).ToString();
+            var expected =
+                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } }";
+            Assert.AreEqual(expected, actual);
+
+        }
+
+        [TestMethod]
+        public void GetQueryPipelineTest()
         {
             var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Navigation = new List<string> { "Account", "SalesPerson" }
-            };
-            var actual = target.GetListFilterDefinitionDocument().ToString();
-            var expected = "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005] } } }";
-            Assert.AreEqual(expected, actual);
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+            var result = target.GetQueryPipelineAccessor();
+           
+            var actualMatchDocument = result.First().ToString();
+            var expectedMatchDocument =
+                "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } } }";
+            var actualGroupDocument = result.ElementAt(1).ToString();
+            var expectedGroupDocument =
+                "{ \"$group\" : { \"_id\" : { \"slicer_0\" : \"$SalesPerson\", \"slicer_1\" : \"$Product\" }, \"measure_0\" : { \"$sum\" : \"$Amount\" } } }";
+            Assert.AreEqual(expectedMatchDocument, actualMatchDocument);
+            Assert.AreEqual(expectedGroupDocument, actualGroupDocument);
+
+        }
+
+        [TestMethod]
+        public void GetQueryPipelineTest_WhenNoCriteria_AssetPipelineNull()
+        {
+            var target = GetAccessor();
+            var result = target.GetQueryPipelineAccessor();
+            Assert.IsFalse(result.Any());
+
+        }
+
+        [TestMethod]
+        public void GetQueryGroupIdElementsTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x=>x.Column.ColumnName=="SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            var actual = target.GetQueryGroupIdElementsAccessor();
+
+        }
+
+        [TestMethod]
+        public void GetQueryMeasureDocumentTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+          //  var actual = target.GetQueryMeasureDocumentAccessor().ToString();
+
+        }
+
+        [TestMethod]
+        public void GetQueryGroupDocumentTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+            var actual = target.GetQueryGroupDocumentAccessor().ToString();
+            var expected =
+                "{ \"$group\" : { \"_id\" : { \"slicer_0\" : \"$SalesPerson\", \"slicer_1\" : \"$Product\" }, \"measure_0\" : { \"$sum\" : \"$Amount\" } } }";
+            Assert.AreEqual(actual, expected);
         }
 
         [TestMethod]
         public void RunQueryTest()
         {
             var target = GetAccessor();
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Navigation = new List<string> { "Account", "SalesPerson" }
-            };
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
             var actual = target.RunQuery().Result;
-            Assert.IsTrue(actual.Any());
-        }
 
-        [TestMethod]
-        public void RunQueryTest_WhenIncludeChildren()
-        {
-            var target = GetAccessor();
-            target.IncludeChildren = true;
-            target.LinkedListMap = new LinkedListMap<int>
-            {
-                Navigation = new List<string> { "Account" }
-            };
-            var actual = target.RunQuery().Result;
+          //  var dd = Newtonsoft.Json.JsonConvert.SerializeObject(actual.First());
             Assert.IsTrue(actual.Any());
+
+            // Assert.IsTrue(actual.Any());
+
+
         }
+        //[TestMethod]
+        //public void GetLinkedListQueryPipelineTest()
+        //{
+        //    var target = GetAccessor();
+        //    target.Path = new List<string> { "Account", "SalesPerson" };
+        //    var result = target.GetLinkedListQueryPipelineAccessor().First();
+        //    var actual = TestHelper.ToDocument<BsonDocument>(result).ToString();
+        //    var expected = "{ \"$match\" : { \"Navigation.0\" : \"Account\", \"Navigation.1\" : \"SalesPerson\" } }";
+        //    Assert.AreEqual(expected, actual);
+
+
+        //}
+
+        //[TestMethod]
+        //public void GetLinkedListQueryPipelineTest_WhenNoNavigation()
+        //{
+        //    var target = GetAccessor();
+
+        //    var result = target.GetLinkedListQueryPipelineAccessor();
+            
+        //    Assert.IsNull(result);
+
+
+        //}
+
+
     }
 }

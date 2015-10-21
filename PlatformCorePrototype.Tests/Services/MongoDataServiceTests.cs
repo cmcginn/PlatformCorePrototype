@@ -14,7 +14,7 @@ using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services;
-using PlatformCorePrototype.Services.Configuration;
+
 using PlatformCorePrototype.Services.DataStructures;
 using JsonReader = MongoDB.Bson.IO.JsonReader;
 using JsonWriter = MongoDB.Bson.IO.JsonWriter;
@@ -26,7 +26,7 @@ namespace PlatformCorePrototype.Tests.Services
     /// Summary description for DataServiceTests
     /// </summary>
     [TestClass]
-    public class MongoDataServiceTests : ServiceTestBase
+    public class MongoDataServiceTests : TestBase
     {
         public MongoDataServiceTests()
         {
@@ -90,31 +90,71 @@ namespace PlatformCorePrototype.Tests.Services
             var actual = target.GetViewDefinitionMetadataAsync("segments_view1").Result;
             Assert.IsInstanceOfType(actual, typeof(ViewDefinitionMetadata));
         }
+        //[TestMethod]
+        //public void GetViewDefinitionAsyncTest_WhenLinkedList()
+        //{
+        //    var target = GetTarget();
+        //    var actual = target.GetViewDefinitionMetadataAsync("linkedlist_account_view1").Result;
+        //    Assert.IsInstanceOfType(actual, typeof(LinkedListViewDefinitionMetadata));
+        //}
+
+        //[TestMethod]
+        //public void GetDataAsync()
+        //{
+        //    var target = GetTarget();
+        //    var strategy = new MongoLinkedListQueryStrategy<dynamic, int>();
+
+        //    //strategy.ViewId = "linkedlist_account_view1";
+        //   // strategy.LinkedListMap = new LinkedListMap<int> {Navigation = new List<string> {"Account", "SalesPerson"}};
+        //    //strategy.LinkedListSettings = new LinkedListSettings
+        //    //{
+        //    //    KeyColumn = new DataColumnMetadata {ColumnName = "Account", DataType = Globals.IntegerDataTypeName},
+        //    //     MapCollectionName="linkedlistmap"
+        //    //};
+        //    strategy.IncludeChildren = true;
+
+
+        //    //var qb = new LinkedListQueryBuilder();
+        //    //qb.SelectedPath = new LinkedListPathSpecification {Navigation = "Account", DisplayOrder = 0};
+
+        //    //qb.ViewId = "linkedlist_account_view1";
+        //    var actual = target.GetDataAsync(strategy).Result;
+        //    Assert.IsTrue(actual.Any());
+
+        //}
+
         [TestMethod]
-        public void GetViewDefinitionAsyncTest_WhenLinkedList()
+        public void GetDataStorageStructureTypeForViewTest_WhenLinkedList()
+        {
+            var target = GetTarget();
+            var actual = target.GetDataStorageStructureTypeForView("linkedlist_account_view1");
+            Assert.AreEqual(DataStorageStructureTypes.LinkedList, actual);
+        }
+
+        [TestMethod]
+        public void GetLinkedListViewDefinitionMetadataTest()
+        {
+            var target = GetTarget();
+            var actual = target.GetLinkedListViewDefinitionMetadata("linkedlist_account_view1").Result;
+            Assert.IsTrue(actual.Paths.Any());
+
+        }
+        [TestMethod]
+        public void GetViewDefinitionMetadataAsync_WhenLinkedList()
         {
             var target = GetTarget();
             var actual = target.GetViewDefinitionMetadataAsync("linkedlist_account_view1").Result;
-            Assert.IsInstanceOfType(actual, typeof(LinkedListViewDefinitionMetadata));
+            Assert.IsInstanceOfType(actual, typeof (LinkedListViewDefinitionMetadata));
         }
 
         [TestMethod]
-        public void GetDataAsync()
+        public void GetViewDefinitionAsyncTest_WhenLinkedList()
         {
-            var target = GetTarget();
-            var qb = new LinkedListQueryBuilder();
-            qb.SelectedPaths = new List<LinkedListPathSpecification>
-            {
-                new LinkedListPathSpecification {Name = "Account", Level = 0},
-                new LinkedListPathSpecification{ Name="SalesPerson", Level=1}
-            };
-            
-            qb.ViewId = "linkedlist_account_view1";
-            var actual = target.GetDataAsync(qb).Result;
-            Assert.IsTrue(actual.Any());
- 
+            //var target = GetTarget();
+            //var actual = target.GetViewDefinitionAsync("linkedlist_account_view1").Result;
+        //    var linkedListQueryBuilder = actual.QueryBuilder as LinkedListQueryBuilder;
+         //   Assert.IsTrue(linkedListQueryBuilder.AvailablePaths.Any());
         }
-
-
+        
     }
 }
