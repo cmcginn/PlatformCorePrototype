@@ -22,6 +22,8 @@ namespace PlatformCorePrototype.Web
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             MappingConfiguration.ConfigureMappings();
             MongoClassMapRegistration.RegisterClassMaps();
+            MappingConfiguration.ConfigureMappings();
+
         }
     }
 }

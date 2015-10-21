@@ -26,11 +26,14 @@ namespace PlatformCorePrototype.Services
             var items = db.GetCollection<BsonDocument>("collectionMetadata");
             var builder = new FilterDefinitionBuilder<BsonDocument>();
             var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], collectionName));
-            var result = md.SingleAsync().ContinueWith<IDataCollectionMetadata>((t) =>
-            {
-                return Mapper.Map<BsonDocument, IDataCollectionMetadata>(t.Result);
-            });
-            return await result;
+            var dd = await md.SingleAsync();
+            var r = Mapper.Map<BsonDocument, IDataCollectionMetadata>(dd);
+            //return Mapper.Map<BsonDocument, dd>();
+            //var result = md.SingleAsync().ContinueWith<IDataCollectionMetadata>((t) =>
+            //{
+            //    return Mapper.Map<BsonDocument, IDataCollectionMetadata>(t.Result);
+            //});
+            return r;
         }
 
         //public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)

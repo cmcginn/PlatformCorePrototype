@@ -1,6 +1,19 @@
 ﻿myApp.service('dataService', ['$http', '$q', 'CUSTOM_APP_PROPERTIES', function($http, $q, appProperties) {
 
     var result = {
+        getScratchDataAsync:function(id) {
+            return $q(function (resolve, reject) {
+
+                $http.get(appProperties.apiBasePath + '/Scratch/'+id).
+                    success(function (data, status, headers, config) {
+                        resolve(data);
+                    })
+                    .error(function (data, status, headers, config) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                    });
+            });
+        },
         getViewDefinitionAsync: function(id) {
 
             return $q(function (resolve, reject) {
