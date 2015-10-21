@@ -1,263 +1,263 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
+using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoLinkedListQueryStrategy<T,V>:IMongoLinkedListQueryStrategy<T,V>
+    public class MongoLinkedListQueryStrategy : IMongoLinkedListQueryStrategy<ExpandoObject>
     {
-        protected FilterDefinition<T> GetMapWithChildrenFilterDefinition()
+
+        #region public interface
+
+        
+
+        public IQueryBuilder QueryBuilder { get; set; }
+        public async Task<List<ExpandoObject>> RunQuery()
         {
-            var builder = new FilterDefinitionBuilder<T>();
-            FilterDefinition<T> result = null;
-            if (LinkedListMap != null)
-            {
-                result = new BsonDocument();
-                if (LinkedListMap.Navigation.Any())
-                {
-                    var val = new BsonArray();
-                    var counter = 0;
-                    LinkedListMap.Navigation.ForEach(x =>
-                    {
-                    
-                        result &= builder.Eq(String.Format("Navigation.{0}", counter), x);
-                        counter += 1;
-                    });
-    
-
-                }
-                V d = default(V);
-                if (!LinkedListMap.Key.Equals(d))
-                {
-                    result &= builder.Eq("Key", LinkedListMap.Key);
-                }
-            }
-
-
-            return result;
-        }
-        protected FilterDefinition<T> GetMapFilterDefinition()
-        {
-            var builder = new FilterDefinitionBuilder<T>();
-            FilterDefinition<T> result = null;
-            if (LinkedListMap != null)
-            {
-                result = new BsonDocument();
-                if (LinkedListMap.Navigation.Any())
-                {
-                    var val = new BsonArray();
-                    LinkedListMap.Navigation.ForEach(x =>
-                    {
-                        val.Add(x);
-                    });
-                    result &= builder.Eq("Navigation", val);
-
-                }
-                V d = default(V);
-                if (!LinkedListMap.Key.Equals(d))
-                {
-                    result &= builder.Eq("Key", LinkedListMap.Key);
-                }
-            }
-            
-
-            return result;
-        }
-
-        protected List<BsonDocument> GetMapFilterPipeline()
-        {
-            var result = new List<BsonDocument>();
-            FilterDefinition<T> matchDefinition = null;
-            if (IncludeChildren)
-                matchDefinition = GetMapWithChildrenFilterDefinition();
-            else
-                matchDefinition = GetMapFilterDefinition();
-            if (matchDefinition != null)
-            {
-                result.Add(new BsonDocument { { "$match", ToDocument(matchDefinition) } });
-            }
-            result.Add(new BsonDocument {{"$project", BsonDocument.Parse("{ \"$project\" : { \"_id\":0,\"Key\" : \"$Key\" } }]")}});
-            return result;
-        }
-
-
-        IMongoDatabase GetDatabase()
-        {
-            var client = new MongoClient(DataSourceLocation);
-            var result = client.GetDatabase(DataSourceName);
-            return result;
-        }
-
-        protected async Task<List<LinkedListMap<V>>> GetLinkListMaps()
-        {
-//TODO if include children assing path contains instead of path equals
-            var pipeline = new List<BsonDocument> {GetMapFilterPipeline().First()};
+            var pipeline = await GetQueryPipeline();
             var db = GetDatabase();
-            var collection = db.GetCollection<BsonDocument>(LinkedListSettings.MapCollectionName);
-
-            var asyncResult = collection.AggregateAsync<BsonDocument>(pipeline);
-            var result = asyncResult.ContinueWith<List<LinkedListMap<V>>>((t) =>
+            var collection = db.GetCollection<ExpandoObject>(CollectionMetadata.Id);
+            var ag = collection.Aggregate();
+            pipeline.ForEach(pl =>
             {
-                var asyncTaskResult = new List<LinkedListMap<V>>();
-                var f = t.Result.ForEachAsync(doc =>
-                {
-                    var item = new LinkedListMap<V>();
-                    BsonValue bsonValue = null;
-                    if (doc.TryGetValue("Key", out bsonValue))
-                    {
-                        BsonValue bsonArray = null;
-                        if (doc.TryGetValue("Navigation", out bsonArray))
-                        {
-                            bsonArray.AsBsonArray.ToList().ForEach(s =>
-                            {
-                                item.Navigation.Add(s.ToString());
-                            });
-                            if (typeof (V) == typeof (int))
-                                item.Key = (V) (object) int.Parse(bsonValue.ToString());
-                            else if(typeof(V)==typeof(double))
-                                item.Key = (V)(object)double.Parse(bsonValue.ToString());
-                            else if (typeof (V) == typeof (Guid))
-                                item.Key = (V)(object) Guid.Parse(bsonValue.ToString());
-                            else
-                                item.Key = (V)(object)bsonValue.ToString();
-                            asyncTaskResult.Add(item);
-                        }
-                        
+                ag = ag.AppendStage<ExpandoObject>(pl);
+            });
+            return await ag.ToListAsync();
+        }
+        #endregion
 
-                    }
+        #region utilities
+
+        private ILinkedListQueryBuilder _LinkedListQueryBuilder;
+        protected ILinkedListQueryBuilder LinkedListQueryBuilder
+        {
+            get
+            {
+                if (_LinkedListQueryBuilder == null)
+                {
+                    _LinkedListQueryBuilder = QueryBuilder as ILinkedListQueryBuilder;
+                    if (_LinkedListQueryBuilder == null)
+                        throw new System.Exception(
+                            "MongoLinkedListQueryStrategy requires member IQueryBuilder to be of type ILinkedListQueryBuilder");
                     
-                });
-                return asyncTaskResult;
+                }
+                return _LinkedListQueryBuilder;
+            }
+            set { _LinkedListQueryBuilder = value; }
+        }
+        protected virtual FilterDefinition<dynamic> GetNavigationFilterDefinition()
+        {
+
+            FilterDefinition<dynamic> result = null;
+            if (LinkedListQueryBuilder.SelectedPath != null)
+            {
+                if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
+                {
+
+
+                    var builder = new FilterDefinitionBuilder<dynamic>();
+                    if (LinkedListQueryBuilder.ExcludeChildren)
+                    {
+             
+                        result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);
+                    }
+                    else
+                    {
+                        var expr =
+                            new BsonRegularExpression(String.Format("^{0}",
+                                LinkedListQueryBuilder.SelectedPath.Navigation));
+                        result = builder.Regex("Navigation", expr);
+                    }
+                }
+
+
+            }
+            return result;
+        }
+
+        protected virtual async Task<FilterDefinition<dynamic>> GetLinkedListMapsFilterDefinition()
+        {
+            var db = GetDatabase();
+            var collection = db.GetCollection<BsonDocument>(CollectionMetadata.MapCollectionName);
+            var navigationFilter = GetNavigationFilterDefinition();
+            var findDocument = navigationFilter != null ? navigationFilter.Serialize() : new BsonDocument();
+            var items = collection.FindAsync<BsonDocument>(findDocument).Result.ToListAsync();
+            var result = items.ContinueWith<FilterDefinition<dynamic>>((t) =>
+            {
+                FilterDefinition<dynamic> asyncResult = null;
+                if (t.Result.Any())
+                {
+
+                    var keyValues = new BsonArray();
+                    var builder = new FilterDefinitionBuilder<dynamic>();
+                    t.Result.ForEach(doc => keyValues.Add(doc.GetElement("Key").Value));
+                    asyncResult = builder.In(CollectionMetadata.KeyColumnName, keyValues);
+
+                }
+                return asyncResult;
             });
             return await result;
         }
-        //TODO: Base Class
-        protected BsonDocument ToDocument(FilterDefinition<T> source)
+
+        protected List<BsonElement> GetQueryGroupIdElements()
         {
-            var serializer = BsonSerializer.SerializerRegistry.GetSerializer<T>();
-            return source.Render(serializer, BsonSerializer.SerializerRegistry);
-        }
-        
-        //protected FilterDefinition<T> GetMapFilterDefinition()
-        //{
-        //    var builder = new FilterDefinitionBuilder<T>();
-        //    FilterDefinition<T> result = null;
-        //    var activeFilters = Filters.Where(x => x.FilterValues.Any(y => y.Active)).ToList();
-        //    if (activeFilters.Any())
-        //    {
-
-        //        result = new BsonDocument();
-        //        activeFilters.ForEach(activeFilter =>
-        //        {
-
-        //            var valuesList = new List<BsonValue>();
-        //            activeFilter.FilterValues.Where(x => x.Active).ToList().ForEach(activeFilterValue =>
-        //            {
-        //                BsonValue elementValue;
-        //                switch (activeFilter.Column.DataType)
-        //                {
-        //                    case Globals.StringDataTypeName:
-        //                        valuesList.Add(new BsonString(activeFilterValue.Value));
-        //                        break;
-        //                }
-
-        //            });
-
-        //            result &= builder.In(activeFilter.Column.ColumnName, valuesList);
-
-        //        });
-        //    }
-        //    if (LinkedListMap != null)
-        //    {
-        //        var navigationBuilder = new FilterDefinitionBuilder<List<string>>();
-        //        FilterDefinition<T> linkedListFilterDefinition = null;
-        //        if (LinkedListMap.Navigation.Any())
-        //        {
-        //            var navigationFilterDefinition = navigationBuilder
-        //            //linkedListFilterDefinition = builder.All<List<string>>("Navigation", LinkedListMap.Navigation);
-        //            //var navigationFilterArray = LinkedListMap.Navigation.ToArray();
-        //           // builder &= builder.Eq<List<string>>("Navigation", LinkedListMap.Navigation);
-        //            //builder &= builder.ElemMatch<BsonArray>("Navigation",)
-        //        }
-        //    }
-        //    return result;
-        //}
-        public bool IncludeChildren { get; set; }
-
-        protected FilterDefinition<T> GetListFilterDefinition()
-        {
-            var builder = new FilterDefinitionBuilder<T>();
-            FilterDefinition<T> result = null;
-            var map = GetLinkListMaps().Result;
-            var ids = new BsonArray();
-            map.ForEach(linkedListMap =>
+            List<BsonElement> result = null;
+            if (LinkedListQueryBuilder.SelectedSlicers.Any())
             {
-                BsonValue val = null;
-                if (typeof (V) == typeof (int))
-                    val = new BsonInt32(int.Parse(linkedListMap.Key.ToString()));
-                ids.Add(val);
-      
-            });
+                result = new List<BsonElement>();
+       
+                for (var index = 0; index < LinkedListQueryBuilder.SelectedSlicers.Count; index++)
+                {
+                    BsonElement el;
 
-            result = builder.In(LinkedListSettings.KeyColumn.ColumnName, ids);
+                    el = new BsonElement(String.Format("slicer_{0}", index), new BsonString(String.Format("${0}", LinkedListQueryBuilder.SelectedSlicers[index].Column.ColumnName)));
+                    result.Add(el);
+                    //TODO Handle Dates?
+
+                }
+            }
             return result;
         }
+        protected List<BsonElement> GetQueryMeasureElements()
+        {
+            List<BsonElement> result = null;
+            if (LinkedListQueryBuilder.SelectedMeasures.Any())
+            {
+                result = new List<BsonElement>();
+                var elements = new List<BsonElement>();
+                for (var index = 0; index < LinkedListQueryBuilder.SelectedMeasures.Count; index++)
+                {
+                    var measure = LinkedListQueryBuilder.SelectedMeasures[index];
+                    var op = "";
+                    BsonValue elementValue = null;
+                    switch (measure.AggregateOperationType)
+                    {
+                        case AggregateOperationTypes.Average:
+                            op = "$avg";
+                            elementValue = new BsonString(String.Format("${0}", measure.Column.ColumnName));
+                            break;
 
-        protected BsonDocument GetListMatchDocument()
+                        case AggregateOperationTypes.Sum:
+                            op = "$sum";
+                            elementValue = new BsonString(String.Format("${0}", measure.Column.ColumnName));
+                            break;
+                        case AggregateOperationTypes.Count:
+                            op = "$sum";
+                            elementValue = new BsonInt32(1);
+                            break;
+                    }
+                    var el = new BsonElement(op, elementValue);
+                    var factDoc = new BsonDocument();
+                    factDoc.Add(el);
+                    var factElementDoc = new BsonDocument();
+                    result.Add(new BsonElement(String.Format("measure_{0}", index), factDoc));
+                
+                }
+                
+            }
+            return result;
+        }
+        protected BsonDocument GetQueryGroupDocument()
         {
             BsonDocument result = null;
-            var filterDefinition = GetListFilterDefinition();
-            if(filterDefinition != null)
-                result = new BsonDocument {{"$match", ToDocument(filterDefinition)}};
+            var idElements = GetQueryGroupIdElements();
+            if (idElements!=null)
+            {
+                result = new BsonDocument {{"_id", new BsonDocument(idElements)}};
+            
+                
+                var measureElements = GetQueryMeasureElements();
+                
+                if (measureElements!=null)
+                {
+                    result.AddRange(measureElements);
+
+                }
+
+            }
+
             return result;
         }
-        public LinkedListMap<V> LinkedListMap { get; set; }
-
-        private List<string> _Path;
-
-        public List<string> Path
+        
+        protected virtual async Task<List<BsonDocument>> GetQueryPipeline()
         {
-            get { return _Path ?? (_Path = new List<string>()); }
-            set { _Path = value; }
-        }
-
-        public string CollectionName { get; set; }
-
-        public string DataSourceName { get; set; }
-
-        public string DataSourceLocation { get; set; }
-
-        private List<FilterSpecification> _Filters;
-        public List<FilterSpecification> Filters
-        {
-            get { return _Filters ?? (_Filters = new List<FilterSpecification>()); }
-            set
+            
+            FilterDefinition<dynamic> linkedListFilters = null;
+            if (LinkedListQueryBuilder.SelectedPath != null)
             {
-                _Filters = value;
+                if(!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
+                    linkedListFilters = await GetLinkedListMapsFilterDefinition();
             }
-        }
 
-        public async Task<List<T>> RunQuery()
-        {
-            var pl = new List<BsonDocument>();
-            var matchDocument = GetListMatchDocument();
-            if (matchDocument != null)
-                pl.Add(matchDocument);
-            var db = GetDatabase();
-            var collection = db.GetCollection<T>(CollectionName);
-            var asyncResult = collection.AggregateAsync<T>(pl);
-            var result = asyncResult.Result.ToListAsync<T>();
+            var result = new Task<List<BsonDocument>>(() =>
+            {
+                var asyncResult = new List<BsonDocument>();
+                if (linkedListFilters != null)
+                    asyncResult.Add(new BsonDocument {{"$match", linkedListFilters.Serialize()}});
+
+                var groupDocument = GetQueryGroupDocument();
+
+                if (groupDocument != null)
+                    asyncResult.Add(new BsonDocument{{"$group",groupDocument}});
+                return asyncResult;
+            });
+            result.Start();
             return await result;
         }
 
+        private LinkedListDataCollectionMetadata _LinkedListDataCollectionMetadata;
+        
 
-        public LinkedListSettings LinkedListSettings { get; set; }
+        private LinkedListDataCollectionMetadata _CollectionMetadata;
+        protected LinkedListDataCollectionMetadata CollectionMetadata
+        {
+            get { return _CollectionMetadata ?? (_CollectionMetadata = GetCollectionMetadata()); }
+            set { _CollectionMetadata = value; }
+        }
+
+       
+
+        protected LinkedListDataCollectionMetadata GetCollectionMetadata()
+        {
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+
+            var collection = db.GetCollection<BsonDocument>("collectionMetadata");
+            var builder = new FilterDefinitionBuilder<BsonDocument>();
+            var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument { { "ViewId", QueryBuilder.ViewId} });
+            var queryResult = collection.Find(fd).SingleOrDefaultAsync();
+            if (queryResult == null)
+                throw new System.Exception(
+                    String.Format("DataCollectionMetadata containing viewId {0} could not be found", QueryBuilder.ViewId));
+
+            var result = Mapper.Map<BsonDocument, LinkedListDataCollectionMetadata>(queryResult.Result);
+            return result;
+        }
+       
+        protected IMongoDatabase GetDatabase()
+        {
+            //todo throw query strategy exception if collection metadata is null
+            var client = new MongoClient(CollectionMetadata.DataSourceLocation);
+            var db = client.GetDatabase(CollectionMetadata.DataSourceName);
+            return db; 
+        }
+        #endregion
+
+
+
+
+
+        
     }
 }

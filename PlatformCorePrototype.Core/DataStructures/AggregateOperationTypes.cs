@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ILinkedListQueryStrategy<T> : IQueryStrategy<T>
+    public enum AggregateOperationTypes
     {
-
-
+        
+        Average=0,
+        Count=1,
+        Sum = 2
     }
 }

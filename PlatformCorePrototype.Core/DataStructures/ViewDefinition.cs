@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 
-namespace PlatformCorePrototype.Services.Models
-{
-    public interface IViewDefinitionModel:IViewDefinitionMetadata
-    {
 
+namespace PlatformCorePrototype.Core.DataStructures
+{
+    public class ViewDefinition:ViewDefinitionMetadata
+    {
+        public QueryBuilder QueryBuilder { get; set; }
+        public DataDefinition DataDefinition { get; set; }
     }
 }

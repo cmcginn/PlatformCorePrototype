@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ILinkedListQueryStrategy<T> : IQueryStrategy<T>
+    public class SlicerSpecification
     {
+        public DataColumnMetadata Column { get; set; }
+        public int DisplayOrder { get; set; }
 
-
+        
     }
 }

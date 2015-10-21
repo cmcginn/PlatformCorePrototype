@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class DataCollectionMetadata
+    public class DataCollectionMetadata : IDataCollectionMetadata
     {
 
         public string Id { get; set; }
@@ -22,6 +22,15 @@ namespace PlatformCorePrototype.Core.DataStructures
             set { _Columns = value; }
         }
 
-        public LinkedListSettings LinkedListSettings { get; set; }
+        public DataStorageStructureTypes DataStorageType { get; set; }
+
+        public List<IViewDefinitionMetadata> Views
+        {
+            get { return _Views ?? (_Views = new List<IViewDefinitionMetadata>()); }
+            set { _Views = value; }
+        }
+
+        private List<IViewDefinitionMetadata> _Views;
+
     }
 }

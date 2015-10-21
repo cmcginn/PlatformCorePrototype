@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ILinkedListQueryStrategy<T> : IQueryStrategy<T>
+    public class DataDefinition
     {
-
-
+        public DataStorageStructureTypes DataStorageType { get; set; }
+        public string CollectionName { get; set; }
     }
 }
