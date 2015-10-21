@@ -18,10 +18,11 @@ namespace PlatformCorePrototype.Web.Services
     {
         public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
         {
+            throw new System.NotImplementedException();
     
-            var service = new MongoDataService();
-            var result = service.GetViewDefinitionAsync(viewId);
-            return await result;
+            //var service = new MongoDataService();
+            //var result = service.GetViewDefinitionAsync(viewId);
+            //return await result;
         }
 
         //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)

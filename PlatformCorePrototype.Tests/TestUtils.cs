@@ -230,7 +230,21 @@ namespace PlatformCorePrototype.Tests
                 new LinkedListPathSpecification {DisplayOrder = 0, Navigation = "Account.SalesPerson"},
                 new LinkedListPathSpecification {DisplayOrder = 1, Navigation = "Account.Product"}
             };
-
+            viewDefinitionMetadata.Measures = new List<MeasureSpecification>
+            {
+                new MeasureSpecification
+                {
+                    AggregateOperationType = AggregateOperationTypes.Sum,
+                    DisplayOrder = 0,
+                    Column = amount
+                }
+            };
+            viewDefinitionMetadata.Slicers = new List<SlicerSpecification>
+            {
+                new SlicerSpecification {Column = account, DisplayOrder = 0},
+                new SlicerSpecification {Column = salesPerson, DisplayOrder = 1},
+                new SlicerSpecification {Column = product, DisplayOrder = 2}
+            };
             collectionMetadata.Views.Add(viewDefinitionMetadata);
              var client = new MongoClient(Globals.MongoConnectionString);
              var db = client.GetDatabase(Globals.MetadataCollectionStoreName);

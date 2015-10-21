@@ -99,7 +99,7 @@ namespace PlatformCorePrototype.Services.Mapping
                     src =>
                         src.MapFrom<DataColumnMetadata>(
                             x => Mapper.Map<BsonDocument, DataColumnMetadata>(x["Column"].AsBsonDocument)))
-                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => x["DisplayOrder"]));
+                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())));
 
         } 
 
@@ -113,7 +113,7 @@ namespace PlatformCorePrototype.Services.Mapping
                 .ForMember(dest => dest.Column, src =>
                     src.MapFrom<DataColumnMetadata>(
                         x => Mapper.Map<BsonDocument, DataColumnMetadata>(x["Column"].AsBsonDocument)))
-                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => x["DisplayOrder"]))
+                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())))
                 .ForMember(dest => dest.AggregateOperationType,
                     src => src.MapFrom(x => (AggregateOperationTypes) int.Parse(x["AggregateOperationType"].ToString())));
         }
@@ -127,7 +127,7 @@ namespace PlatformCorePrototype.Services.Mapping
                     src =>
                         src.MapFrom<DataColumnMetadata>(
                             x => Mapper.Map<BsonDocument, DataColumnMetadata>(x["Column"].AsBsonDocument)))
-                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => x["DisplayOrder"]))
+                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())))
                 .ForMember(dest => dest.SelectionMode, src => src.MapFrom(x => x["SelectionMode"]))
                 .ForMember(dest => dest.FilterType,
                     src => src.MapFrom(x => (FilterTypes) int.Parse(x["FilterType"].ToString())))

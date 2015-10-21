@@ -34,6 +34,21 @@ namespace PlatformCorePrototype.Tests.DataStructures
 
             return this.GetQueryPipeline().Result;
         }
+
+        public BsonDocument GetQueryGroupDocumentAccessor()
+        {
+            return this.GetQueryGroupDocument();
+        }
+
+        public List<BsonElement> GetQueryMeasureElementsAccessor()
+        {
+            return this.GetQueryMeasureElements();
+        }
+
+        public List<BsonElement> GetQueryGroupIdElementsAccessor()
+        {
+            return this.GetQueryGroupIdElements();
+        }
     }
     [TestClass]
     public class MongoLinkedListQueryStrategyTests : TestBase
@@ -58,14 +73,15 @@ namespace PlatformCorePrototype.Tests.DataStructures
         [TestMethod]
         public void TestMethod1()
         {
-            //var client = new MongoClient(Globals.MongoConnectionString);
-            //var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            //var items = db.GetCollection<BsonDocument>("collectionMetadata");
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var items = db.GetCollection<BsonDocument>("linkedlistdata");
             //var builder = new FilterDefinitionBuilder<BsonDocument>();
-           // //var doc = items.FindAsync(new BsonDocument()).Result.ToListAsync().Result.First();
-           // var fd = builder.Regex("Navigation", "^Account.SalesPerson[.]+");
-           // var actual = TestHelper.ToDocument(fd).ToString();
-            var target = GetAccessor();
+            //var builder = new ProjectionDefinitionBuilder<BsonDocument>();
+            //ProjectionDefinition<BsonDocument> pd = new BsonDocument();
+            //pd &= builder.
+
+            //var actual = items.Aggregate(new BsonDocument()).Group()
         }
 
 
@@ -127,12 +143,20 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var target = GetAccessor();
             var qb = target.QueryBuilder as LinkedListQueryBuilder;
             qb.SelectedPath = qb.AvailablePaths.First();
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
             var result = target.GetQueryPipelineAccessor();
            
             var actualMatchDocument = result.First().ToString();
             var expectedMatchDocument =
-                "{ \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } }";
+                "{ \"$match\" : { \"Account\" : { \"$in\" : [1001, 1002, 1003, 1004, 1005, 1011, 1012, 1013, 1014, 1015] } } }";
+            var actualGroupDocument = result.ElementAt(1).ToString();
+            var expectedGroupDocument =
+                "{ \"$group\" : { \"_id\" : { \"slicer_0\" : \"$SalesPerson\", \"slicer_1\" : \"$Product\" }, \"measure_0\" : { \"$sum\" : \"$Amount\" } } }";
             Assert.AreEqual(expectedMatchDocument, actualMatchDocument);
+            Assert.AreEqual(expectedGroupDocument, actualGroupDocument);
+
         }
 
         [TestMethod]
@@ -141,6 +165,57 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var target = GetAccessor();
             var result = target.GetQueryPipelineAccessor();
             Assert.IsFalse(result.Any());
+
+        }
+
+        [TestMethod]
+        public void GetQueryGroupIdElementsTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x=>x.Column.ColumnName=="SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            var actual = target.GetQueryGroupIdElementsAccessor();
+
+        }
+
+        [TestMethod]
+        public void GetQueryMeasureDocumentTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+          //  var actual = target.GetQueryMeasureDocumentAccessor().ToString();
+
+        }
+
+        [TestMethod]
+        public void GetQueryGroupDocumentTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+            var actual = target.GetQueryGroupDocumentAccessor().ToString();
+            var expected =
+                "{ \"$group\" : { \"_id\" : { \"slicer_0\" : \"$SalesPerson\", \"slicer_1\" : \"$Product\" }, \"measure_0\" : { \"$sum\" : \"$Amount\" } } }";
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod]
+        public void RunQueryTest()
+        {
+            var target = GetAccessor();
+            var qb = target.QueryBuilder as LinkedListQueryBuilder;
+            qb.SelectedPath = qb.AvailablePaths.First();
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+           
+
+            // Assert.IsTrue(actual.Any());
+
 
         }
         //[TestMethod]

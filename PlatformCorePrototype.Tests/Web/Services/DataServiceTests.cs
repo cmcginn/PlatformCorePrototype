@@ -21,10 +21,10 @@ namespace PlatformCorePrototype.Tests.Web.Services
         [TestMethod]
         public void  GetDataAsyncTest()
         {
-            var mds = new MongoDataService();
-            var vd = mds.GetViewDefinitionAsync("linkedlist_account_view1").Result;
+          //  var mds = new MongoDataService();
+          //  var vd = mds.GetViewDefinitionAsync("linkedlist_account_view1").Result;
 
-          var target = GetTarget();
+          //var target = GetTarget();
          // var actual = target.GetDataAsync(vd.QueryBuilder).Result.ToList();
             //Assert.IsTrue(actual.Any());
         }

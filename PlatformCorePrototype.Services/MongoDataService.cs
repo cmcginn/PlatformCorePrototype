@@ -154,18 +154,18 @@ namespace PlatformCorePrototype.Services
 
         
 #region refactored
-        public async Task<LinkedListDataCollectionMetadata> GetLinkedListDataCollectionMetadata(string collectionName)
-        {
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<LinkedListDataCollectionMetadata>("collectionMetadata");
-            var builder = new FilterDefinitionBuilder<LinkedListDataCollectionMetadata>();
-            var md = items.Find(Builders<LinkedListDataCollectionMetadata>.Filter.Eq(x => x.Id, collectionName));
+        //public async Task<LinkedListDataCollectionMetadata> GetLinkedListDataCollectionMetadata(string collectionName)
+        //{
+        //    var client = new MongoClient(Globals.MongoConnectionString);
+        //    var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+        //    var items = db.GetCollection<LinkedListDataCollectionMetadata>("collectionMetadata");
+        //    var builder = new FilterDefinitionBuilder<LinkedListDataCollectionMetadata>();
+        //    var md = items.Find(Builders<LinkedListDataCollectionMetadata>.Filter.Eq(x => x.Id, collectionName));
 
-            var result = await md.SingleAsync();
+        //    var result = await md.SingleAsync();
 
-            return result;
-        }
+        //    return result;
+        //}
         public async Task<List<dynamic>> GetDataAsync(IQueryStrategy<dynamic> strategy)
         {
             throw new System.NotImplementedException();
@@ -201,18 +201,18 @@ namespace PlatformCorePrototype.Services
             //return null;
         }
 
-        public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
-        {
-            var t1 = GetViewDefinitionMetadataAsync(viewId);
-            var t2 = t1.ContinueWith<ViewDefinition>((t) =>
-            {
-                var asyncResult =  Mapper.Map<ViewDefinition>(t.Result);
-                asyncResult.QueryBuilder.ViewId = viewId;
-                return asyncResult;
-            });
-            var result = await t2;
-            return result;
-        }
+        //public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
+        //{
+        //    var t1 = GetViewDefinitionMetadataAsync(viewId);
+        //    var t2 = t1.ContinueWith<ViewDefinition>((t) =>
+        //    {
+        //        var asyncResult =  Mapper.Map<ViewDefinition>(t.Result);
+        //        asyncResult.QueryBuilder.ViewId = viewId;
+        //        return asyncResult;
+        //    });
+        //    var result = await t2;
+        //    return result;
+        //}
         public async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync(string viewId)
         {
      

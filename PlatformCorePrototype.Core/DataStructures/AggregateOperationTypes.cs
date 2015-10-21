@@ -8,7 +8,9 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public enum AggregateOperationTypes
     {
-        Sum=0,
-        Average=1
+        
+        Average=0,
+        Count=1,
+        Sum = 2
     }
 }

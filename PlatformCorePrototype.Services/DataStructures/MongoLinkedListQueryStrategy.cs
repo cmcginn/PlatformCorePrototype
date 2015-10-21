@@ -22,9 +22,27 @@ namespace PlatformCorePrototype.Services.DataStructures
         
 
         public IQueryBuilder QueryBuilder { get; set; }
-        public Task<List<T>> RunQuery()
+        public async Task<List<T>> RunQuery()
         {
-            throw new NotImplementedException();
+            //throw new System.NotImplementedException();
+            var pipeline = await GetQueryPipeline();
+            var db = GetDatabase();
+            var collection = db.GetCollection<T>(CollectionMetadata.Id);
+            var ag = collection.Aggregate();
+            
+          
+            //ProjectionDefinition < T > = new ProjectionDefinition<T>();
+            //ag.Group<T>((x) => { return pipeline.First(); });
+            //Command<T> cmd = pipeline;
+            // var pp = collection.AggregateAsync<T>()
+
+            //pl.Stages.Add(pipeline.First())
+            //pl.Group(x=>x.State,g => new { State = g.Key, TotalPopulation = g.Sum(x => x.Population) })
+            //PipelineDefinition p = new BsonDocument[];
+            //pl.AppendStage(pipeline.First())
+            //pl.Group(pipeline.First());
+            //PipelineDefinition<BsonDocument,T> pd = pipeline;
+            //var result = collection.AggregateAsync<T>()
         }
         #endregion
 
@@ -101,6 +119,85 @@ namespace PlatformCorePrototype.Services.DataStructures
             return await result;
         }
 
+        protected List<BsonElement> GetQueryGroupIdElements()
+        {
+            List<BsonElement> result = null;
+            if (LinkedListQueryBuilder.SelectedSlicers.Any())
+            {
+                result = new List<BsonElement>();
+       
+                for (var index = 0; index < LinkedListQueryBuilder.SelectedSlicers.Count; index++)
+                {
+                    BsonElement el;
+
+                    el = new BsonElement(String.Format("slicer_{0}", index), new BsonString(String.Format("${0}", LinkedListQueryBuilder.SelectedSlicers[index].Column.ColumnName)));
+                    result.Add(el);
+                    //TODO Handle Dates?
+
+                }
+            }
+            return result;
+        }
+        protected List<BsonElement> GetQueryMeasureElements()
+        {
+            List<BsonElement> result = null;
+            if (LinkedListQueryBuilder.SelectedMeasures.Any())
+            {
+                result = new List<BsonElement>();
+                var elements = new List<BsonElement>();
+                for (var index = 0; index < LinkedListQueryBuilder.SelectedMeasures.Count; index++)
+                {
+                    var measure = LinkedListQueryBuilder.SelectedMeasures[index];
+                    var op = "";
+                    BsonValue elementValue = null;
+                    switch (measure.AggregateOperationType)
+                    {
+                        case AggregateOperationTypes.Average:
+                            op = "$avg";
+                            elementValue = new BsonString(String.Format("${0}", measure.Column.ColumnName));
+                            break;
+
+                        case AggregateOperationTypes.Sum:
+                            op = "$sum";
+                            elementValue = new BsonString(String.Format("${0}", measure.Column.ColumnName));
+                            break;
+                        case AggregateOperationTypes.Count:
+                            op = "$sum";
+                            elementValue = new BsonInt32(1);
+                            break;
+                    }
+                    var el = new BsonElement(op, elementValue);
+                    var factDoc = new BsonDocument();
+                    factDoc.Add(el);
+                    var factElementDoc = new BsonDocument();
+                    result.Add(new BsonElement(String.Format("measure_{0}", index), factDoc));
+                
+                }
+                
+            }
+            return result;
+        }
+        protected BsonDocument GetQueryGroupDocument()
+        {
+            BsonDocument result = null;
+            var idElements = GetQueryGroupIdElements();
+            if (idElements!=null)
+            {
+                result = new BsonDocument {{"_id", new BsonDocument(idElements)}};
+            
+                
+                var measureElements = GetQueryMeasureElements();
+                
+                if (measureElements!=null)
+                {
+                    result.AddRange(measureElements);
+
+                }
+
+            }
+
+            return result;
+        }
         
         protected virtual async Task<List<BsonDocument>> GetQueryPipeline()
         {
@@ -116,7 +213,12 @@ namespace PlatformCorePrototype.Services.DataStructures
             {
                 var asyncResult = new List<BsonDocument>();
                 if (linkedListFilters != null)
-                    asyncResult.Add(linkedListFilters.Serialize());
+                    asyncResult.Add(new BsonDocument {{"$match", linkedListFilters.Serialize()}});
+
+                var groupDocument = GetQueryGroupDocument();
+
+                if (groupDocument != null)
+                    asyncResult.Add(new BsonDocument{{"$group",groupDocument}});
                 return asyncResult;
             });
             result.Start();

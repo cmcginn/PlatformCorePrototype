@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +15,7 @@ namespace PlatformCorePrototype.Tests.SystemTests
     public class FullPipelineExample:TestBase
     {
 
-        IDataCollectionMetadata GetMetadataByViewId(string viewId)
+        IDataCollectionMetadata GetCollectionMetadataByViewId(string viewId)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
@@ -34,7 +35,18 @@ namespace PlatformCorePrototype.Tests.SystemTests
         [TestMethod]
         public void TestMethod1()
         {
-            GetMetadataByViewId("linkedlist_account_view1");
+            var actual = GetCollectionMetadataByViewId("linkedlist_account_view1") as LinkedListDataCollectionMetadata;
+            //maps correctly?
+            Assert.IsNotNull(actual);
+            var viewDefinition =
+                actual.Views.Single(x => x.ViewId == "linkedlist_account_view1") as LinkedListViewDefinitionMetadata;
+            Assert.IsNotNull(viewDefinition);
+
+            Assert.IsTrue(viewDefinition.Paths.Any());
+            var accountMeasure = viewDefinition.Measures.Single(x => x.Column.ColumnName == "Amount");
+            Assert.IsTrue(accountMeasure.AggregateOperationType == AggregateOperationTypes.Sum);
+            Assert.IsTrue(viewDefinition.Slicers.Any());
+         
         }
     }
 }
