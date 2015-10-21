@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -16,7 +17,7 @@ using PlatformCorePrototype.Tests.Services;
 namespace PlatformCorePrototype.Tests.DataStructures
 {
 
-    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<dynamic>
+    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy
     {
         public FilterDefinition<dynamic> GetNavigationFilterDefinitionAccessor()
         {
@@ -75,13 +76,16 @@ namespace PlatformCorePrototype.Tests.DataStructures
         {
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<BsonDocument>("linkedlistdata");
-            //var builder = new FilterDefinitionBuilder<BsonDocument>();
-            //var builder = new ProjectionDefinitionBuilder<BsonDocument>();
-            //ProjectionDefinition<BsonDocument> pd = new BsonDocument();
-            //pd &= builder.
+            var items = db.GetCollection<ExpandoObject>("linkedlistdata");
+            var builder = new FilterDefinitionBuilder<ExpandoObject>();
+            var r = items.Aggregate();
+            dynamic grouping = new ExpandoObject();
 
-            //var actual = items.Aggregate(new BsonDocument()).Group()
+            var g = r.Group<ExpandoObject>(BsonDocument.Parse("{ '_id' : { 's0' : '$SalesPerson', 's1' : '$Product' }, 'f0' : { '$sum' : '$Amount' } }"));
+            r=r.AppendStage<ExpandoObject>(
+                BsonDocument.Parse(
+                    "{'$group':{ '_id' : { 's0' : '$SalesPerson', 's1' : '$Product' }, 'f0' : { '$sum' : '$Amount' } }}"));
+            var result = r.ToListAsync().Result;
         }
 
 
@@ -212,7 +216,10 @@ namespace PlatformCorePrototype.Tests.DataStructures
             qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "SalesPerson"));
             qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
             qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
-           
+            var actual = target.RunQuery().Result;
+
+          //  var dd = Newtonsoft.Json.JsonConvert.SerializeObject(actual.First());
+            Assert.IsTrue(actual.Any());
 
             // Assert.IsTrue(actual.Any());
 

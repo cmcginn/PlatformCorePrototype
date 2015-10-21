@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoLinkedListQueryStrategy<T>
+    public class MongoLinkedListQueryStrategy : IMongoLinkedListQueryStrategy<ExpandoObject>
     {
 
         #region public interface
@@ -22,27 +23,17 @@ namespace PlatformCorePrototype.Services.DataStructures
         
 
         public IQueryBuilder QueryBuilder { get; set; }
-        public async Task<List<T>> RunQuery()
+        public async Task<List<ExpandoObject>> RunQuery()
         {
-            //throw new System.NotImplementedException();
             var pipeline = await GetQueryPipeline();
             var db = GetDatabase();
-            var collection = db.GetCollection<T>(CollectionMetadata.Id);
+            var collection = db.GetCollection<ExpandoObject>(CollectionMetadata.Id);
             var ag = collection.Aggregate();
-            
-          
-            //ProjectionDefinition < T > = new ProjectionDefinition<T>();
-            //ag.Group<T>((x) => { return pipeline.First(); });
-            //Command<T> cmd = pipeline;
-            // var pp = collection.AggregateAsync<T>()
-
-            //pl.Stages.Add(pipeline.First())
-            //pl.Group(x=>x.State,g => new { State = g.Key, TotalPopulation = g.Sum(x => x.Population) })
-            //PipelineDefinition p = new BsonDocument[];
-            //pl.AppendStage(pipeline.First())
-            //pl.Group(pipeline.First());
-            //PipelineDefinition<BsonDocument,T> pd = pipeline;
-            //var result = collection.AggregateAsync<T>()
+            pipeline.ForEach(pl =>
+            {
+                ag = ag.AppendStage<ExpandoObject>(pl);
+            });
+            return await ag.ToListAsync();
         }
         #endregion
 
@@ -65,20 +56,20 @@ namespace PlatformCorePrototype.Services.DataStructures
             }
             set { _LinkedListQueryBuilder = value; }
         }
-        protected virtual FilterDefinition<T> GetNavigationFilterDefinition()
+        protected virtual FilterDefinition<dynamic> GetNavigationFilterDefinition()
         {
-      
-            FilterDefinition<T> result = null;
+
+            FilterDefinition<dynamic> result = null;
             if (LinkedListQueryBuilder.SelectedPath != null)
             {
                 if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
                 {
 
 
-                    var builder = new FilterDefinitionBuilder<T>();
+                    var builder = new FilterDefinitionBuilder<dynamic>();
                     if (LinkedListQueryBuilder.ExcludeChildren)
                     {
-
+             
                         result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);
                     }
                     else
@@ -95,21 +86,21 @@ namespace PlatformCorePrototype.Services.DataStructures
             return result;
         }
 
-        protected virtual async Task<FilterDefinition<T>> GetLinkedListMapsFilterDefinition()
+        protected virtual async Task<FilterDefinition<dynamic>> GetLinkedListMapsFilterDefinition()
         {
             var db = GetDatabase();
             var collection = db.GetCollection<BsonDocument>(CollectionMetadata.MapCollectionName);
             var navigationFilter = GetNavigationFilterDefinition();
             var findDocument = navigationFilter != null ? navigationFilter.Serialize() : new BsonDocument();
             var items = collection.FindAsync<BsonDocument>(findDocument).Result.ToListAsync();
-            var result = items.ContinueWith<FilterDefinition<T>>((t) =>
+            var result = items.ContinueWith<FilterDefinition<dynamic>>((t) =>
             {
-                FilterDefinition<T> asyncResult = null;
+                FilterDefinition<dynamic> asyncResult = null;
                 if (t.Result.Any())
                 {
 
                     var keyValues = new BsonArray();
-                    var builder = new FilterDefinitionBuilder<T>();
+                    var builder = new FilterDefinitionBuilder<dynamic>();
                     t.Result.ForEach(doc => keyValues.Add(doc.GetElement("Key").Value));
                     asyncResult = builder.In(CollectionMetadata.KeyColumnName, keyValues);
 
@@ -202,7 +193,7 @@ namespace PlatformCorePrototype.Services.DataStructures
         protected virtual async Task<List<BsonDocument>> GetQueryPipeline()
         {
             
-            FilterDefinition<T> linkedListFilters = null;
+            FilterDefinition<dynamic> linkedListFilters = null;
             if (LinkedListQueryBuilder.SelectedPath != null)
             {
                 if(!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
