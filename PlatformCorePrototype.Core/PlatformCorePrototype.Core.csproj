@@ -80,7 +80,6 @@
     <Compile Include="DataStructures\LinkedListViewDefinition.cs" />
     <Compile Include="DataStructures\QueryBuilder.cs" />
     <Compile Include="DataStructures\ViewDefinition.cs" />
-    <Compile Include="Mapping\LinkedListViewDefinitionMetadataToLinkedListViewDefinitionModelProfile.cs" />
     <Compile Include="Mapping\ViewDefinitionMetadataToViewDefinitionModelProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IDataService.cs" />

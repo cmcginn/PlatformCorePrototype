@@ -234,7 +234,6 @@
     </Compile>
     <Compile Include="Infrastructure\MongoBsonContractResolver.cs" />
     <Compile Include="Infrastructure\JsonNetBsonDocumentConverter.cs" />
-    <Compile Include="Mapping\LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile.cs" />
     <Compile Include="Mapping\MappingConfiguration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

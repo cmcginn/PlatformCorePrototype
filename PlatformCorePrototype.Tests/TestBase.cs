@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson.Serialization;
 using PlatformCorePrototype.Core.DataStructures;
-using PlatformCorePrototype.Services.Configuration;
+
 using PlatformCorePrototype.Web.Mapping;
 
 namespace PlatformCorePrototype.Tests
@@ -18,7 +18,7 @@ namespace PlatformCorePrototype.Tests
         public TestBase()
         {
             MappingConfiguration.ConfigureMappings();
-            MongoClassMapRegistration.RegisterClassMaps();
+   
         }
 
     }
