@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\MongoLinkedListQueryStrategy.cs" />
+    <Compile Include="DataStructures\MongoLinkedListExpandoObjectQueryStrategy.cs" />
     <Compile Include="Helpers\BsonExtensions.cs" />
     <Compile Include="Mapping\BsonDocumentMappings.cs" />
     <Compile Include="MongoDataService.cs" />

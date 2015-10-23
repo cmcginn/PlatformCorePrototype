@@ -8,6 +8,7 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public interface IDataService
     {
+        Task<List<T>> GetDataAsync<T>(IQueryStrategy<T> strategy);
         Task<IDataCollectionMetadata> GetCollectionMetadataByViewId(string viewId);
     }
 }

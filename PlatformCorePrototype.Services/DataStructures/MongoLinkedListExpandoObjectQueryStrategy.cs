@@ -13,7 +13,7 @@ using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoLinkedListQueryStrategy : IQueryStrategy<ExpandoObject>
+    public class MongoLinkedListExpandoObjectQueryStrategy : IQueryStrategy<ExpandoObject>
     {
         #region public interface
 

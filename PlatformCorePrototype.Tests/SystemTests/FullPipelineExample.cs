@@ -44,13 +44,16 @@ namespace PlatformCorePrototype.Tests.SystemTests
         public async Task QueryDataReturnsResults()
         {
             var viewId = "linkedlist_account_view1";
+
             var actual = await GetCollectionMetadataByViewId(viewId);
             var view = actual.Views.Single(x => x.ViewId == viewId);
             var qs = Mapper.Map<IQueryBuilder>(view);
             Assert.IsInstanceOfType(qs, typeof (LinkedListQueryBuilder));
-            var strategy = Mapper.Map<MongoLinkedListQueryStrategy>(qs);
+            var strategy = Mapper.Map<MongoLinkedListExpandoObjectQueryStrategy>(qs);
             Assert.IsInstanceOfType(strategy, typeof (IQueryStrategy<ExpandoObject>));
-            var results = await strategy.RunQuery();
+            IDataService svc = new MongoDataService();
+            var results =  await svc.GetDataAsync<ExpandoObject>(strategy);
+     
             Assert.IsTrue(results.Any());
         }
     }

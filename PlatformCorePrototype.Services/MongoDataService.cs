@@ -12,37 +12,11 @@ namespace PlatformCorePrototype.Services
 {
     public class MongoDataService:IDataService
     {
-        //public async Task<IDataCollectionMetadata> GetDataCollectionMetadata(string collectionName)
-        //{
-        //    var client = new MongoClient(Globals.MongoConnectionString);
-        //    var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-        //    var items = db.GetCollection<BsonDocument>("collectionMetadata");
 
-        //    var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], collectionName));
-        //    var dd = await md.SingleAsync();
-        //    var r = Mapper.Map<BsonDocument, IDataCollectionMetadata>(dd);
-        //    //return Mapper.Map<BsonDocument, dd>();
-        //    //var result = md.SingleAsync().ContinueWith<IDataCollectionMetadata>((t) =>
-        //    //{
-        //    //    return Mapper.Map<BsonDocument, IDataCollectionMetadata>(t.Result);
-        //    //});
-        //    return r;
-        //}
-
-
-
-       
-
-    
-
-
-
-
-
-
-   
-      
-
+        public async Task<List<T>> GetDataAsync<T>(IQueryStrategy<T> strategy)
+        {
+            return await strategy.RunQuery();
+        }
         public async Task<IDataCollectionMetadata> GetCollectionMetadataByViewId(string viewId)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
