@@ -24,6 +24,8 @@ namespace PlatformCorePrototype.Web.Mapping
                 cfg.AddProfile<LinkedListViewDefinitionMetadataToLinkedListQueryBuilder>();
                 cfg.AddProfile<BsonDocumentToLinkedListPathSpecificationProfile>();
                 cfg.AddProfile<BsonDocumentToLinkedListViewDefinitionMetadata>();
+                //cfg.AddProfile<QueryBuilderToQueryStrategyProfile>();
+                cfg.AddProfile<QueryBuilderToMongoLinkedListQueryStrategy>();
                 //Core.Configuration.MappingConfiguration.Configure(cfg);
                 //cfg.AddProfile<LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile>();
             });

@@ -13,7 +13,7 @@ using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoLinkedListQueryStrategy : IMongoLinkedListQueryStrategy<ExpandoObject>
+    public class MongoLinkedListQueryStrategy<T> : IMongoLinkedListQueryStrategy<ExpandoObject>
     {
         #region public interface
 
@@ -59,14 +59,14 @@ namespace PlatformCorePrototype.Services.DataStructures
             set { _CollectionMetadata = value; }
         }
 
-        protected virtual FilterDefinition<dynamic> GetNavigationFilterDefinition()
+        protected virtual FilterDefinition<T> GetNavigationFilterDefinition()
         {
-            FilterDefinition<dynamic> result = null;
+            FilterDefinition<T> result = null;
             if (LinkedListQueryBuilder.SelectedPath != null)
             {
                 if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
                 {
-                    var builder = new FilterDefinitionBuilder<dynamic>();
+                    var builder = new FilterDefinitionBuilder<T>();
                     if (LinkedListQueryBuilder.ExcludeChildren)
                     {
                         result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);

@@ -55,6 +55,7 @@
     <Compile Include="DataStructures\FilterTypes.cs" />
     <Compile Include="DataStructures\FilterValue.cs" />
     <Compile Include="DataStructures\IDataCollectionMetadata.cs" />
+    <Compile Include="DataStructures\IDataService.cs" />
     <Compile Include="DataStructures\ILinkedListQueryBuilder.cs" />
     <Compile Include="DataStructures\ILinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />

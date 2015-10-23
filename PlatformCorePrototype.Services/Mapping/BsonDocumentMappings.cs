@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using AutoMapper;
 using MongoDB.Bson;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
+using PlatformCorePrototype.Services.DataStructures;
 
 namespace PlatformCorePrototype.Services.Mapping
 {
@@ -186,6 +188,21 @@ namespace PlatformCorePrototype.Services.Mapping
                 .ForMember(dest => dest.SelectedPath, src => src.Ignore())
                 .ForMember(dest => dest.SelectedKey, src => src.Ignore())
                 .ForMember(dest => dest.ExcludeChildren, src => src.Ignore());
+        }
+    }
+
+    public class QueryBuilderToMongoLinkedListQueryStrategy : Profile
+    {
+        protected override void Configure()
+        {
+            Mapper.CreateMap<ILinkedListQueryBuilder, MongoLinkedListQueryStrategy<ExpandoObject>>()
+                .ForMember(dest => dest.QueryBuilder, src => src.Ignore())
+                .AfterMap((source, dest) =>
+                {
+                    dest.QueryBuilder = source;
+                });
+
+
         }
     }
 }

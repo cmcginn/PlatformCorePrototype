@@ -10,8 +10,9 @@ namespace PlatformCorePrototype.Tests
     {
         public static IDataCollectionMetadata GetDataCollectionMetadata(string collectionName)
         {
+            throw new System.NotImplementedException();
             var svc = new MongoDataService();
-            return svc.GetDataCollectionMetadata(collectionName).Result;
+            //return svc.GetDataCollectionMetadata(collectionName).Result;
         }
 
         public static BsonDocument ToDocument<T>(FilterDefinition<T> source)

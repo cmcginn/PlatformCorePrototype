@@ -42,7 +42,7 @@ namespace PlatformCorePrototype.Web.Api
             //
             //qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
             qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
-            var strategy = new MongoLinkedListQueryStrategy();
+            var strategy = new MongoLinkedListQueryStrategy<ExpandoObject>();
             strategy.QueryBuilder = qb;
 
             return await strategy.RunQuery();

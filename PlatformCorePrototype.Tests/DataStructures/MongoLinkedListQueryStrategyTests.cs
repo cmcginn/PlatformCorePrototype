@@ -12,9 +12,9 @@ using PlatformCorePrototype.Services.DataStructures;
 
 namespace PlatformCorePrototype.Tests.DataStructures
 {
-    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy
+    public class MongoLinkedListQueryStrategyAccessor : MongoLinkedListQueryStrategy<ExpandoObject>
     {
-        public FilterDefinition<dynamic> GetNavigationFilterDefinitionAccessor()
+        public FilterDefinition<ExpandoObject> GetNavigationFilterDefinitionAccessor()
         {
             return GetNavigationFilterDefinition();
         }
