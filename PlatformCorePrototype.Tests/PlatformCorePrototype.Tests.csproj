@@ -73,7 +73,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataStructures\MongoLinkedListQueryStrategyTests.cs" />
-    <Compile Include="MyBsonDocumentSerializer.cs" />
     <Compile Include="SystemTests\FullPipelineExample.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestData.Designer.cs">
@@ -109,12 +108,7 @@
       <LastGenOutput>TestData.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-    <Folder Include="Mapping\" />
-    <Folder Include="Services\" />
-    <Folder Include="Web\Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
