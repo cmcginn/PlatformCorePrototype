@@ -135,7 +135,7 @@ namespace PlatformCorePrototype.Services.DataStructures
             if (LinkedListQueryBuilder.SelectedMeasures.Any())
             {
                 result = new List<BsonElement>();
-                var elements = new List<BsonElement>();
+    
                 for (var index = 0; index < LinkedListQueryBuilder.SelectedMeasures.Count; index++)
                 {
                     var measure = LinkedListQueryBuilder.SelectedMeasures[index];
@@ -160,7 +160,6 @@ namespace PlatformCorePrototype.Services.DataStructures
                     var el = new BsonElement(op, elementValue);
                     var factDoc = new BsonDocument();
                     factDoc.Add(el);
-                    var factElementDoc = new BsonDocument();
                     result.Add(new BsonElement(String.Format("measure_{0}", index), factDoc));
                 
                 }

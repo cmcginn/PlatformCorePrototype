@@ -9,9 +9,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
-using PlatformCorePrototype.Core.Models;
-using PlatformCorePrototype.Core.Services;
-using PlatformCorePrototype.Services.DataStructures;
+
 
 namespace PlatformCorePrototype.Services
 {
@@ -24,7 +22,7 @@ namespace PlatformCorePrototype.Services
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var items = db.GetCollection<BsonDocument>("collectionMetadata");
-            var builder = new FilterDefinitionBuilder<BsonDocument>();
+  
             var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], collectionName));
             var dd = await md.SingleAsync();
             var r = Mapper.Map<BsonDocument, IDataCollectionMetadata>(dd);
@@ -98,15 +96,7 @@ namespace PlatformCorePrototype.Services
             return await result;
         }
 
-        async Task<ViewDefinitionMetadata> GetViewDefinitionMetadataAsync<T>(string viewId) where T : ViewDefinitionMetadata
-        {
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<T>("viewDefinitionMetadata");
-            var viewDefinitionMetadataTask = items.Find(x => x.ViewId == viewId);
-            var result = await viewDefinitionMetadataTask.SingleAsync();
-            return result;
-        }
+
 
         
         //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)

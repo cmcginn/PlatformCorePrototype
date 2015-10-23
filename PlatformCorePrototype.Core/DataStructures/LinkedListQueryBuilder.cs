@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Core.Models;
 
-namespace PlatformCorePrototype.Core.Models
+namespace PlatformCorePrototype.Core.DataStructures
 {
     public class LinkedListQueryBuilder:QueryBuilder,ILinkedListQueryBuilder
     {

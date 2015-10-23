@@ -57,17 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\IMongoLinkedListQueryStrategy.cs" />
-    <Compile Include="DataStructures\IMongoTreeQueryDefinition.cs" />
-    <Compile Include="DataStructures\IMongoTreeQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoLinkedListQueryStrategy.cs" />
-    <Compile Include="DataStructures\MongoTreeQueryStrategy.cs" />
     <Compile Include="Helpers\BsonExtensions.cs" />
     <Compile Include="Mapping\BsonDocumentMappings.cs" />
     <Compile Include="MongoDataService.cs" />
-    <Compile Include="DataStructures\Ancestor.cs" />
-    <Compile Include="DataStructures\MongoQueryDefinition.cs" />
     <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
-    <Compile Include="Helpers\TreeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

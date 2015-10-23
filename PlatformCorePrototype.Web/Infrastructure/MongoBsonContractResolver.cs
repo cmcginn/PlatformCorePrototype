@@ -8,9 +8,6 @@ namespace PlatformCorePrototype.Web.Infrastructure
 {
     public class MongoBsonContractResolver:DefaultContractResolver
     {
-        public override JsonContract ResolveContract(Type type)
-        {
-            return base.ResolveContract(type);
-        }
+       
     }
 }

@@ -72,16 +72,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DataStructures\MongoQueryDefinitionTests.cs" />
-    <Compile Include="DataStructures\MongoTreeQueryStrategyTests.cs" />
     <Compile Include="DataStructures\MongoLinkedListQueryStrategyTests.cs" />
-    <Compile Include="Helpers\TreeExtensionsTests.cs" />
-    <Compile Include="Mapping\MappingTests.cs" />
     <Compile Include="MyBsonDocumentSerializer.cs" />
-    <Compile Include="Services\MongoDataServiceTests.cs" />
     <Compile Include="SystemTests\FullPipelineExample.cs" />
     <Compile Include="TestBase.cs" />
-    <Compile Include="SystemTests\LinkedListTests.cs" />
     <Compile Include="TestData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -89,9 +83,7 @@
     </Compile>
     <Compile Include="TestHelper.cs" />
     <Compile Include="TestUtils.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\Services\DataServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -116,6 +108,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TestData.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="Mapping\" />
+    <Folder Include="Services\" />
+    <Folder Include="Web\Services\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
