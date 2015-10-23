@@ -17,35 +17,36 @@ namespace PlatformCorePrototype.Web.Api
     {
         public async Task<List<ExpandoObject>> Get(string id)
         {
-            var client = new MongoClient(Globals.MongoConnectionString);
-            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
-            var items = db.GetCollection<BsonDocument>("collectionMetadata");
-
-            var builder = new FilterDefinitionBuilder<BsonDocument>();
-            var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], "linkedlistdata"));
-
+            throw new System.NotImplementedException();
+            //var client = new MongoClient(Globals.MongoConnectionString);
+            //var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            //var items = db.GetCollection<BsonDocument>("collectionMetadata");
 
             //var builder = new FilterDefinitionBuilder<BsonDocument>();
-            var svc = new MongoDataService();
+            //var md = items.Find(Builders<BsonDocument>.Filter.Eq(x => x["_id"], "linkedlistdata"));
 
-            var metadata =
-                Mapper.Map<LinkedListDataCollectionMetadata>(md.SingleAsync().Result);
-            var v =
-                metadata.Views.Single(x => x.ViewId == "linkedlist_account_view1") as LinkedListViewDefinitionMetadata;
 
-            var qb = Mapper.Map<ILinkedListQueryBuilder>(v);
-            var selectedSlicers = id.Split('_');
-            selectedSlicers.ToList()
-                .ForEach(z => { qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == z)); });
+            ////var builder = new FilterDefinitionBuilder<BsonDocument>();
+            //var svc = new MongoDataService();
 
-            qb.SelectedPath = qb.AvailablePaths.Single(x => x.Navigation == id.Replace("_", "."));
-            //
-            //qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
-            qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
-            var strategy = new MongoLinkedListQueryStrategy<ExpandoObject>();
-            strategy.QueryBuilder = qb;
+            //var metadata =
+            //    Mapper.Map<LinkedListDataCollectionMetadata>(md.SingleAsync().Result);
+            //var v =
+            //    metadata.Views.Single(x => x.ViewId == "linkedlist_account_view1") as LinkedListViewDefinitionMetadata;
 
-            return await strategy.RunQuery();
+            //var qb = Mapper.Map<ILinkedListQueryBuilder>(v);
+            //var selectedSlicers = id.Split('_');
+            //selectedSlicers.ToList()
+            //    .ForEach(z => { qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == z)); });
+
+            //qb.SelectedPath = qb.AvailablePaths.Single(x => x.Navigation == id.Replace("_", "."));
+            ////
+            ////qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Product"));
+            //qb.SelectedMeasures.Add(qb.AvailableMeasures.First());
+            //var strategy = new MongoLinkedListQueryStrategy<ExpandoObject>();
+            //strategy.QueryBuilder = qb;
+
+            //return await strategy.RunQuery();
         }
     }
 }

@@ -195,7 +195,7 @@ namespace PlatformCorePrototype.Services.Mapping
     {
         protected override void Configure()
         {
-            Mapper.CreateMap<ILinkedListQueryBuilder, MongoLinkedListQueryStrategy<ExpandoObject>>()
+            Mapper.CreateMap<ILinkedListQueryBuilder, MongoLinkedListQueryStrategy>()
                 .ForMember(dest => dest.QueryBuilder, src => src.Ignore())
                 .AfterMap((source, dest) =>
                 {

@@ -13,7 +13,7 @@ using PlatformCorePrototype.Services.Helpers;
 
 namespace PlatformCorePrototype.Services.DataStructures
 {
-    public class MongoLinkedListQueryStrategy<T> : IMongoLinkedListQueryStrategy<ExpandoObject>
+    public class MongoLinkedListQueryStrategy : IQueryStrategy<ExpandoObject>
     {
         #region public interface
 
@@ -59,14 +59,14 @@ namespace PlatformCorePrototype.Services.DataStructures
             set { _CollectionMetadata = value; }
         }
 
-        protected virtual FilterDefinition<T> GetNavigationFilterDefinition()
+        protected virtual FilterDefinition<ExpandoObject> GetNavigationFilterDefinition()
         {
-            FilterDefinition<T> result = null;
+            FilterDefinition<ExpandoObject> result = null;
             if (LinkedListQueryBuilder.SelectedPath != null)
             {
                 if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
                 {
-                    var builder = new FilterDefinitionBuilder<T>();
+                    var builder = new FilterDefinitionBuilder<ExpandoObject>();
                     if (LinkedListQueryBuilder.ExcludeChildren)
                     {
                         result = builder.Eq("Navigation", LinkedListQueryBuilder.SelectedPath.Navigation);
@@ -83,7 +83,7 @@ namespace PlatformCorePrototype.Services.DataStructures
             return result;
         }
 
-        protected virtual async Task<FilterDefinition<dynamic>> GetLinkedListMapsFilterDefinition()
+        protected virtual async Task<FilterDefinition<ExpandoObject>> GetLinkedListMapsFilterDefinition()
         {
             var db = GetDatabase();
             var collection = db.GetCollection<BsonDocument>(CollectionMetadata.MapCollectionName);
@@ -92,11 +92,11 @@ namespace PlatformCorePrototype.Services.DataStructures
             var items = collection.FindAsync<BsonDocument>(findDocument).Result.ToListAsync();
             var result = items.ContinueWith(t =>
             {
-                FilterDefinition<dynamic> asyncResult = null;
+                FilterDefinition<ExpandoObject> asyncResult = null;
                 if (t.Result.Any())
                 {
                     var keyValues = new BsonArray();
-                    var builder = new FilterDefinitionBuilder<dynamic>();
+                    var builder = new FilterDefinitionBuilder<ExpandoObject>();
                     t.Result.ForEach(doc => keyValues.Add(doc.GetElement("Key").Value));
                     asyncResult = builder.In(CollectionMetadata.KeyColumnName, keyValues);
                 }
@@ -169,7 +169,7 @@ namespace PlatformCorePrototype.Services.DataStructures
             var idElements = GetQueryGroupIdElements();
             if (idElements != null)
             {
-                result = new BsonDocument {{"_id", new BsonDocument(idElements)}};
+                result = new BsonDocument { { "_id", new BsonDocument(idElements) } };
 
 
                 var measureElements = GetQueryMeasureElements();
@@ -185,7 +185,7 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         protected virtual async Task<List<BsonDocument>> GetQueryPipeline()
         {
-            FilterDefinition<dynamic> linkedListFilters = null;
+            FilterDefinition<ExpandoObject> linkedListFilters = null;
             if (LinkedListQueryBuilder.SelectedPath != null)
             {
                 if (!String.IsNullOrWhiteSpace(LinkedListQueryBuilder.SelectedPath.Navigation))
@@ -196,12 +196,12 @@ namespace PlatformCorePrototype.Services.DataStructures
             {
                 var asyncResult = new List<BsonDocument>();
                 if (linkedListFilters != null)
-                    asyncResult.Add(new BsonDocument {{"$match", linkedListFilters.Serialize()}});
+                    asyncResult.Add(new BsonDocument { { "$match", linkedListFilters.Serialize() } });
 
                 var groupDocument = GetQueryGroupDocument();
 
                 if (groupDocument != null)
-                    asyncResult.Add(new BsonDocument {{"$group", groupDocument}});
+                    asyncResult.Add(new BsonDocument { { "$group", groupDocument } });
                 return asyncResult;
             });
             result.Start();
@@ -216,7 +216,7 @@ namespace PlatformCorePrototype.Services.DataStructures
 
             var collection = db.GetCollection<BsonDocument>("collectionMetadata");
             var builder = new FilterDefinitionBuilder<BsonDocument>();
-            var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument {{"ViewId", QueryBuilder.ViewId}});
+            var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument { { "ViewId", QueryBuilder.ViewId } });
             var queryResult = collection.Find(fd).SingleOrDefaultAsync();
             if (queryResult == null)
                 throw new Exception(

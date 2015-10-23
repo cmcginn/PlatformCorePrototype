@@ -48,8 +48,8 @@ namespace PlatformCorePrototype.Tests.SystemTests
             var view = actual.Views.Single(x => x.ViewId == viewId);
             var qs = Mapper.Map<IQueryBuilder>(view);
             Assert.IsInstanceOfType(qs, typeof (LinkedListQueryBuilder));
-            var strategy = Mapper.Map<MongoLinkedListQueryStrategy<ExpandoObject>>(qs);
-            Assert.IsInstanceOfType(strategy, typeof (IMongoLinkedListQueryStrategy<ExpandoObject>));
+            var strategy = Mapper.Map<MongoLinkedListQueryStrategy>(qs);
+            Assert.IsInstanceOfType(strategy, typeof (IQueryStrategy<ExpandoObject>));
             var results = await strategy.RunQuery();
             Assert.IsTrue(results.Any());
         }

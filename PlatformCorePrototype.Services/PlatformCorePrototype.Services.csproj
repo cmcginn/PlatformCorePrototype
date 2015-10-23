@@ -56,12 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\IMongoLinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\MongoLinkedListQueryStrategy.cs" />
     <Compile Include="Helpers\BsonExtensions.cs" />
     <Compile Include="Mapping\BsonDocumentMappings.cs" />
     <Compile Include="MongoDataService.cs" />
-    <Compile Include="DataStructures\IMongoQueryStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

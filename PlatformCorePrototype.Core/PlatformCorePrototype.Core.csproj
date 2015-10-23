@@ -57,7 +57,6 @@
     <Compile Include="DataStructures\IDataCollectionMetadata.cs" />
     <Compile Include="DataStructures\IDataService.cs" />
     <Compile Include="DataStructures\ILinkedListQueryBuilder.cs" />
-    <Compile Include="DataStructures\ILinkedListQueryStrategy.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
     <Compile Include="DataStructures\IViewDefinitionMetadata.cs" />
     <Compile Include="DataStructures\LinkedListDataCollectionMetadata.cs" />
