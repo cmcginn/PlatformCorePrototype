@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using MongoDB.Bson;
 using PlatformCorePrototype.Core.Models;
-using PlatformCorePrototype.Services.DataStructures;
 using PlatformCorePrototype.Web.Services;
 
 namespace PlatformCorePrototype.Web.Api
@@ -18,10 +13,9 @@ namespace PlatformCorePrototype.Web.Api
         //POST:api/QueryBuilder
         public async Task<List<dynamic>> Post(QueryBuilder value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
             // var result =  await service.GetDataAsync(value);
             //return result;
         }
-
-   }
+    }
 }

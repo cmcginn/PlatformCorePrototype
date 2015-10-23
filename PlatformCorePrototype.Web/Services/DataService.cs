@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using AutoMapper;
-using MongoDB.Bson;
-using PlatformCorePrototype.Core;
 using PlatformCorePrototype.Core.DataStructures;
-using PlatformCorePrototype.Core.Models;
-using PlatformCorePrototype.Services;
-using PlatformCorePrototype.Services.DataStructures;
-
 
 namespace PlatformCorePrototype.Web.Services
 {
@@ -18,8 +8,8 @@ namespace PlatformCorePrototype.Web.Services
     {
         public async Task<ViewDefinition> GetViewDefinitionAsync(string viewId)
         {
-            throw new System.NotImplementedException();
-    
+            throw new NotImplementedException();
+
             //var service = new MongoDataService();
             //var result = service.GetViewDefinitionAsync(viewId);
             //return await result;
@@ -48,7 +38,7 @@ namespace PlatformCorePrototype.Web.Services
         //{
         //    var result = new Task<List<FilterSpecification>>(() =>
         //    {
-               
+
         //        var taskResult = new List<FilterSpecification>();
         //        var codeFilter = new FilterSpecification();
         //        codeFilter.Column = new DataColumnMetadata

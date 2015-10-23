@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
     public class ViewDefinitionMetadata : IViewDefinitionMetadata
     {
-        public string ViewId { get; set; }
-
         private List<FilterSpecification> _Filters;
+        private List<MeasureSpecification> _Measures;
+        private List<SlicerSpecification> _Slicers;
+        public string ViewId { get; set; }
 
         public List<FilterSpecification> Filters
         {
@@ -29,9 +26,5 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _Measures ?? (_Measures = new List<MeasureSpecification>()); }
             set { _Measures = value; }
         }
-
-        private List<SlicerSpecification> _Slicers;
-
-        private List<MeasureSpecification> _Measures;
     }
 }

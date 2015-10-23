@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PlatformCorePrototype.Core.DataStructures;
+﻿using System.Collections.Generic;
 using PlatformCorePrototype.Core.Models;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class LinkedListQueryBuilder:QueryBuilder,ILinkedListQueryBuilder
+    public class LinkedListQueryBuilder : QueryBuilder, ILinkedListQueryBuilder
     {
-       
-        public LinkedListPathSpecification SelectedPath { get; set; }
         private List<LinkedListPathSpecification> _AvailablePaths;
+        public LinkedListPathSpecification SelectedPath { get; set; }
 
         public bool ExcludeChildren { get; set; }
         public object SelectedKey { get; set; }
@@ -22,6 +16,5 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _AvailablePaths ?? (_AvailablePaths = new List<LinkedListPathSpecification>()); }
             set { _AvailablePaths = value; }
         }
-
     }
 }

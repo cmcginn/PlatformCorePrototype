@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using PlatformCorePrototype.Core.DataStructures;
 
 namespace PlatformCorePrototype.Core.Models
@@ -13,7 +9,7 @@ namespace PlatformCorePrototype.Core.Models
         List<FilterSpecification> AvailableFilters { get; set; }
         List<MeasureSpecification> AvailableMeasures { get; set; }
         List<SlicerSpecification> AvailableSlicers { get; set; }
-        List<FilterSpecification> SelectedFilters{get;set;}
+        List<FilterSpecification> SelectedFilters { get; set; }
         List<SlicerSpecification> SelectedSlicers { get; set; }
         List<MeasureSpecification> SelectedMeasures { get; set; }
     }

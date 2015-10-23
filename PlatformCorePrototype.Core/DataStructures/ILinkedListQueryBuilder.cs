@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using PlatformCorePrototype.Core.Models;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ILinkedListQueryBuilder:IQueryBuilder
+    public interface ILinkedListQueryBuilder : IQueryBuilder
     {
         bool ExcludeChildren { get; set; }
         List<LinkedListPathSpecification> AvailablePaths { get; set; }

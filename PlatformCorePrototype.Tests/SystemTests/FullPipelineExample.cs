@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MongoDB.Bson;
@@ -14,19 +12,18 @@ using PlatformCorePrototype.Services.DataStructures;
 namespace PlatformCorePrototype.Tests.SystemTests
 {
     [TestClass]
-    public class FullPipelineExample:TestBase
+    public class FullPipelineExample : TestBase
     {
-
-        IDataCollectionMetadata GetCollectionMetadataByViewId(string viewId)
+        private IDataCollectionMetadata GetCollectionMetadataByViewId(string viewId)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
             var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
             var items = db.GetCollection<BsonDocument>("collectionMetadata");
             var builder = new FilterDefinitionBuilder<BsonDocument>();
             var fd = builder.ElemMatch<BsonDocument>("Views", new BsonDocument {{"ViewId", viewId}});
-          
+
             var serializer = BsonSerializer.SerializerRegistry.GetSerializer<BsonDocument>();
-            var f =  fd.Render(serializer, BsonSerializer.SerializerRegistry).ToString();
+            var f = fd.Render(serializer, BsonSerializer.SerializerRegistry).ToString();
 
             var r = items.Find(fd).SingleAsync().Result;
 
@@ -34,6 +31,7 @@ namespace PlatformCorePrototype.Tests.SystemTests
             var result = Mapper.Map<IDataCollectionMetadata>(r);
             return result;
         }
+
         [TestMethod]
         public void TestMethod1()
         {
@@ -48,7 +46,6 @@ namespace PlatformCorePrototype.Tests.SystemTests
             var accountMeasure = viewDefinition.Measures.Single(x => x.Column.ColumnName == "Amount");
             Assert.IsTrue(accountMeasure.AggregateOperationType == AggregateOperationTypes.Sum);
             Assert.IsTrue(viewDefinition.Slicers.Any());
-         
         }
 
         [TestMethod]
@@ -74,7 +71,6 @@ namespace PlatformCorePrototype.Tests.SystemTests
             strategy.QueryBuilder = qb;
             var actual = strategy.RunQuery().Result;
             Assert.IsTrue(actual.Any());
-
         }
     }
 }

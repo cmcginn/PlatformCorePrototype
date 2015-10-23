@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
     public class DataCollectionMetadata : IDataCollectionMetadata
     {
-
+        private List<DataColumnMetadata> _Columns;
+        private List<IViewDefinitionMetadata> _Views;
         public string Id { get; set; }
         public string DataSourceLocation { get; set; }
 
         public string DataSourceName { get; set; }
-
-        List<DataColumnMetadata> _Columns;
 
         public List<DataColumnMetadata> Columns
         {
@@ -29,8 +24,5 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _Views ?? (_Views = new List<IViewDefinitionMetadata>()); }
             set { _Views = value; }
         }
-
-        private List<IViewDefinitionMetadata> _Views;
-
     }
 }

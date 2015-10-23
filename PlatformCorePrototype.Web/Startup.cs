@@ -1,7 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using PlatformCorePrototype.Web;
 
-[assembly: OwinStartupAttribute(typeof(PlatformCorePrototype.Web.Startup))]
+[assembly: OwinStartup(typeof (Startup))]
+
 namespace PlatformCorePrototype.Web
 {
     public partial class Startup

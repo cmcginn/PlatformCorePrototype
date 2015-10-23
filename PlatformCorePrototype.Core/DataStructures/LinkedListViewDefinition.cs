@@ -6,7 +6,6 @@
 //using PlatformCorePrototype.Core.DataStructures;
 
 
-
 //namespace PlatformCorePrototype.Core.DataStructures
 //{
 //    public class LinkedListViewDefinition:ViewDefinition
@@ -20,3 +19,4 @@
 //        }
 //    }
 //}
+
