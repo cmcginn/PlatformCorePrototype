@@ -19,7 +19,7 @@ namespace PlatformCorePrototype.Services.Mapping
                 .ForMember(dest => dest.DataSourceLocation, src => src.MapFrom(x => x["DataSourceLocation"]))
                 .ForMember(dest => dest.DataSourceName, src => src.MapFrom(x => x["DataSourceName"]))
                 .ForMember(dest => dest.DataStorageType,
-                    src => src.MapFrom(x => (DataStorageStructureTypes) int.Parse(x["DataStorageType"].ToString())))
+                    src => src.MapFrom(x => (DataStorageStructureTypes)int.Parse(x["DataStorageType"].ToString())))
                 .ForMember(dest => dest.Views,
                     src =>
                         src.MapFrom(
@@ -77,13 +77,8 @@ namespace PlatformCorePrototype.Services.Mapping
     {
         protected override void Configure()
         {
-            Mapper.CreateMap<BsonDocument, LinkedListViewDefinitionMetadata>()
-                .ForMember(dest => dest.Paths,
-                    src =>
-                        src.MapFrom(
-                            x =>
-                                Mapper.Map<BsonDocument[], List<LinkedListPathSpecification>>(
-                                    x["Paths"].AsBsonArray.Select(m => m.AsBsonDocument).ToArray())));
+            Mapper.CreateMap<BsonDocument, LinkedListViewDefinitionMetadata>();
+
         }
     }
 
@@ -120,7 +115,7 @@ namespace PlatformCorePrototype.Services.Mapping
                         x => Mapper.Map<BsonDocument, DataColumnMetadata>(x["Column"].AsBsonDocument)))
                 .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())))
                 .ForMember(dest => dest.AggregateOperationType,
-                    src => src.MapFrom(x => (AggregateOperationTypes) int.Parse(x["AggregateOperationType"].ToString())));
+                    src => src.MapFrom(x => (AggregateOperationTypes)int.Parse(x["AggregateOperationType"].ToString())));
         }
     }
 
@@ -136,7 +131,7 @@ namespace PlatformCorePrototype.Services.Mapping
                 .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())))
                 .ForMember(dest => dest.SelectionMode, src => src.MapFrom(x => x["SelectionMode"]))
                 .ForMember(dest => dest.FilterType,
-                    src => src.MapFrom(x => (FilterTypes) int.Parse(x["FilterType"].ToString())))
+                    src => src.MapFrom(x => (FilterTypes)int.Parse(x["FilterType"].ToString())))
                 .ForMember(dest => dest.Dependencies,
                     src =>
                         src.MapFrom(
@@ -184,10 +179,13 @@ namespace PlatformCorePrototype.Services.Mapping
         protected override void Configure()
         {
             Mapper.CreateMap<LinkedListViewDefinitionMetadata, LinkedListQueryBuilder>()
-                .ForMember(dest => dest.AvailablePaths, src => src.MapFrom(x => x.Paths))
+                .ForMember(dest => dest.LinkedListMaps, src => src.Ignore())
                 .ForMember(dest => dest.SelectedPath, src => src.Ignore())
                 .ForMember(dest => dest.SelectedKey, src => src.Ignore())
-                .ForMember(dest => dest.ExcludeChildren, src => src.Ignore());
+                .ForMember(dest => dest.ExcludeChildren, src => src.Ignore())
+                .ForMember(dest => dest.SelectedLevel, src => src.Ignore());
+
+
         }
     }
 
@@ -205,4 +203,48 @@ namespace PlatformCorePrototype.Services.Mapping
 
         }
     }
+
+    public class BsonDocumentToILinkedListMapProfile : Profile
+    {
+        protected override void Configure()
+        {
+            Mapper.CreateMap<BsonDocument, ILinkedListMap>()
+                .ForMember(dest => dest.SlicerColumnName, src => src.MapFrom(m => m["SlicerColumnName"].ToString()))
+                .ForMember(dest => dest.NavigationMaps,
+                    src =>
+                        src.MapFrom(
+                            x =>
+                                Mapper.Map<BsonDocument[], List<ILinkedListNavigationMap>>(
+                                    x["NavigationMaps"].AsBsonArray.Select(m => m.AsBsonDocument).ToArray())))
+                .Include<BsonDocument, LinkedListMap>();
+        }
+    }
+
+    public class BsonDocumentToLinkedListMapProfile : Profile
+    {
+        protected override void Configure()
+        {
+            Mapper.CreateMap<BsonDocument, LinkedListMap>();
+        }
+    }
+
+    public class BsonDocumentToILinkedListNavigationMapProfile : Profile
+    {
+        protected override void Configure()
+        {
+            Mapper.CreateMap<BsonDocument, ILinkedListNavigationMap>()
+                .ForMember(dest => dest.Navigation, src => src.MapFrom(m => m["Navigation"]))
+                .ForMember(dest => dest.Key, src => src.MapFrom(m =>m["Key"]))
+                .Include<BsonDocument, LinkedListNavigationMap>();
+        }
+    }
+    public class BsonDocumentToLinkedListNavigationMapProfile : Profile
+    {
+        protected override void Configure()
+        {
+            Mapper.CreateMap<BsonDocument, LinkedListNavigationMap>();
+
+        }
+    }
+
 }

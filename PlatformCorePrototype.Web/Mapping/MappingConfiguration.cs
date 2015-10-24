@@ -26,6 +26,11 @@ namespace PlatformCorePrototype.Web.Mapping
                 cfg.AddProfile<BsonDocumentToLinkedListViewDefinitionMetadata>();
                 //cfg.AddProfile<QueryBuilderToQueryStrategyProfile>();
                 cfg.AddProfile<QueryBuilderToMongoLinkedListQueryStrategy>();
+                cfg.AddProfile<BsonDocumentToILinkedListMapProfile>();
+                cfg.AddProfile<BsonDocumentToLinkedListMapProfile>();
+               // cfg.AddProfile<BsonDocumentsToILinkedListMapsProfile>();
+                cfg.AddProfile<BsonDocumentToILinkedListNavigationMapProfile>();
+                cfg.AddProfile<BsonDocumentToLinkedListNavigationMapProfile>();
                 //Core.Configuration.MappingConfiguration.Configure(cfg);
                 //cfg.AddProfile<LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile>();
             });

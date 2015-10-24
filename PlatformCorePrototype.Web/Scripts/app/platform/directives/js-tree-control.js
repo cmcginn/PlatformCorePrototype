@@ -1,45 +1,47 @@
 ﻿myApp.directive('jsTreeControl', ['$log', 'CUSTOM_APP_PROPERTIES', function ($log, constants) {
-    function getNodeLevel(scope, level) {
-        var result = _.filter(scope.paths, function (path) {
-            return path.level == level;
-        });
-        return result;
-    }
-    function getTreeJson(scope) {
-        var result = { core: { data: [] } };
-        var ids = [];
-        console.log(scope);
-        if (!scope.path)
-            return;
-       // angular.forEach(scope.paths, function (navigation) {
+    var el = null;
+    function buildTree(scope) {
+        var mapped = d3.nest()
+            .key(function(d) { return d.navigation })
+            .map(scope.map, d3.map);
 
-            var paths = scope.path.navigation.split('.');
-            for (var i = 0; i < paths.length; i++) {
-                var id = paths[i] + "_" + i.toString();
-                if (ids.indexOf(id) < 0) {
-                    ids.push(id);
-                    if (i == 0) {
-                        var item = { id: id, parent: '#', text: paths[i] }
-                        result.core.data.push(item);
-                    } else {
-                        var item = { id: id, parent: ids[i - 1], text: paths[i] };
-                        result.core.data.push(item);
-                    }
-                }
+        var stage1 = [];
+        angular.forEach(mapped.entries(), function(entry) {
+            var keys = entry.key.split('.');
+            for (var i = 0; i < keys.length; i++) {
+                var item = { id: keys[i] + '_' + i.toString(), text: keys[i], parent:'#' };
+                if (i > 0)
+                    item.parent = keys[i - 1] + '_' + (i - 1).toString();
+                
+                  
+                stage1.push(item);
 
             }
-        //});
-        return result;
+        });
+        var result = [];
+        angular.forEach(stage1, function(stage) {
+            var existing = _.filter(result, function(resultValue) {
+                return resultValue.id == stage.id;
+            });
+            if (existing.length == 0)
+                result.push(stage);
+
+        });
+        console.log(result);
+        el.jstree({ core: {data:result} });
+
     }
+
+
     function link(scope, element, attrs) {
+        
+        el = $(element);
+        console.log(el);
         $log.debug('jsTreeControl');
-        scope.$watch('path', function (value) {
+        scope.$watch('map', function (value) {
             if (value) {
-                var d = getTreeJson(scope);
-                var tree = $(element).jstree(d);
-                tree.on('after_open.jstree', function(node) {
-                    console.log(node);
-                });
+                scope.map = value;
+                buildTree(scope);
             }
         });
 
@@ -48,7 +50,8 @@
     var result = {
         link: link,
         scope: {
-            path: '='
+            map: '=',
+            id:'='
         }
     };
     return result;

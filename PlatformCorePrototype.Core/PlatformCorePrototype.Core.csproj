@@ -56,10 +56,14 @@
     <Compile Include="DataStructures\FilterValue.cs" />
     <Compile Include="DataStructures\IDataCollectionMetadata.cs" />
     <Compile Include="DataStructures\IDataService.cs" />
+    <Compile Include="DataStructures\ILinkedListMap.cs" />
+    <Compile Include="DataStructures\ILinkedListNavigationMap.cs" />
     <Compile Include="DataStructures\ILinkedListQueryBuilder.cs" />
     <Compile Include="DataStructures\IQueryStrategy.cs" />
     <Compile Include="DataStructures\IViewDefinitionMetadata.cs" />
     <Compile Include="DataStructures\LinkedListDataCollectionMetadata.cs" />
+    <Compile Include="DataStructures\LinkedListMap.cs" />
+    <Compile Include="DataStructures\LinkedListNavigationMap.cs" />
     <Compile Include="DataStructures\LinkedListPathSpecification.cs" />
     <Compile Include="DataStructures\LinkedListViewDefinitionMetadata.cs" />
     <Compile Include="DataStructures\QueryStrategy.cs" />

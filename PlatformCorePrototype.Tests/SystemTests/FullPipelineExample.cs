@@ -25,6 +25,14 @@ namespace PlatformCorePrototype.Tests.SystemTests
         }
 
         [TestMethod]
+        public async Task GetLinkedListMaps()
+        {
+            IDataService svc = new MongoDataService();
+            var viewId = "linkedlist_account_view1";
+            var result = await svc.GetLinkedListMaps(viewId);
+            Assert.IsTrue(result.Any());
+        }
+        [TestMethod]
         public async Task MapsCorrectly()
         {
             var actual = await GetCollectionMetadataByViewId("linkedlist_account_view1") as LinkedListDataCollectionMetadata;
@@ -34,7 +42,7 @@ namespace PlatformCorePrototype.Tests.SystemTests
                 actual.Views.Single(x => x.ViewId == "linkedlist_account_view1") as LinkedListViewDefinitionMetadata;
             Assert.IsNotNull(viewDefinition);
 
-            Assert.IsTrue(viewDefinition.Paths.Any());
+        
             var accountMeasure = viewDefinition.Measures.Single(x => x.Column.ColumnName == "Amount");
             Assert.IsTrue(accountMeasure.AggregateOperationType == AggregateOperationTypes.Sum);
             Assert.IsTrue(viewDefinition.Slicers.Any());

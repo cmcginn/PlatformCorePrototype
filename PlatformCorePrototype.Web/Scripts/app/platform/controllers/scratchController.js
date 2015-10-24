@@ -1,36 +1,44 @@
 ﻿myApp.controller('ScratchController', ['$scope', '$timeout', '$resource','dataService', function ($scope, $timeout, $resource,dataservice) {
 
-    $scope.accounts = [];
-    $scope.salesPersons = [];
-    $scope.products = [];
-  //function getDataByPath()
-    $scope.getDataByPath = function(path) {
-        var d = dataservice.getScratchDataAsync(path);
-        d.then(function (data) {
-            if (path == "Account") {
-     
-                $scope.accounts = [];
-                angular.forEach(data, function (i) {
+    //function buildTree(map) {
+    //    var mapped = d3.nest()
+    //        .key(function (d) { return d.navigation })
+    //        .map(map, d3.map);
 
-                    var item = { id: i._id.slicer_0, sales: i.measure_0 };
-                    $scope.accounts.push(item);
-                });
-            } else if (path == "Account_SalesPerson") {
-                $scope.salesPersons = [];
-                angular.forEach(data, function(i) {
-                    var item = { id: i._id.slicer_0, name: i._id.slicer_1, sales: i.measure_0 };
-                    $scope.salesPersons.push(item);
-                });
+    //    var stage1 = [];
+    //    angular.forEach(mapped.entries(), function (entry) {
+    //        var keys = entry.key.split('.');
+    //        for (var i = 0; i < keys.length; i++) {
+    //            var item = { id: keys[i] + '_' + i.toString(), text: keys[i] };
+    //            if (i > 0) 
+    //                item.parent = keys[i - 1] + '_' + (i - 1).toString();
+    //            stage1.push(item);
+
+    //        }
+    //    });
+    //    var result = [];
+    //    angular.forEach(stage1, function(stage) {
+    //        var existing = _.filter(result, function(resultValue) {
+    //            return resultValue.id == stage.id;
+    //        });
+    //        if (existing.length == 0)
+    //            result.push(stage);
             
-            } else if (path == "Account_SalesPerson_Product") {
-                $scope.products = [];
-                angular.forEach(data, function (i) {
-                    var item = { id: i._id.slicer_0, salesPerson: i._id.slicer_1,name:i._id.slicer_2, sales: i.measure_0 };
-                    $scope.products.push(item);
-                });
+    //    });
+        
+    //}
+    //function buildTrees() {
+    //    angular.forEach($scope.linkedListMaps, function(linkListMap) {
+    //        buildTree(linkListMap.navigationMaps);
+    //    });
+    //}
 
-            }
-            //console.log(data);
+    $scope.linkedListMaps = [];
+    $scope.init=function(viewId) {
+        var d = dataservice.getScratchDataAsync(viewId);
+        d.then(function (data) {
+            $scope.linkedListMaps = data.linkedListMaps;
+            console.log($scope.linkedListMaps[0]);
         });
     }
 }]);

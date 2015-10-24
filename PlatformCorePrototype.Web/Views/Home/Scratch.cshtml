@@ -3,69 +3,8 @@
     Layout = null;
 }
 
-<div ng-controller="ScratchController">
-    <div>
-        <a href="#" ng-click="getDataByPath('Account')">Account</a>
-    </div>
-    <div>
-        <a href="#" ng-click="getDataByPath('Account_SalesPerson')">Account.SalesPerson</a>
-    </div>
-    <div>
-        <a href="#" ng-click="getDataByPath('Account_SalesPerson_Product')">Account.SalesPerson.Product</a>
-    </div>
-    
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Account</th>
-                    <th>Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="account in accounts">
-                    <td>{{account.id}}</td>
-                    <td>${{account.sales}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Account</th>
-                    <th>Sales Person</th>
-                    <th>Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="salesPerson in salesPersons">
-                    <td>{{salesPerson.id}}</td>
-                    <td>{{salesPerson.name}}</td>
-                    <td>${{salesPerson.sales}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Account</th>
-                    <th>Sales Person</th>
-                    <th>Product</th>
-                    <th>Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="product in products">
-                    <td>{{product.id}}</td>
-                    <td>{{product.salesPerson}}</td>
-                    <td>{{product.name}}</td>
-                    <td>${{product.sales}}</td>
-                </tr>
-            </tbody>
-        </table>
+<div ng-controller="ScratchController" ng-init="init('linkedlist_account_view1')">
+    <div class="row" ng-repeat="map in linkedListMaps">
+        <div js-tree-control data-map="map.navigationMaps" data-id="map.slicerColumnName"></div>
     </div>
 </div>

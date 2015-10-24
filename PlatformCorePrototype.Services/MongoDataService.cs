@@ -17,6 +17,7 @@ namespace PlatformCorePrototype.Services
         {
             return await strategy.RunQuery();
         }
+
         public async Task<IDataCollectionMetadata> GetCollectionMetadataByViewId(string viewId)
         {
             var client = new MongoClient(Globals.MongoConnectionString);
@@ -28,6 +29,23 @@ namespace PlatformCorePrototype.Services
             var result = Mapper.Map<IDataCollectionMetadata>(asyncResult);
             return result;
 
+        }
+
+
+
+
+
+        public async Task<List<ILinkedListMap>> GetLinkedListMaps(string viewId)
+        {
+
+            var collectionMetadata = await GetCollectionMetadataByViewId(viewId) as LinkedListDataCollectionMetadata;
+            var client = new MongoClient(Globals.MongoConnectionString);
+            var db = client.GetDatabase(Globals.MetadataCollectionStoreName);
+            var collection = db.GetCollection<BsonDocument>(collectionMetadata.MapCollectionName);
+            var items = await collection.FindAsync(new BsonDocument());
+            var itemsList = await items.ToListAsync();
+            var result = itemsList.Select(x => Mapper.Map<ILinkedListMap>(x)).ToList();
+            return result;
         }
     }
 }
