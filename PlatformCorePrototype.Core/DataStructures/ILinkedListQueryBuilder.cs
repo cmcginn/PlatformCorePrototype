@@ -7,7 +7,8 @@ namespace PlatformCorePrototype.Core.DataStructures
     {
         bool ExcludeChildren { get; set; }
         List<ILinkedListMap> LinkedListMaps { get; set; }
-        LinkedListPathSpecification SelectedPath { get; set; }
+        string SelectedNavigationPath { get; set; }
+        ILinkedListMap SelectedNavigation { get; set; }
         int SelectedLevel { get; set; }
         object SelectedKey { get; set; }
     }

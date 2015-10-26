@@ -179,8 +179,9 @@ namespace PlatformCorePrototype.Services.Mapping
         protected override void Configure()
         {
             Mapper.CreateMap<LinkedListViewDefinitionMetadata, LinkedListQueryBuilder>()
+                .ForMember(dest=>dest.SelectedNavigation,src=>src.Ignore())
                 .ForMember(dest => dest.LinkedListMaps, src => src.Ignore())
-                .ForMember(dest => dest.SelectedPath, src => src.Ignore())
+                .ForMember(dest => dest.SelectedNavigationPath, src => src.Ignore())
                 .ForMember(dest => dest.SelectedKey, src => src.Ignore())
                 .ForMember(dest => dest.ExcludeChildren, src => src.Ignore())
                 .ForMember(dest => dest.SelectedLevel, src => src.Ignore());

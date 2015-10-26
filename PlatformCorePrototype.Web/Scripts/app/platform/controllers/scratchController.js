@@ -34,11 +34,31 @@
     //}
 
     $scope.linkedListMaps = [];
-    $scope.init=function(viewId) {
+    $scope.init = function(viewId) {
         var d = dataservice.getScratchDataAsync(viewId);
-        d.then(function (data) {
-            $scope.linkedListMaps = data.linkedListMaps;
-            console.log($scope.linkedListMaps[0]);
+        d.then(function(data) {
+            $scope.queryBuilder = data;
+            //$scope.linkedListMaps = data.linkedListMaps;
+            //console.log($scope.linkedListMaps[0]);
         });
-    }
+    };
+
+    $scope.$on('tree_node_selected', function (e, args) {
+        $scope.queryBuilder.selectedSlicers = [];
+        $scope.queryBuilder.selectedNavigation = $scope.queryBuilder.linkedListMaps[0];
+        $scope.queryBuilder.selectedNavigationPath = args.path;
+        $scope.queryBuilder.selectedLevel = args.level;
+
+        var pathItems = $scope.queryBuilder.selectedNavigationPath.split('.');
+        var navPath = '';
+        for (var i = 0; i < $scope.queryBuilder.selectedLevel+1; i++) {
+            navPath = navPath + '>' + pathItems[i];
+        }
+        $scope.navPath = navPath;
+        var d = dataservice.getDataAsync($scope.queryBuilder);
+        d.then(function (data) {
+            $scope.sum = data[0].f0;
+     
+        });
+    });
 }]);

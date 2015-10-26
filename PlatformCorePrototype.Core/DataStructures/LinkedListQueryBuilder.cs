@@ -6,7 +6,7 @@ namespace PlatformCorePrototype.Core.DataStructures
     public class LinkedListQueryBuilder : QueryBuilder, ILinkedListQueryBuilder
     {
 
-        public LinkedListPathSpecification SelectedPath { get; set; }
+        public string SelectedNavigationPath { get; set; }
 
         public bool ExcludeChildren { get; set; }
         public object SelectedKey { get; set; }
@@ -22,5 +22,8 @@ namespace PlatformCorePrototype.Core.DataStructures
                 _LinkedListMaps = value;
             }
         }
+
+
+        public ILinkedListMap SelectedNavigation { get; set; }
     }
 }

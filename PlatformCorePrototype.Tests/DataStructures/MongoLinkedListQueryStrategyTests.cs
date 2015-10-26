@@ -37,14 +37,25 @@ namespace PlatformCorePrototype.Tests.DataStructures
             var qb= Mapper.Map<IQueryBuilder>(view);
             Assert.IsInstanceOfType(qb, typeof(LinkedListQueryBuilder));
             result.QueryBuilder = qb;
+            ((LinkedListQueryBuilder)result.QueryBuilder).LinkedListMaps =svc.GetLinkedListMaps(viewId).Result;
             return result;
         }
 
         [TestMethod]
-        public void GetLinkedListMapTest()
+        public async Task GetLinkedListMapTest()
         {
             var target = GetTarget();
-           // target.
+            var qb = target.QueryBuilder as ILinkedListQueryBuilder;
+            var strategy = Mapper.Map<MongoLinkedListExpandoObjectQueryStrategy>(qb);
+            qb.SelectedSlicers.Add(qb.AvailableSlicers.Single(x => x.Column.ColumnName == "Account"));
+            
+            qb.SelectedNavigationPath = qb.LinkedListMaps.First().NavigationMaps.First().Navigation;
+            qb.SelectedNavigation = qb.LinkedListMaps.First();
+            qb.SelectedLevel = 2;
+            Assert.IsNotNull(strategy.QueryBuilder);
+            var actual = await strategy.RunQuery();
+            Assert.IsTrue(actual.Any());
+            // target.
         }
         
     }

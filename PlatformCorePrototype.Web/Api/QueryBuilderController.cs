@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 using AutoMapper;
 using PlatformCorePrototype.Core.DataStructures;
 using PlatformCorePrototype.Core.Models;
 using PlatformCorePrototype.Services;
+using PlatformCorePrototype.Web.Infrastructure;
 using PlatformCorePrototype.Web.Services;
 
 namespace PlatformCorePrototype.Web.Api
@@ -26,6 +29,13 @@ namespace PlatformCorePrototype.Web.Api
             var paths = await svc.GetLinkedListMaps(id);
             result.LinkedListMaps = paths.Select(x => Mapper.Map<ILinkedListMap>(x)).ToList();
             return result;
+        }
+
+        public async Task<List<ExpandoObject>> Post([ModelBinder(typeof(JsonPolyModelBinder))]LinkedListQueryBuilder value)
+        {
+            var svc = new DataService();
+            return await svc.GetDataAsync(value);
+          
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
+using AutoMapper;
 using PlatformCorePrototype.Core.DataStructures;
+using PlatformCorePrototype.Services.DataStructures;
 
 namespace PlatformCorePrototype.Web.Services
 {
@@ -15,6 +19,11 @@ namespace PlatformCorePrototype.Web.Services
             //return await result;
         }
 
+        public async Task<List<ExpandoObject>> GetDataAsync(LinkedListQueryBuilder builder)
+        {
+            var strategy = Mapper.Map<MongoLinkedListExpandoObjectQueryStrategy>(builder);
+            return await strategy.RunQuery();
+        }
         //public async Task<List<dynamic>> GetDataAsync(IQueryBuilder queryBuilder)
         //{
         //    Task<List<dynamic>> myT = null;

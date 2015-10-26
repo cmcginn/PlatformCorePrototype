@@ -12,7 +12,7 @@
             var parent = null;
             for (var i = 0; i < keys.length; i++) {
 
-                var item = { id: keys[i] + '_' + i.toString(), text: keys[i], parent:'#' };
+                var item = { id: keys[i] + '_' + i.toString(), text: keys[i], parent: '#', data: { path: entry.key, level: i } };
                 if (i > 0)
                     item.parent = keys[i - 1] + '_' + (i - 1).toString();
                 stage1.push(item);
@@ -21,7 +21,8 @@
             
             for (var i = 0; i < entry.value.length; i++) {
           
-                var item = { id: parent.id + '_' + i.toString() + '_leaf', text: entry.value[i].key.toString(), parent: parent.id,icon:'folder-icon' };
+                var item = {
+                    id: parent.id + '_' + i.toString() + '_leaf', text: entry.value[i].key.toString(), parent: parent.id,icon:'folder-icon',data: { path: entry.key, level: keys.length - 1 }};
                 stage1.push(item);
             }
         });
@@ -37,10 +38,13 @@
 
         });
        
-        var dd = el.jstree({
+        var tree = el.jstree({
             core: { data: result }
         });
-        
+        tree.on('after_open.jstree', function(e, data) {
+            scope.selected_node = data.node.data;
+            scope.$emit('tree_node_selected', scope.selected_node);
+        });
     }
 
 

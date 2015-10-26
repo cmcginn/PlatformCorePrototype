@@ -21,13 +21,63 @@ namespace PlatformCorePrototype.Services.DataStructures
 
         public async Task<List<ExpandoObject>> RunQuery()
         {
-            throw new System.NotImplementedException();
+            
+            if (LinkedListQueryBuilder.SelectedNavigation != null)
+            {
+                
+                var navPath = String.Join(".",
+                    LinkedListQueryBuilder.SelectedNavigationPath.Split('.').Take(LinkedListQueryBuilder.SelectedLevel +1));
+                var keys = new List<object>();
+                var keyValues = new BsonArray();
+                LinkedListQueryBuilder.LinkedListMaps.ForEach(x =>
+                {
+                    x.NavigationMaps.ForEach(n =>
+                    {
+                        BsonValue val = null;
+                        var p = String.Join(".",n.Navigation.Split('.').Take(LinkedListQueryBuilder.SelectedLevel+1));
+
+                        if (navPath == p)
+                        {
+                            if (n.Key is Int64)
+                                val = (BsonValue) new BsonInt32(int.Parse(n.Key.ToString()));
+                            else
+                                val = (BsonValue) n.Key;
+                           
+                                keyValues.Add(val);
+                        }
+
+                                
+                        
+                     
+                    });
+                });
+                var builder = new FilterDefinitionBuilder<ExpandoObject>();
+                FilterDefinition<ExpandoObject> filter =
+                    builder.In(LinkedListQueryBuilder.SelectedNavigation.SlicerColumnName, keyValues);
+                var db = GetDatabase();
+                var collection = db.GetCollection<ExpandoObject>(CollectionMetadata.Id);
+                var groupDocument = new BsonDocument {{"id", 0}, {"$sum", "$Amount"}};
+                var aggregated = collection.Aggregate().Match(filter).Group<ExpandoObject>(new BsonDocument { { "_id", 0 }, { "f0", new BsonDocument { { "$sum", "$Amount" } } } });
+                return await aggregated.ToListAsync();
+
+            }
+         
+            //{
+                //var q = from llm in LinkedListQueryBuilder.LinkedListMaps
+                //        join np in LinkedListQueryBuilder.LinkedListMaps.Select(m=>m.NavigationMaps)
+                //        on llm
+                //LinkedListQueryBuilder.LinkedListMaps.Where(x=>x.)
+                //var paths = LinkedListQueryBuilder.SelectedPath.Split('.').ToList();
+                //var pathText = 
+            //}
+            //throw new System.NotImplementedException();
             //var pipeline = await GetQueryPipeline();
             //var db = GetDatabase();
             //var collection = db.GetCollection<ExpandoObject>(CollectionMetadata.Id);
             //var ag = collection.Aggregate();
             //pipeline.ForEach(pl => { ag = ag.AppendStage<ExpandoObject>(pl); });
             //return await ag.ToListAsync();
+            throw new System.NotImplementedException();
         }
 
         #endregion

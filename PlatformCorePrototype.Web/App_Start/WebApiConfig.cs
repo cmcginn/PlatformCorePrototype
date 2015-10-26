@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace PlatformCorePrototype.Web
@@ -14,7 +15,7 @@ namespace PlatformCorePrototype.Web
             config.Formatters.Add(bson);
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-
+            jsonFormatter.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
             //jsonFormatter.SerializerSettings.Converters.Add(new JsonNetBsonDocumentConverter());
 
             config.MapHttpAttributeRoutes();
