@@ -22,7 +22,7 @@ namespace PlatformCorePrototype.Web.Mapping
                 cfg.AddProfile<BsonDocumentToLinkedListDataCollectionMetadataProfile>();
                 cfg.AddProfile<ViewDefinitionMetadataToIQueryBuilderProfile>();
                 cfg.AddProfile<LinkedListViewDefinitionMetadataToLinkedListQueryBuilder>();
-                cfg.AddProfile<BsonDocumentToLinkedListPathSpecificationProfile>();
+               // cfg.AddProfile<BsonDocumentToLinkedListPathSpecificationProfile>();
                 cfg.AddProfile<BsonDocumentToLinkedListViewDefinitionMetadata>();
                 //cfg.AddProfile<QueryBuilderToQueryStrategyProfile>();
                 cfg.AddProfile<QueryBuilderToMongoLinkedListQueryStrategy>();

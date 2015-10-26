@@ -82,15 +82,15 @@ namespace PlatformCorePrototype.Services.Mapping
         }
     }
 
-    public class BsonDocumentToLinkedListPathSpecificationProfile : Profile
-    {
-        protected override void Configure()
-        {
-            Mapper.CreateMap<BsonDocument, LinkedListPathSpecification>()
-                .ForMember(dest => dest.Navigation, src => src.MapFrom(x => x["Navigation"]))
-                .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())));
-        }
-    }
+    //public class BsonDocumentToLinkedListPathSpecificationProfile : Profile
+    //{
+    //    protected override void Configure()
+    //    {
+    //        Mapper.CreateMap<BsonDocument, LinkedListPathSpecification>()
+    //            .ForMember(dest => dest.Navigation, src => src.MapFrom(x => x["Navigation"]))
+    //            .ForMember(dest => dest.DisplayOrder, src => src.MapFrom(x => int.Parse(x["DisplayOrder"].ToString())));
+    //    }
+    //}
 
     public class BsonDocumentToSlicerSpecificationProfile : Profile
     {

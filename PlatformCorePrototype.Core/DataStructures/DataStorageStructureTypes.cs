@@ -3,7 +3,6 @@
     public enum DataStorageStructureTypes
     {
         Default = 0,
-        Tree = 1,
-        LinkedList = 2
+        LinkedList = 10
     }
 }

@@ -49,7 +49,6 @@
     <Compile Include="DataStructures\AggregateOperationTypes.cs" />
     <Compile Include="DataStructures\DataCollectionMetadata.cs" />
     <Compile Include="DataStructures\DataColumnMetadata.cs" />
-    <Compile Include="DataStructures\DataDefinition.cs" />
     <Compile Include="DataStructures\DataStorageStructureTypes.cs" />
     <Compile Include="DataStructures\FilterSpecification.cs" />
     <Compile Include="DataStructures\FilterTypes.cs" />

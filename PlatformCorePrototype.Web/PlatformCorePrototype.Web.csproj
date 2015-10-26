@@ -1919,6 +1919,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="Classes.cd" />
     <None Include="Project_Readme.html" />
     <Content Include="Vendor\amcharts\amcharts\images\dragIconRectBig.svg" />
     <Content Include="Vendor\amcharts\amcharts\images\dragIconRectBigBlack.svg" />

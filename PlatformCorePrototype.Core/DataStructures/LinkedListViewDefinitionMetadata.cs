@@ -4,6 +4,6 @@ namespace PlatformCorePrototype.Core.DataStructures
 {
     public class LinkedListViewDefinitionMetadata : ViewDefinitionMetadata
     {
- 
+
     }
 }
