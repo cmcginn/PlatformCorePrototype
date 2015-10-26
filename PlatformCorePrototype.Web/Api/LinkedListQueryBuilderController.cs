@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using PlatformCorePrototype.Core.Models;
+﻿using System.Web.Http;
 using PlatformCorePrototype.Web.Services;
 
 namespace PlatformCorePrototype.Web.Api
 {
-
     public class LinkedListQueryBuilderController : ApiController
     {
         private DataService service = new DataService();

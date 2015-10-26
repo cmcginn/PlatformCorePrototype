@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ITreeQueryStrategy<T>:IQueryStrategy<T>
+    public interface ILinkedListMap
     {
-        bool IncludeChildren { get; set; }
+        string SlicerColumnName { get; set; }
+        List<ILinkedListNavigationMap> NavigationMaps { get; set; }
     }
 }

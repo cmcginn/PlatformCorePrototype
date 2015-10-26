@@ -232,10 +232,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\JsonPolyModelBinder.cs" />
     <Compile Include="Infrastructure\MongoBsonContractResolver.cs" />
     <Compile Include="Infrastructure\JsonNetBsonDocumentConverter.cs" />
     <Compile Include="Mapping\MappingConfiguration.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LinkedListViewDefinitionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Startup.cs" />
@@ -1363,6 +1365,7 @@
     <Content Include="Vendor\jsTree3\themes\custom\throbber.gif" />
     <Content Include="Vendor\jsTree3\themes\default\32px.png" />
     <Content Include="Vendor\jsTree3\themes\default\40px.png" />
+    <Content Include="Vendor\jsTree3\themes\default\file.png" />
     <Content Include="Vendor\jsTree3\themes\default\style.css" />
     <Content Include="Vendor\jsTree3\themes\default\style.min.css" />
     <Content Include="Vendor\jsTree3\themes\default\throbber.gif" />
@@ -2081,6 +2084,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Scratch.cshtml" />
     <Content Include="Scripts\app\platform\resources\treedata.json" />
+    <Content Include="Vendor\fontawesome\fonts\fontawesome-webfont.woff2" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Vendor\angular-ui-router\api\angular-ui-router.d.ts" />

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
     public class FilterSpecification
     {
+        private List<FilterSpecification> _Dependencies;
+
+        private List<FilterValue> _FilterValues;
         public DataColumnMetadata Column { get; set; }
 
         public List<FilterSpecification> Dependencies
@@ -24,9 +23,6 @@ namespace PlatformCorePrototype.Core.DataStructures
 
         public int DisplayOrder { get; set; }
         public FilterTypes FilterType { get; set; }
-        private List<FilterSpecification> _Dependencies;
-
-        private List<FilterValue> _FilterValues;
 
         public string SelectionMode { get; set; }
     }

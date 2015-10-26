@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class LinkedListMap<T>
+    public class LinkedListMap:ILinkedListMap
     {
-        public T Key { get; set; }
-
-        public List<string> Navigation
+        public string SlicerColumnName { get; set; }
+        private List<ILinkedListNavigationMap> _NavigationMaps;
+        public List<ILinkedListNavigationMap> NavigationMaps
         {
-            get { return _Navigation ?? (_Navigation = new List<string>()); }
-            set { _Navigation = value; }
+            get { return _NavigationMaps ?? (_NavigationMaps = new List<ILinkedListNavigationMap>()); }
+            set
+            {
+                _NavigationMaps = value;
+            }
         }
-
-        private List<string> _Navigation;
-
-
     }
 }

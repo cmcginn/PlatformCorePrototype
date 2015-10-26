@@ -1,3 +1,4 @@
+using System.IO;
 using Cassette;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
@@ -11,7 +12,7 @@ namespace PlatformCorePrototype.Web
     {
         public void Configure(BundleCollection bundles)
         {
-            var files = new[] 
+            var files = new[]
             {
                 "~/Vendor/modernizr/modernizr.js",
                 "~/Vendor/jquery/dist/jquery.js",
@@ -47,17 +48,17 @@ namespace PlatformCorePrototype.Web
                 "~/Vendor/animo/animo.js",
                 "~/Vendor/angular-bootstrap-nav-tree/dist/abn_tree_directive.js",
                 "~/Vendor/jsTree3/jstree.js"
-
             };
             bundles.Add<ScriptBundle>("~/Vendor", files);
-            bundles.Add<ScriptBundle>("~/Scripts", new FileSearch { Pattern = "*.js", SearchOption = System.IO.SearchOption.AllDirectories });
+            bundles.Add<ScriptBundle>("~/Scripts",
+                new FileSearch {Pattern = "*.js", SearchOption = SearchOption.AllDirectories});
 
             files = new[]
             {
                 "~/Content/app/bootstrap.css"
             };
             bundles.Add<StylesheetBundle>("~/Bootstrap", files);
-            files = new[] { "~/Content/app/app.css", "~/Content/app/custom/site.css" };
+            files = new[] {"~/Content/app/app.css", "~/Content/app/custom/site.css"};
             bundles.Add<StylesheetBundle>("~/App", files);
             files = new[]
             {

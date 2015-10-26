@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
     public class DataColumnMetadata
     {
+        private List<DataColumnMetadata> _Columns;
         public string ColumnName { get; set; }
         public string DataType { get; set; }
 
@@ -16,7 +13,5 @@ namespace PlatformCorePrototype.Core.DataStructures
             get { return _Columns ?? (_Columns = new List<DataColumnMetadata>()); }
             set { _Columns = value; }
         }
-
-        private List<DataColumnMetadata> _Columns;
     }
 }

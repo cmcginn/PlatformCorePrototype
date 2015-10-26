@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public interface ILinkedListQueryStrategy<T> : IQueryStrategy<T>
+    public class LinkedListNavigationMap:ILinkedListNavigationMap
     {
-
-
+        public string Navigation { get; set; }
+        public object Key { get; set; }
     }
 }

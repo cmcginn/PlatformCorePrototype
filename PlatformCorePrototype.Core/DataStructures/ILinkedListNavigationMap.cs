@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace PlatformCorePrototype.Core.DataStructures
 {
-    public class LinkedListSettings
+    public interface ILinkedListNavigationMap
     {
-        public string MapCollectionName { get; set; }
-        public DataColumnMetadata KeyColumn { get; set; }
-
+        string Navigation { get; set; }
+        object Key { get; set; }
     }
 }

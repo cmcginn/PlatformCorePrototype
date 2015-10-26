@@ -8,6 +8,5 @@ namespace PlatformCorePrototype.Core.DataStructures
         List<FilterSpecification> Filters { get; set; }
         List<SlicerSpecification> Slicers { get; set; }
         List<MeasureSpecification> Measures { get; set; }
-
     }
 }

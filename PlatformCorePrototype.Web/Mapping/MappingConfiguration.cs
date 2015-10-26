@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using PlatformCorePrototype.Services.Mapping;
-
 
 namespace PlatformCorePrototype.Web.Mapping
 {
     public class MappingConfiguration
     {
         private static bool _Initialized;
+
         public static void ConfigureMappings()
         {
             if (_Initialized)
@@ -28,13 +24,19 @@ namespace PlatformCorePrototype.Web.Mapping
                 cfg.AddProfile<LinkedListViewDefinitionMetadataToLinkedListQueryBuilder>();
                 cfg.AddProfile<BsonDocumentToLinkedListPathSpecificationProfile>();
                 cfg.AddProfile<BsonDocumentToLinkedListViewDefinitionMetadata>();
+                //cfg.AddProfile<QueryBuilderToQueryStrategyProfile>();
+                cfg.AddProfile<QueryBuilderToMongoLinkedListQueryStrategy>();
+                cfg.AddProfile<BsonDocumentToILinkedListMapProfile>();
+                cfg.AddProfile<BsonDocumentToLinkedListMapProfile>();
+               // cfg.AddProfile<BsonDocumentsToILinkedListMapsProfile>();
+                cfg.AddProfile<BsonDocumentToILinkedListNavigationMapProfile>();
+                cfg.AddProfile<BsonDocumentToLinkedListNavigationMapProfile>();
                 //Core.Configuration.MappingConfiguration.Configure(cfg);
                 //cfg.AddProfile<LinkedListQueryBuilderToMongoLinkedListQueryStrategyProfile>();
             });
- 
+
             Mapper.AssertConfigurationIsValid();
             _Initialized = true;
-           
         }
     }
 }

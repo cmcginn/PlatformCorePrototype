@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using Newtonsoft.Json;
 
 namespace PlatformCorePrototype.Web.Infrastructure
 {
     public class JsonNetBsonDocumentConverter : JsonConverter
     {
-
-
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(BsonDocument));
+            return (objectType == typeof (BsonDocument));
         }
-        public override object ReadJson(Newtonsoft.Json.JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
 
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
+        {
             throw new NotImplementedException();
         }
 
-        public override void WriteJson(Newtonsoft.Json.JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             //handle object id serialization
-            var doc = (BsonDocument)value;
+            var doc = (BsonDocument) value;
             BsonElement idElement;
             if (doc.TryGetElement("_id", out idElement))
             {
