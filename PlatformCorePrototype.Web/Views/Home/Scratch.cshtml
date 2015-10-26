@@ -2,6 +2,14 @@
 @{
     Layout = null;
 }
+<style>
+  i.jstree-icon.jstree-themeicon.folder-icon.jstree-themeicon-custom {
+        background-image: url("http://localhost:9091/Vendor/jsTree3/themes/default/file.png");
+      background-position-x: -10px;
+      background-position-y: -6px;
+       
+    }
+</style>
 
 <div ng-controller="ScratchController" ng-init="init('linkedlist_account_view1')">
     <div class="row" ng-repeat="map in linkedListMaps">

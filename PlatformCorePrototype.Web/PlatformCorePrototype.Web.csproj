@@ -1364,6 +1364,7 @@
     <Content Include="Vendor\jsTree3\themes\custom\throbber.gif" />
     <Content Include="Vendor\jsTree3\themes\default\32px.png" />
     <Content Include="Vendor\jsTree3\themes\default\40px.png" />
+    <Content Include="Vendor\jsTree3\themes\default\file.png" />
     <Content Include="Vendor\jsTree3\themes\default\style.css" />
     <Content Include="Vendor\jsTree3\themes\default\style.min.css" />
     <Content Include="Vendor\jsTree3\themes\default\throbber.gif" />
